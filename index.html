@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🥋 태권도장 마스터 시스템 v1.1</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --container-bg: #151d30;
+            --input-bg: #090c15;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --accent-green: #4ade80;
+            --accent-amber: #fbbf24;
+            --accent-red: #f87171;
+            --accent-blue: #38bdf8;
+            --border-color: #1e293b;
+            
+            --tkd-red: #ef4444;
+            --tkd-blue: #3b82f6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 16px;
+            min-height: 100vh;
+        }
+
+        /* 래퍼: 왼쪽 사이드바 + 오른쪽 메인앱 구조 */
+        .main-wrapper {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+        /* 왼쪽 예상 수익 계산기 (사이드바) */
+        .sidebar-container {
+            flex: 0 0 340px;
+            background-color: var(--container-bg);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+            border: 2px solid var(--border-color);
+            margin-top: 10px;
+            position: sticky;
+            top: 20px;
+            max-height: 95vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-scroll-area {
+            overflow-y: auto;
+            flex-grow: 1;
+            padding-right: 5px;
+        }
+
+        /* 오른쪽 메인 시세 분석기 */
+        .app-container {
+            flex: 1;
+            max-width: 620px;
+            background-color: var(--container-bg);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+            border: 2px solid var(--border-color);
+            margin-top: 10px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .app-container::before, .sidebar-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(90deg, var(--tkd-blue) 50%, var(--tkd-red) 50%);
+            border-radius: 20px 20px 0 0;
+        }
+
+        @media (max-width: 900px) {
+            .main-wrapper {
+                flex-direction: column-reverse;
+                align-items: center;
+            }
+            .sidebar-container {
+                width: 100%;
+                max-width: 620px;
+                position: static;
+                max-height: none;
+            }
+            .app-container {
+                width: 100%;
+            }
+        }
+
+        /* ---------- 오른쪽 메인 영역 디자인 ---------- */
+        .header { text-align: center; margin-bottom: 24px; padding-top: 12px; }
+        .header h1 { font-size: 24px; font-weight: 900; margin-bottom: 6px; }
+        .title-tkd { background: linear-gradient(90deg, #38bdf8, #f87171); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .header p { font-size: 13px; color: var(--text-muted); }
+
+        .parser-container {
+            background-color: rgba(255, 255, 255, 0.02);
+            border: 2px dashed var(--border-color);
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+        .parser-label { display: block; font-size: 13px; font-weight: 700; color: var(--accent-blue); margin-bottom: 8px; }
+        .parser-textarea {
+            width: 100%; height: 90px; background-color: var(--input-bg);
+            border: 1px solid var(--border-color); color: var(--text-main);
+            padding: 12px; border-radius: 10px; font-size: 14px; resize: none; outline: none; line-height: 1.5;
+        }
+        .parser-textarea:focus { border-color: var(--accent-blue); }
+
+        .tabs { display: table; width: 100%; background-color: var(--input-bg); padding: 4px; border-radius: 10px; margin-bottom: 20px; border: 1px solid var(--border-color); }
+        .tab-cell { display: table-cell; width: 50%; text-align: center; }
+        .tab-btn { width: 100%; background: none; border: none; color: var(--text-muted); padding: 12px; font-size: 15px; font-weight: 700; cursor: pointer; border-radius: 8px; }
+        .tab-btn.active { background-color: var(--container-bg); color: var(--text-main); border: 1px solid var(--border-color); }
+        #tab-rune.active { color: var(--accent-blue); }
+        #tab-cooking.active { color: var(--accent-amber); }
+
+        .sub-tabs { display: flex; gap: 6px; margin-bottom: 20px; background-color: var(--input-bg); padding: 4px; border-radius: 8px; border: 1px solid var(--border-color); }
+        .sub-tab-btn { flex: 1; background: none; border: none; color: var(--text-muted); padding: 8px 4px; font-size: 12px; font-weight: 700; cursor: pointer; border-radius: 6px; }
+        .sub-tab-btn.active { background-color: var(--container-bg); color: var(--accent-amber); }
+
+        .section-group-title { font-size: 14px; font-weight: 800; color: var(--text-main); padding: 6px 12px; background-color: rgba(255, 255, 255, 0.05); border-left: 4px solid var(--tkd-red); margin-top: 24px; margin-bottom: 12px; border-radius: 0 6px 6px 0; }
+
+        .item-card { background-color: var(--input-bg); border: 1px solid var(--border-color); border-radius: 14px; padding: 16px; margin-bottom: 14px; }
+        .item-header { margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px; }
+        .item-name { font-weight: 800; font-size: 16px; color: var(--text-main); }
+        .item-recipe { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+
+        .tier-table { display: table; width: 100%; border-collapse: collapse; }
+        .tier-row { display: table-row; }
+        .tier-row + .tier-row .tier-cell { border-top: 1px dashed rgba(255, 255, 255, 0.05); }
+        .tier-cell { display: table-cell; vertical-align: middle; padding: 8px 0; }
+        .cell-label { width: 25%; font-size: 12px; }
+        .star-badge { font-weight: 800; font-size: 12px; }
+        .star-무별 { color: #e2e8f0; } .star-은별 { color: #94a3b8; } .star-금별 { color: #fbbf24; }
+        .rune-badge { color: var(--accent-blue); }
+        .range-text { display: block; font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+        
+        .cell-input { width: 25%; padding-right: 8px; }
+        .cell-input input { width: 100%; background-color: var(--container-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 7px 8px; border-radius: 8px; font-size: 14px; outline: none; text-align: center; font-weight: 700; }
+        .cell-input input:focus { border-color: var(--accent-blue); }
+        
+        .cell-result { width: 50%; text-align: right; font-size: 11px; display: flex; justify-content: flex-end; align-items: center; gap: 6px; }
+        .status-badge { font-size: 11px; padding: 3px 7px; border-radius: 5px; font-weight: 700; }
+        .status-perfect { background-color: rgba(74, 222, 128, 0.15); color: var(--accent-green); }
+        .status-good { background-color: rgba(56, 189, 248, 0.15); color: var(--accent-blue); }
+        .status-normal { background-color: rgba(251, 191, 36, 0.15); color: var(--accent-amber); }
+        .status-bad { background-color: rgba(248, 113, 113, 0.15); color: var(--accent-red); }
+        .status-none { background-color: transparent; color: var(--text-muted); }
+        .diff-text { font-weight: 700; } .diff-good { color: var(--accent-green); } .diff-bad { color: var(--accent-red); } .diff-none { color: var(--text-muted); }
+
+        .add-cart-btn { background-color: var(--tkd-blue); color: white; border: none; border-radius: 6px; width: 28px; height: 28px; font-size: 14px; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: 0.1s; }
+        .add-cart-btn:hover { background-color: #2563eb; transform: scale(1.05); }
+
+        /* ---------- 사이드바 장부 디자인 ---------- */
+        .cart-header { font-size: 18px; font-weight: 900; margin-bottom: 12px; border-bottom: 2px solid var(--border-color); padding-bottom: 12px; color: var(--text-main); display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+        .cart-empty { font-size: 13px; color: var(--text-muted); text-align: center; padding: 20px 0; background: var(--input-bg); border-radius: 10px; border: 1px dashed var(--border-color); }
+        
+        .cart-item { background-color: var(--input-bg); border: 1px solid var(--border-color); border-radius: 10px; padding: 12px; margin-bottom: 10px; }
+        .cart-item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+        .cart-item-name { font-size: 13px; font-weight: 800; color: var(--text-main); max-width: 85%; line-height: 1.3; }
+        .cart-remove-btn { background: none; border: none; color: var(--accent-red); cursor: pointer; font-size: 14px; opacity: 0.7; }
+        .cart-remove-btn:hover { opacity: 1; }
+
+        .cart-item-controls { display: flex; flex-direction: column; gap: 8px; }
+        .cart-row-1 { display: flex; justify-content: space-between; align-items: center; }
+        .cart-row-2 { display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed var(--border-color); padding-top: 8px; }
+        
+        .cart-item-price { font-size: 12px; color: var(--accent-amber); font-weight: 700; }
+        
+        .qty-wrapper { display: flex; align-items: center; gap: 4px; }
+        .qty-input, .cost-input { background-color: var(--container-bg); border: 1px solid var(--border-color); color: var(--text-main); border-radius: 4px; text-align: center; font-size: 12px; font-weight: 700; outline: none; }
+        .qty-input { width: 45px; padding: 4px; }
+        .cost-input { width: 70px; padding: 4px; text-align: right; }
+        .qty-input:focus, .cost-input:focus { border-color: var(--accent-blue); }
+        
+        .qty-btn { background-color: var(--border-color); color: var(--text-main); border: none; border-radius: 4px; padding: 4px 6px; font-size: 11px; cursor: pointer; font-weight: bold; }
+        .qty-btn:hover { background-color: #475569; }
+
+        .item-profit { font-size: 12px; font-weight: 900; }
+
+        .cart-total-box { margin-top: 16px; padding: 16px; background-color: var(--input-bg); border: 1px solid var(--border-color); border-radius: 12px; }
+        .total-line { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px; color: var(--text-muted); }
+        .total-line.final { border-top: 2px dashed var(--border-color); margin-top: 8px; padding-top: 8px; font-size: 16px; font-weight: 900; color: var(--text-main); }
+
+        /* ---------- 퀵 계산기 디자인 ---------- */
+        .calculator-box { margin-top: 16px; background-color: var(--input-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px; }
+        .calc-title { font-size: 13px; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;}
+        
+        /* 직접 타이핑 가능하도록 개선된 입력창 */
+        .calc-display { width: 100%; background-color: var(--container-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 10px; border-radius: 6px; font-size: 18px; font-weight: 700; text-align: right; margin-bottom: 10px; outline: none; font-family: monospace; }
+        .calc-display:focus { border-color: var(--accent-green); box-shadow: 0 0 5px rgba(74, 222, 128, 0.3); }
+        
+        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+        .calc-btn { background-color: var(--container-bg); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 6px; padding: 10px 0; font-size: 15px; font-weight: 700; cursor: pointer; transition: 0.1s; }
+        .calc-btn:hover { background-color: #334155; }
+        .calc-btn:active { transform: scale(0.95); }
+        .calc-op { background-color: rgba(56, 189, 248, 0.1); color: var(--accent-blue); border-color: rgba(56, 189, 248, 0.3); }
+        .calc-op:hover { background-color: rgba(56, 189, 248, 0.2); }
+        .calc-eq { background-color: var(--accent-green); color: #000; border: none; }
+        .calc-eq:hover { background-color: #22c55e; }
+        .calc-clear { background-color: rgba(248, 113, 113, 0.1); color: var(--accent-red); border-color: rgba(248, 113, 113, 0.3); }
+        .calc-clear:hover { background-color: rgba(248, 113, 113, 0.2); }
+    </style>
+</head>
+<body>
+
+<div class="main-wrapper">
+    <!-- 왼쪽 사이드바 (장부 + 퀵 계산기) -->
+    <div class="sidebar-container">
+        <div class="cart-header">💰 예상 수익</div>
+        
+        <div class="cart-scroll-area">
+            <div id="cartItemsList"></div>
+        </div>
+
+        <div class="cart-total-box">
+            <div class="total-line"><span>총 예상 매출</span><span id="sumRevenue">0원</span></div>
+            <div class="total-line"><span>총 재료비</span><span id="sumCost">0원</span></div>
+            <div class="total-line final"><span>최종 순수익</span><span id="sumProfit" style="color:var(--accent-green);">0원</span></div>
+        </div>
+
+        <!-- 키보드 직접 입력 지원 퀵 계산기 -->
+        <div class="calculator-box">
+            <div class="calc-title">
+                <span>🧮 퀵 재료비 계산기</span>
+                <span style="font-size: 10px;">(키보드 입력 지원)</span>
+            </div>
+            <!-- 직접 입력 가능! 엔터 누르면 자동 계산됨 -->
+            <input type="text" id="calcDisplay" class="calc-display" placeholder="예: 30*3+15*2" onkeydown="handleCalcKey(event)">
+            <div class="calc-grid">
+                <button class="calc-btn" onclick="calcAppend('7')">7</button>
+                <button class="calc-btn" onclick="calcAppend('8')">8</button>
+                <button class="calc-btn" onclick="calcAppend('9')">9</button>
+                <button class="calc-btn calc-op" onclick="calcAppend('+')">+</button>
+                <button class="calc-btn" onclick="calcAppend('4')">4</button>
+                <button class="calc-btn" onclick="calcAppend('5')">5</button>
+                <button class="calc-btn" onclick="calcAppend('6')">6</button>
+                <button class="calc-btn calc-op" onclick="calcAppend('-')">-</button>
+                <button class="calc-btn" onclick="calcAppend('1')">1</button>
+                <button class="calc-btn" onclick="calcAppend('2')">2</button>
+                <button class="calc-btn" onclick="calcAppend('3')">3</button>
+                <button class="calc-btn calc-op" onclick="calcAppend('*')">×</button>
+                <button class="calc-btn calc-clear" onclick="calcClear()">C</button>
+                <button class="calc-btn" onclick="calcAppend('0')">0</button>
+                <button class="calc-btn calc-eq" onclick="calcCalculate()">=</button>
+                <button class="calc-btn calc-op" onclick="calcAppend('/')">÷</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 오른쪽 메인 앱 -->
+    <div class="app-container">
+        <div class="header">
+            <h1>🥋 <span class="title-tkd">태권도장 시세계산기</span></h1>
+            <p>텍스트를 붙여넣고 우측 [+] 버튼을 눌러 장부를 기록하세요</p>
+        </div>
+
+        <!-- 스마트 파서 (정규식 업그레이드 됨) -->
+        <div class="parser-container">
+            <label class="parser-label" id="parserLabel">📋 통합 시세 복사+붙여넣기</label>
+            <textarea id="smartParser" class="parser-textarea" placeholder="디스코드 내용을 통째로 복사해서 이곳에 넣으세요!&#10;예: [룬 ㅣ 신속] | 263 → 290"></textarea>
+        </div>
+
+        <div class="tabs">
+            <div class="tab-cell"><button class="tab-btn active" id="tab-rune" onclick="switchTab('rune')">☯️ 룬 상점</button></div>
+            <div class="tab-cell"><button class="tab-btn" id="tab-cooking" onclick="switchTab('cooking')">🍳 요리 상점</button></div>
+        </div>
+
+        <div id="runeView">
+            <div class="item-list" id="runeListContainer"></div>
+        </div>
+
+        <div id="cookingView" style="display: none;">
+            <div class="sub-tabs">
+                <button class="sub-tab-btn active" id="sub-tab-c1" onclick="switchSubTab('c1')">요리 1차</button>
+                <button class="sub-tab-btn" id="sub-tab-c2" onclick="switchSubTab('c2')">요리 2차</button>
+                <button class="sub-tab-btn" id="sub-tab-c3" onclick="switchSubTab('c3')">요리 3차</button>
+                <button class="sub-tab-btn" id="sub-tab-c4" onclick="switchSubTab('c4')">요리 4차</button>
+                <button class="sub-tab-btn" id="sub-tab-c5" onclick="switchSubTab('c5')">요리 5차</button>
+            </div>
+            <div id="cookingListContainer"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const serverData = {
+        rune: [
+            { name: "룬ㅣ화염저항", keywords: ["화염", "화염저항"], min: 180, max: 270 },
+            { name: "룬ㅣ호흡", keywords: ["호흡"], min: 207, max: 311 },
+            { name: "룬ㅣ신속", keywords: ["신속"], min: 228, max: 342 },
+            { name: "룬ㅣ성급", keywords: ["성급"], min: 402, max: 603 },
+            { name: "룬ㅣ힘", keywords: ["힘"], min: 405, max: 608 }
+        ],
+        cooking: {
+            "c1": [
+                { name: "아스파라거스 샐러드", keywords: ["아스파라거스 샐러드", "샐러드"], recipe: "당근 큐브×1, 손질 아스파라거스×2", tiers: [{min:48, max:62}, {min:62, max:72}, {min:72, max:82}] },
+                { name: "갈릭 포테이토 콩피", keywords: ["갈릭 포테이토 콩피", "콩피", "포테이토 콩피"], recipe: "감자 큐브×1, 다진 마늘×2", tiers: [{min:48, max:62}, {min:62, max:72}, {min:72, max:82}] },
+                { name: "레몬 당근 라페", keywords: ["레몬 당근 라페", "당근 라페", "레몬 당근"], recipe: "당근 큐브×1, 레몬 슬라이스×2", tiers: [{min:48, max:62}, {min:62, max:72}, {min:72, max:82}] },
+                { name: "어니언 포테이토 그라탱", keywords: ["어니언 포테이토 그라탱", "그라탱", "포테이토 그라탱"], recipe: "감자 큐브×1, 양파 슬라이스×2", tiers: [{min:48, max:62}, {min:62, max:72}, {min:72, max:82}] },
+                { name: "고로케", keywords: ["고로케"], recipe: "감자 큐브×2, 당근 큐브×2", tiers: [{min:12, max:16}, {min:16, max:18}, {min:18, max:20}] }
+            ],
+            "c2": [
+                { name: "갈릭 아스파라거스 피클", keywords: ["갈릭 아스파라거스 피클", "아스파라거스 피클", "갈릭 아스파라거스"], recipe: "당근 큐브×1, 손질 아스파라거스×1, 초마늘×1", tiers: [{min:69, max:90}, {min:90, max:104}, {min:104, max:117}] },
+                { name: "시트러스 어니언 스튜", keywords: ["시트러스 어니언 스튜", "어니언 스튜", "시트러스 어니언"], recipe: "감자 큐브×1, 양파 슬라이스×1, 레몬청×1", tiers: [{min:69, max:90}, {min:90, max:104}, {min:104, max:117}] },
+                { name: "어니언 감자조림", keywords: ["어니언 감자조림", "감자조림"], recipe: "감자 큐브×1, 다진 마늘×1, 양파 효소×1", tiers: [{min:69, max:90}, {min:90, max:104}, {min:104, max:117}] },
+                { name: "아스파라거스 라페", keywords: ["아스파라거스 라페"], recipe: "당근 큐브×1, 레몬 슬라이스×1, 아스파라거스 피클×1", tiers: [{min:69, max:90}, {min:90, max:104}, {min:104, max:117}] }
+            ],
+            "c3": [
+                { name: "파프리카 비프 스튜", keywords: ["파프리카 비프 스튜", "비프 스튜"], recipe: "손질 소고기×1, 양파 슬라이스×1, 감자 큐브×1, 로메스코 소스×1", tiers: [{min:120, max:156}, {min:156, max:180}, {min:180, max:204}] },
+                { name: "피치 레몬 치킨", keywords: ["피치 레몬 치킨", "레몬 치킨", "피치 레몬"], recipe: "손질 닭고기×1, 복숭아 슬라이스×2, 당근 큐브×1, 레몬청×1", tiers: [{min:120, max:156}, {min:156, max:180}, {min:180, max:204}] },
+                { name: "허브 램 플래터", keywords: ["허브 램 플래터", "램 플래터", "허브 램"], recipe: "손질 양고기×1, 다진 파슬리×1, 당근 큐브×1, 아스파라거스 피클×1", tiers: [{min:120, max:156}, {min:156, max:180}, {min:180, max:204}] },
+                { name: "스파이시 갈릭 포크", keywords: ["스파이시 갈릭 포크", "갈릭 포크", "스파이시 갈릭"], recipe: "손질 돼지고기×1, 다진 마늘×2, 감자 큐브×1, 고추장×1", tiers: [{min:120, max:156}, {min:156, max:180}, {min:180, max:204}] }
+            ],
+            "c4": [
+                { name: "비프 라구 파이", keywords: ["비프 라구 파이", "라구 파이", "비프 라구"], recipe: "손질 소고기×1, 채 썬 파프리카×2, 당근 큐브×1, 양파 효소×1, 가지 소스×1, 밀 반죽×1", tiers: [{min:191, max:248}, {min:248, max:287}, {min:287, max:325}] },
+                { name: "복숭아 치킨 타르트", keywords: ["복숭아 치킨 타르트", "치킨 타르트", "복숭아 치킨"], recipe: "손질 닭고기×1, 레몬 슬라이스×2, 감자 큐브×1, 복숭아 식초×1, 쌀가루×1, 밀 반죽×1", tiers: [{min:191, max:248}, {min:248, max:287}, {min:287, max:325}] },
+                { name: "키슈 파이", keywords: ["키슈 파이", "키슈"], recipe: "손질 양고기×1, 손질 아스파라거스×2, 감자 큐브×1, 치미추리 소스×1, 가지 소스×1, 밀 반죽×1", tiers: [{min:191, max:248}, {min:248, max:287}, {min:287, max:325}] },
+                { name: "갈릭 포크 크로켓", keywords: ["갈릭 포크 크로켓", "포크 크로켓", "크로켓"], recipe: "손질 돼지고기×1, 다진 고추×2, 당근 큐브×1, 초마늘×1, 쌀가루×1, 밀 반죽×1", tiers: [{min:191, max:248}, {min:248, max:287}, {min:287, max:325}] }
+            ],
+            "c5": [
+                { name: "크리미 파프리카 비프플레이트", keywords: ["크리미 파프리카 비프플레이트", "비프플레이트", "크리미 파프리카"], recipe: "손질 소고기×1, 양파 슬라이스×1, 채 썬 파프리카×1, 당근 큐브×1, 로메스코 소스×1, 요거트×1, 가지 소스×1, 마요네즈×1", tiers: [{min:209, max:272}, {min:272, max:314}, {min:314, max:355}] },
+                { name: "시트러스 피치 치킨램", keywords: ["시트러스 피치 치킨램", "치킨램", "시트러스 피치"], recipe: "손질 닭고기×1, 복숭아 슬라이스×1, 레몬 슬라이스×1, 당근 큐브×1, 레몬청×1, 요거트×1, 쌀가루×1, 마요네즈×1", tiers: [{min:185, max:241}, {min:241, max:278}, {min:278, max:315}] },
+                { name: "그린 허브 램플", keywords: ["그린 허브 램플", "램플", "그린 허브"], recipe: "손질 양고기×1, 다진 파슬리×1, 손질 아스파라거스×1, 당근 큐브×1, 아스파라거스 피클×1, 요거트×1, 가지 소스×1, 마요네즈×1", tiers: [{min:185, max:241}, {min:241, max:278}, {min:278, max:315}] },
+                { name: "스파이시 포크라이스", keywords: ["스파이시 포크라이스", "포크라이스", "스파이시 포크"], recipe: "손질 돼지고기×1, 다진 마늘×1, 다진 고추×1, 감자 큐브×1, 고추장×1, 요거트×1, 쌀가루×1, 마요네즈×1", tiers: [{min:209, max:272}, {min:272, max:314}, {min:314, max:355}] }
+            ]
+        }
+    };
+
+    const labels = ["무별", "은별", "금별"];
+    let cart = {};
+
+    function init() {
+        renderRuneList();
+        renderCookingList();
+        renderCart();
+        switchTab('rune');
+        document.getElementById('smartParser').addEventListener('input', handleSmartParse);
+    }
+
+    /* 네비게이션 */
+    function switchTab(tab) {
+        document.getElementById('tab-rune').classList.remove('active');
+        document.getElementById('tab-cooking').classList.remove('active');
+        document.getElementById(`tab-${tab}`).classList.add('active');
+        document.getElementById('runeView').style.display = tab === 'rune' ? 'block' : 'none';
+        document.getElementById('cookingView').style.display = tab === 'cooking' ? 'block' : 'none';
+    }
+
+    function switchSubTab(catKey) {
+        ['c1', 'c2', 'c3', 'c4', 'c5'].forEach(k => {
+            document.getElementById(`sub-tab-${k}`).classList.remove('active');
+            document.getElementById(`section-container-${k}`).style.display = 'none';
+        });
+        document.getElementById(`sub-tab-${catKey}`).classList.add('active');
+        document.getElementById(`section-container-${catKey}`).style.display = 'block';
+    }
+
+    /* 렌더링 - 룬 */
+    function renderRuneList() {
+        const container = document.getElementById('runeListContainer');
+        container.innerHTML = '';
+        serverData.rune.forEach((rune, index) => {
+            const card = document.createElement('div');
+            card.className = 'item-card';
+            card.innerHTML = `
+                <div class="item-header"><span class="item-name">${rune.name}</span><div class="item-recipe">범위: ${rune.min} ~ ${rune.max}원</div></div>
+                <div class="tier-table">
+                    <div class="tier-row">
+                        <div class="tier-cell cell-label"><span class="star-badge rune-badge">🔮 단가</span></div>
+                        <div class="tier-cell cell-input"><input type="number" id="rune_input_${index}" placeholder="단가" oninput="updateRune(${index})"></div>
+                        <div class="tier-cell cell-result">
+                            <span class="diff-text diff-none" id="rune_diff_${index}">-</span>
+                            <span class="status-badge status-none" id="rune_status_${index}">-</span>
+                            <button class="add-cart-btn" onclick="addToCart('rune', ${index}, 0, 0)" title="장부에 추가"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function updateRune(index) {
+        const rune = serverData.rune[index];
+        const inputVal = document.getElementById(`rune_input_${index}`).value;
+        const diffEl = document.getElementById(`rune_diff_${index}`);
+        const statusEl = document.getElementById(`rune_status_${index}`);
+        
+        if (!inputVal || isNaN(inputVal)) {
+            diffEl.textContent = "-"; diffEl.className = "diff-text diff-none";
+            statusEl.textContent = "-"; statusEl.className = "status-badge status-none";
+            syncCartPrice(`rune_${index}_0_0`, 0); return;
+        }
+
+        const currentPrice = parseInt(inputVal);
+        const diff = rune.max - currentPrice;
+        const pct = ((diff / rune.max) * 100).toFixed(1);
+        let pricePositionPct = rune.max !== rune.min ? ((currentPrice - rune.min) / (rune.max - rune.min)) * 100 : 0;
+
+        diffEl.textContent = diff >= 0 ? `-${diff}원 (${pct}%)` : `+${Math.abs(diff)}원 상회`;
+        diffEl.className = (diff < 0 || pricePositionPct >= 60) ? "diff-text diff-good" : "diff-text diff-bad";
+
+        statusEl.className = 'status-badge';
+        if (pricePositionPct >= 90) { statusEl.textContent = '🔥 최적'; statusEl.classList.add('status-perfect'); }
+        else if (pricePositionPct >= 60) { statusEl.textContent = '🟢 추천'; statusEl.classList.add('status-good'); }
+        else if (pricePositionPct >= 30) { statusEl.textContent = '🟡 보통'; statusEl.classList.add('status-normal'); }
+        else { statusEl.textContent = '❌ 비추'; statusEl.classList.add('status-bad'); }
+
+        syncCartPrice(`rune_${index}_0_0`, currentPrice);
+    }
+
+    /* 렌더링 - 요리 */
+    function renderCookingList() {
+        const container = document.getElementById('cookingListContainer');
+        container.innerHTML = '';
+        Object.keys(serverData.cooking).forEach((catKey, catIdx) => {
+            const sectionWrapper = document.createElement('div');
+            sectionWrapper.id = `section-container-${catKey}`;
+            sectionWrapper.style.display = (catKey === 'c1') ? 'block' : 'none';
+
+            serverData.cooking[catKey].forEach((item, itemIdx) => {
+                const card = document.createElement('div');
+                card.className = 'item-card';
+                let tierHtml = '';
+                item.tiers.forEach((tier, tierIdx) => {
+                    tierHtml += `
+                        <div class="tier-row">
+                            <div class="tier-cell cell-label"><span class="star-badge star-${labels[tierIdx]}">★ ${labels[tierIdx]}</span></div>
+                            <div class="tier-cell cell-input"><input type="number" id="cook_${catIdx}_${itemIdx}_${tierIdx}" placeholder="단가" oninput="updateCooking(${catIdx}, ${itemIdx}, ${tierIdx})"></div>
+                            <div class="tier-cell cell-result">
+                                <span class="diff-text diff-none" id="cook_diff_${catIdx}_${itemIdx}_${tierIdx}">-</span>
+                                <span class="status-badge status-none" id="cook_status_${catIdx}_${itemIdx}_${tierIdx}">-</span>
+                                <button class="add-cart-btn" onclick="addToCart('cook', ${catIdx}, ${itemIdx}, ${tierIdx})" title="장부에 추가"><i class="fa-solid fa-plus"></i></button>
+                            </div>
+                        </div>
+                    `;
+                });
+                card.innerHTML = `<div class="item-header"><span class="item-name">${item.name}</span><div class="item-recipe">재료: ${item.recipe}</div></div><div class="tier-table">${tierHtml}</div>`;
+                sectionWrapper.appendChild(card);
+            });
+            container.appendChild(sectionWrapper);
+        });
+    }
+
+    function updateCooking(catIdx, itemIdx, tierIdx) {
+        const catKey = ['c1', 'c2', 'c3', 'c4', 'c5'][catIdx];
+        const item = serverData.cooking[catKey][itemIdx];
+        const tier = item.tiers[tierIdx];
+        const inputVal = document.getElementById(`cook_${catIdx}_${itemIdx}_${tierIdx}`).value;
+        const diffEl = document.getElementById(`cook_diff_${catIdx}_${itemIdx}_${tierIdx}`);
+        const statusEl = document.getElementById(`cook_status_${catIdx}_${itemIdx}_${tierIdx}`);
+
+        if (!inputVal || isNaN(inputVal)) {
+            diffEl.textContent = "-"; diffEl.className = "diff-text diff-none";
+            statusEl.textContent = "-"; statusEl.className = "status-badge status-none";
+            syncCartPrice(`cook_${catIdx}_${itemIdx}_${tierIdx}`, 0); return;
+        }
+
+        const currentPrice = parseInt(inputVal);
+        const diff = tier.max - currentPrice;
+        const pct = ((diff / tier.max) * 100).toFixed(1);
+        let pricePositionPct = tier.max !== tier.min ? ((currentPrice - tier.min) / (tier.max - tier.min)) * 100 : 0;
+
+        diffEl.textContent = diff >= 0 ? `-${diff}원 (${pct}%)` : `+${Math.abs(diff)}원 상회`;
+        diffEl.className = (diff < 0 || pricePositionPct >= 60) ? "diff-text diff-good" : "diff-text diff-bad";
+
+        statusEl.className = 'status-badge';
+        if (pricePositionPct >= 90) { statusEl.textContent = '🔥 최적'; statusEl.classList.add('status-perfect'); }
+        else if (pricePositionPct >= 60) { statusEl.textContent = '🟢 추천'; statusEl.classList.add('status-good'); }
+        else if (pricePositionPct >= 30) { statusEl.textContent = '🟡 보통'; statusEl.classList.add('status-normal'); }
+        else { statusEl.textContent = '❌ 비추'; statusEl.classList.add('status-bad'); }
+
+        syncCartPrice(`cook_${catIdx}_${itemIdx}_${tierIdx}`, currentPrice);
+    }
+
+    /* ---------- 장부(카트) 시스템 ---------- */
+    function addToCart(type, groupIdx, itemIdx, tierIdx) {
+        let key = `${type}_${groupIdx}_${itemIdx}_${tierIdx}`;
+        let name = '', price = 0;
+
+        if (type === 'rune') {
+            name = serverData.rune[groupIdx].name;
+            price = parseInt(document.getElementById(`rune_input_${groupIdx}`).value);
+        } else {
+            const catKey = ['c1', 'c2', 'c3', 'c4', 'c5'][groupIdx];
+            name = `${serverData.cooking[catKey][itemIdx].name} (${labels[tierIdx]})`;
+            price = parseInt(document.getElementById(`cook_${groupIdx}_${itemIdx}_${tierIdx}`).value);
+        }
+
+        if (!price || isNaN(price) || price <= 0) { alert("상점 단가가 입력되지 않았습니다."); return; }
+
+        if (cart[key]) cart[key].qty += 1;
+        else cart[key] = { name, price, cost: 0, qty: 1 };
+        renderCart();
+    }
+
+    function updateCartQty(key, newQty) {
+        if (!cart[key]) return;
+        const qty = parseInt(newQty);
+        cart[key].qty = (isNaN(qty) || qty < 1) ? 1 : qty;
+        renderCart();
+    }
+    
+    function updateCartCost(key, newCost) {
+        if (!cart[key]) return;
+        const cost = parseInt(newCost);
+        cart[key].cost = isNaN(cost) ? 0 : cost;
+        renderCart();
+    }
+
+    function removeCartItem(key) { delete cart[key]; renderCart(); }
+    function syncCartPrice(key, newPrice) { if (cart[key]) { cart[key].price = newPrice; renderCart(); } }
+
+    function renderCart() {
+        const container = document.getElementById('cartItemsList');
+        const keys = Object.keys(cart);
+        let sumRev = 0, sumCost = 0, sumProfit = 0;
+
+        if (keys.length === 0) {
+            container.innerHTML = `<div class="cart-empty">우측의 [+] 버튼을 눌러<br>장부에 품목을 추가하세요.</div>`;
+            document.getElementById('sumRevenue').textContent = "0원";
+            document.getElementById('sumCost').textContent = "0원";
+            document.getElementById('sumProfit').textContent = "0원";
+            document.getElementById('sumProfit').style.color = "var(--text-muted)";
+            return;
+        }
+
+        container.innerHTML = '';
+        keys.forEach(key => {
+            const item = cart[key];
+            const rev = item.price * item.qty;
+            const cost = item.cost * item.qty;
+            const profit = rev - cost;
+            
+            sumRev += rev; sumCost += cost; sumProfit += profit;
+
+            const div = document.createElement('div');
+            div.className = 'cart-item';
+            div.innerHTML = `
+                <div class="cart-item-header">
+                    <span class="cart-item-name">${item.name}</span>
+                    <button class="cart-remove-btn" onclick="removeCartItem('${key}')"><i class="fa-solid fa-trash"></i></button>
+                </div>
+                <div class="cart-item-controls">
+                    <div class="cart-row-1">
+                        <span class="cart-item-price">판매가: ${item.price.toLocaleString()}원</span>
+                        <div class="qty-wrapper">
+                            <input type="number" class="qty-input" value="${item.qty}" min="1" onchange="updateCartQty('${key}', this.value)">
+                            <button class="qty-btn" onclick="updateCartQty('${key}', ${item.qty + 1})">+1</button>
+                            <button class="qty-btn" onclick="updateCartQty('${key}', ${item.qty + 64})">+64</button>
+                        </div>
+                    </div>
+                    <div class="cart-row-2">
+                        <span style="font-size:12px; color:var(--text-muted);">개당 재료비:</span>
+                        <input type="number" class="cost-input" value="${item.cost || ''}" placeholder="0" onchange="updateCartCost('${key}', this.value)">
+                    </div>
+                    <div style="text-align:right; margin-top:6px;">
+                        <span class="item-profit" style="color: ${profit >= 0 ? 'var(--accent-green)' : 'var(--accent-red)'}">순수익: ${profit > 0 ? '+' : ''}${profit.toLocaleString()}원</span>
+                    </div>
+                </div>
+            `;
+            container.appendChild(div);
+        });
+
+        document.getElementById('sumRevenue').textContent = `${sumRev.toLocaleString()}원`;
+        document.getElementById('sumCost').textContent = `-${sumCost.toLocaleString()}원`;
+        const profitEl = document.getElementById('sumProfit');
+        profitEl.textContent = `${sumProfit > 0 ? '+' : ''}${sumProfit.toLocaleString()}원`;
+        profitEl.style.color = sumProfit >= 0 ? 'var(--accent-green)' : 'var(--accent-red)';
+    }
+
+    /* ---------- 퀵 재료비 계산기 (직접 입력 지원) ---------- */
+    function calcAppend(val) {
+        const display = document.getElementById('calcDisplay');
+        display.value += val;
+        display.focus(); // 타이핑 편의를 위해 포커스 유지
+    }
+    function calcClear() { document.getElementById('calcDisplay').value = ''; }
+    function calcCalculate() {
+        const display = document.getElementById('calcDisplay');
+        try {
+            // 사용자가 키보드로 쳤을 때 x 나 ÷ 를 수식 기호로 변환
+            let safeExpr = display.value.replace(/x|X|×/g, '*').replace(/÷/g, '/');
+            // 보안을 위해 수학 기호와 숫자만 남김
+            safeExpr = safeExpr.replace(/[^0-9+\-*/.()]/g, ''); 
+            if (safeExpr) {
+                let result = new Function('return ' + safeExpr)();
+                display.value = Math.round(result); // 마인크래프트 머니 특성상 반올림
+            }
+        } catch (e) {
+            // 수식 미완성 시 무시
+        }
+    }
+    function handleCalcKey(e) {
+        if (e.key === 'Enter') calcCalculate();
+    }
+
+    /* ---------- 강력한 정규식 스마트 파서 ---------- */
+    function handleSmartParse() {
+        const rawText = document.getElementById('smartParser').value;
+        if (!rawText.trim()) return;
+
+        const regex = /\[([^\]]+)\]\s*\|\s*\d+\s*→\s*(\d+)/g;
+        let match, matchCount = 0;
+
+        while ((match = regex.exec(rawText)) !== null) {
+            matchCount++;
+            let itemNameRaw = match[1].trim(); 
+            let price = parseInt(match[2], 10); 
+            let normalizedInput = itemNameRaw.replace(/\s+/g, '');
+
+            serverData.rune.forEach((rune, index) => {
+                let matched = false;
+                rune.keywords.forEach(kw => { if (normalizedInput.includes(kw.replace(/\s+/g, ''))) matched = true; });
+                if (matched) {
+                    const inputEl = document.getElementById(`rune_input_${index}`);
+                    if(inputEl) { inputEl.value = price; updateRune(index); }
+                }
+            });
+
+            Object.keys(serverData.cooking).forEach((groupName, groupIdx) => {
+                serverData.cooking[groupName].forEach((item, itemIdx) => {
+                    let itemMatched = false;
+                    item.keywords.forEach(kw => { if (normalizedInput.includes(kw.replace(/\s+/g, ''))) itemMatched = true; });
+
+                    if (itemMatched) {
+                        let bestTierIdx = 0, minDistance = Infinity;
+                        item.tiers.forEach((t, tIdx) => {
+                            let distance = Math.abs(price - ((t.min + t.max) / 2));
+                            if (distance < minDistance) { minDistance = distance; bestTierIdx = tIdx; }
+                        });
+                        const inputEl = document.getElementById(`cook_${groupIdx}_${itemIdx}_${bestTierIdx}`);
+                        if (inputEl) { inputEl.value = price; updateCooking(groupIdx, itemIdx, bestTierIdx); }
+                    }
+                });
+            });
+        }
+    }
+
+    window.onload = init;
+</script>
+
+</body>
+</html>
