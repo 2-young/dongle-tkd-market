@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🥋 태권도장 마스터 시스템 v1.1</title>
+    <title>🥋 태권도장 마스터 시스템 v1.2</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
             --bg-color: #0b0f19;
             --container-bg: #151d30;
-            --input-bg: #090c15;
+            --input-bg: #0b0f19;
             --text-main: #f1f5f9;
             --text-muted: #94a3b8;
             --accent-green: #4ade80;
@@ -20,7 +20,6 @@
             --accent-red: #f87171;
             --accent-blue: #38bdf8;
             --border-color: #1e293b;
-            
             --tkd-red: #ef4444;
             --tkd-blue: #3b82f6;
         }
@@ -40,43 +39,33 @@
             min-height: 100vh;
         }
 
-        /* 래퍼: 왼쪽 사이드바 + 오른쪽 메인앱 구조 */
         .main-wrapper {
             display: flex;
             flex-direction: row;
             gap: 20px;
-            max-width: 1000px;
+            max-width: 960px;
             margin: 0 auto;
             align-items: flex-start;
             justify-content: center;
         }
 
-        /* 왼쪽 예상 수익 계산기 (사이드바) */
         .sidebar-container {
-            flex: 0 0 340px;
+            flex: 0 0 320px;
             background-color: var(--container-bg);
             border-radius: 20px;
-            padding: 20px;
+            padding: 24px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
             border: 2px solid var(--border-color);
             margin-top: 10px;
             position: sticky;
             top: 20px;
-            max-height: 95vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .cart-scroll-area {
+            max-height: 90vh;
             overflow-y: auto;
-            flex-grow: 1;
-            padding-right: 5px;
         }
 
-        /* 오른쪽 메인 시세 분석기 */
         .app-container {
             flex: 1;
-            max-width: 620px;
+            max-width: 600px;
             background-color: var(--container-bg);
             border-radius: 20px;
             padding: 24px;
@@ -85,6 +74,7 @@
             margin-top: 10px;
             margin-bottom: 30px;
             position: relative;
+            overflow: hidden;
         }
 
         .app-container::before, .sidebar-container::before {
@@ -95,7 +85,6 @@
             right: 0;
             height: 8px;
             background: linear-gradient(90deg, var(--tkd-blue) 50%, var(--tkd-red) 50%);
-            border-radius: 20px 20px 0 0;
         }
 
         @media (max-width: 900px) {
@@ -105,7 +94,7 @@
             }
             .sidebar-container {
                 width: 100%;
-                max-width: 620px;
+                max-width: 600px;
                 position: static;
                 max-height: none;
             }
@@ -114,11 +103,34 @@
             }
         }
 
-        /* ---------- 오른쪽 메인 영역 디자인 ---------- */
-        .header { text-align: center; margin-bottom: 24px; padding-top: 12px; }
-        .header h1 { font-size: 24px; font-weight: 900; margin-bottom: 6px; }
-        .title-tkd { background: linear-gradient(90deg, #38bdf8, #f87171); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .header p { font-size: 13px; color: var(--text-muted); }
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+            padding-top: 12px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .title-tkd {
+            background: linear-gradient(90deg, #38bdf8, #f87171);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
+        }
+
+        .header p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
 
         .parser-container {
             background-color: rgba(255, 255, 255, 0.02);
@@ -126,172 +138,668 @@
             border-radius: 14px;
             padding: 16px;
             margin-bottom: 24px;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.4);
         }
-        .parser-label { display: block; font-size: 13px; font-weight: 700; color: var(--accent-blue); margin-bottom: 8px; }
-        .parser-textarea {
-            width: 100%; height: 90px; background-color: var(--input-bg);
-            border: 1px solid var(--border-color); color: var(--text-main);
-            padding: 12px; border-radius: 10px; font-size: 14px; resize: none; outline: none; line-height: 1.5;
-        }
-        .parser-textarea:focus { border-color: var(--accent-blue); }
 
-        .tabs { display: table; width: 100%; background-color: var(--input-bg); padding: 4px; border-radius: 10px; margin-bottom: 20px; border: 1px solid var(--border-color); }
-        .tab-cell { display: table-cell; width: 50%; text-align: center; }
-        .tab-btn { width: 100%; background: none; border: none; color: var(--text-muted); padding: 12px; font-size: 15px; font-weight: 700; cursor: pointer; border-radius: 8px; }
-        .tab-btn.active { background-color: var(--container-bg); color: var(--text-main); border: 1px solid var(--border-color); }
+        .parser-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--accent-blue);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .parser-textarea {
+            width: 100%;
+            height: 100px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 14px;
+            resize: none;
+            outline: none;
+            box-shadow: inset 0 1px 4px rgba(0,0,0,0.5);
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        .parser-textarea:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.2), inset 0 1px 4px rgba(0,0,0,0.5);
+        }
+
+        .tabs {
+            display: table;
+            width: 100%;
+            background-color: var(--input-bg);
+            padding: 4px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .tab-cell {
+            display: table-cell;
+            width: 50%;
+            text-align: center;
+        }
+
+        .tab-btn {
+            width: 100%;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            padding: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background-color: var(--container-bg);
+            color: var(--text-main);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+            border: 1px solid var(--border-color);
+        }
+        
         #tab-rune.active { color: var(--accent-blue); }
         #tab-cooking.active { color: var(--accent-amber); }
 
-        .sub-tabs { display: flex; gap: 6px; margin-bottom: 20px; background-color: var(--input-bg); padding: 4px; border-radius: 8px; border: 1px solid var(--border-color); }
-        .sub-tab-btn { flex: 1; background: none; border: none; color: var(--text-muted); padding: 8px 4px; font-size: 12px; font-weight: 700; cursor: pointer; border-radius: 6px; }
-        .sub-tab-btn.active { background-color: var(--container-bg); color: var(--accent-amber); }
+        .sub-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 20px;
+            background-color: var(--input-bg);
+            padding: 4px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
 
-        .section-group-title { font-size: 14px; font-weight: 800; color: var(--text-main); padding: 6px 12px; background-color: rgba(255, 255, 255, 0.05); border-left: 4px solid var(--tkd-red); margin-top: 24px; margin-bottom: 12px; border-radius: 0 6px 6px 0; }
+        .sub-tab-btn {
+            flex: 1;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            padding: 8px 4px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 6px;
+            text-align: center;
+            transition: all 0.2s;
+        }
 
-        .item-card { background-color: var(--input-bg); border: 1px solid var(--border-color); border-radius: 14px; padding: 16px; margin-bottom: 14px; }
-        .item-header { margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px; }
-        .item-name { font-weight: 800; font-size: 16px; color: var(--text-main); }
-        .item-recipe { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+        .sub-tab-btn.active {
+            background-color: var(--container-bg);
+            color: var(--accent-amber);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
 
-        .tier-table { display: table; width: 100%; border-collapse: collapse; }
-        .tier-row { display: table-row; }
-        .tier-row + .tier-row .tier-cell { border-top: 1px dashed rgba(255, 255, 255, 0.05); }
-        .tier-cell { display: table-cell; vertical-align: middle; padding: 8px 0; }
-        .cell-label { width: 25%; font-size: 12px; }
-        .star-badge { font-weight: 800; font-size: 12px; }
-        .star-무별 { color: #e2e8f0; } .star-은별 { color: #94a3b8; } .star-금별 { color: #fbbf24; }
-        .rune-badge { color: var(--accent-blue); }
-        .range-text { display: block; font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+        .item-card {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+            transition: border-color 0.2s;
+        }
+
+        .item-card:hover {
+            border-color: #334155;
+        }
         
-        .cell-input { width: 25%; padding-right: 8px; }
-        .cell-input input { width: 100%; background-color: var(--container-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 7px 8px; border-radius: 8px; font-size: 14px; outline: none; text-align: center; font-weight: 700; }
+        .item-header {
+            margin-bottom: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 8px;
+        }
+        
+        .item-name {
+            font-weight: 800;
+            font-size: 16px;
+            color: var(--text-main);
+        }
+        
+        .item-recipe {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .tier-table {
+            display: table;
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .tier-row {
+            display: table-row;
+        }
+
+        .tier-row + .tier-row .tier-cell {
+            border-top: 1px dashed rgba(255, 255, 255, 0.05);
+        }
+
+        .tier-cell {
+            display: table-cell;
+            vertical-align: middle;
+            padding: 8px 0;
+        }
+
+        .cell-label {
+            width: 25%;
+            font-size: 12px;
+        }
+
+        .star-badge {
+            font-weight: 800;
+            font-size: 12px;
+        }
+        .star-무별 { color: #e2e8f0; }
+        .star-은별 { color: #94a3b8; }
+        .star-금별 { color: #fbbf24; text-shadow: 0 0 6px rgba(251,191,36,0.3); }
+        .rune-badge { color: var(--accent-blue); text-shadow: 0 0 6px rgba(56,189,248,0.3); }
+
+        .range-text {
+            display: block;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .cell-input {
+            width: 25%;
+            padding-right: 8px;
+        }
+        
+        .cell-input input {
+            width: 100%;
+            background-color: var(--container-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 7px 8px;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            text-align: center;
+            font-weight: 700;
+        }
+
         .cell-input input:focus { border-color: var(--accent-blue); }
         
-        .cell-result { width: 50%; text-align: right; font-size: 11px; display: flex; justify-content: flex-end; align-items: center; gap: 6px; }
-        .status-badge { font-size: 11px; padding: 3px 7px; border-radius: 5px; font-weight: 700; }
+        .cell-result {
+            width: 50%;
+            text-align: right;
+            font-size: 11px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-badge {
+            font-size: 11px;
+            padding: 3px 7px;
+            border-radius: 5px;
+            font-weight: 700;
+            display: inline-block;
+        }
         .status-perfect { background-color: rgba(74, 222, 128, 0.15); color: var(--accent-green); }
         .status-good { background-color: rgba(56, 189, 248, 0.15); color: var(--accent-blue); }
         .status-normal { background-color: rgba(251, 191, 36, 0.15); color: var(--accent-amber); }
         .status-bad { background-color: rgba(248, 113, 113, 0.15); color: var(--accent-red); }
         .status-none { background-color: transparent; color: var(--text-muted); }
-        .diff-text { font-weight: 700; } .diff-good { color: var(--accent-green); } .diff-bad { color: var(--accent-red); } .diff-none { color: var(--text-muted); }
 
-        .add-cart-btn { background-color: var(--tkd-blue); color: white; border: none; border-radius: 6px; width: 28px; height: 28px; font-size: 14px; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: 0.1s; }
+        .diff-text { font-weight: 700; }
+        .diff-good { color: var(--accent-green); }
+        .diff-bad { color: var(--accent-red); }
+        .diff-none { color: var(--text-muted); }
+
+        .add-cart-btn {
+            background-color: var(--tkd-blue);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            width: 26px;
+            height: 26px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s, transform 0.1s;
+        }
         .add-cart-btn:hover { background-color: #2563eb; transform: scale(1.05); }
+        .add-cart-btn:active { transform: scale(0.95); }
 
-        /* ---------- 사이드바 장부 디자인 ---------- */
-        .cart-header { font-size: 18px; font-weight: 900; margin-bottom: 12px; border-bottom: 2px solid var(--border-color); padding-bottom: 12px; color: var(--text-main); display: flex; align-items: center; gap: 8px; margin-top: 10px; }
-        .cart-empty { font-size: 13px; color: var(--text-muted); text-align: center; padding: 20px 0; background: var(--input-bg); border-radius: 10px; border: 1px dashed var(--border-color); }
-        
-        .cart-item { background-color: var(--input-bg); border: 1px solid var(--border-color); border-radius: 10px; padding: 12px; margin-bottom: 10px; }
-        .cart-item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
-        .cart-item-name { font-size: 13px; font-weight: 800; color: var(--text-main); max-width: 85%; line-height: 1.3; }
-        .cart-remove-btn { background: none; border: none; color: var(--accent-red); cursor: pointer; font-size: 14px; opacity: 0.7; }
+        .cart-header {
+            font-size: 18px;
+            font-weight: 900;
+            margin-bottom: 16px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 12px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cart-empty {
+            font-size: 13px;
+            color: var(--text-muted);
+            text-align: center;
+            padding: 30px 0;
+            background: var(--input-bg);
+            border-radius: 10px;
+            border: 1px dashed var(--border-color);
+        }
+
+        .cart-item {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+
+        .cart-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .cart-item-name {
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--text-main);
+            word-break: keep-all;
+            line-height: 1.3;
+            max-width: 85%;
+        }
+
+        .cart-remove-btn {
+            background: none;
+            border: none;
+            color: var(--accent-red);
+            cursor: pointer;
+            font-size: 14px;
+            opacity: 0.7;
+        }
         .cart-remove-btn:hover { opacity: 1; }
 
-        .cart-item-controls { display: flex; flex-direction: column; gap: 8px; }
-        .cart-row-1 { display: flex; justify-content: space-between; align-items: center; }
-        .cart-row-2 { display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed var(--border-color); padding-top: 8px; }
-        
-        .cart-item-price { font-size: 12px; color: var(--accent-amber); font-weight: 700; }
-        
-        .qty-wrapper { display: flex; align-items: center; gap: 4px; }
-        .qty-input, .cost-input { background-color: var(--container-bg); border: 1px solid var(--border-color); color: var(--text-main); border-radius: 4px; text-align: center; font-size: 12px; font-weight: 700; outline: none; }
-        .qty-input { width: 45px; padding: 4px; }
-        .cost-input { width: 70px; padding: 4px; text-align: right; }
-        .qty-input:focus, .cost-input:focus { border-color: var(--accent-blue); }
-        
-        .qty-btn { background-color: var(--border-color); color: var(--text-main); border: none; border-radius: 4px; padding: 4px 6px; font-size: 11px; cursor: pointer; font-weight: bold; }
-        .qty-btn:hover { background-color: #475569; }
+        .cart-item-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-        .item-profit { font-size: 12px; font-weight: 900; }
+        .cart-item-price {
+            font-size: 12px;
+            color: var(--accent-amber);
+            font-weight: 700;
+        }
 
-        .cart-total-box { margin-top: 16px; padding: 16px; background-color: var(--input-bg); border: 1px solid var(--border-color); border-radius: 12px; }
-        .total-line { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px; color: var(--text-muted); }
-        .total-line.final { border-top: 2px dashed var(--border-color); margin-top: 8px; padding-top: 8px; font-size: 16px; font-weight: 900; color: var(--text-main); }
+        .cart-qty-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
 
-        /* ---------- 퀵 계산기 디자인 ---------- */
-        .calculator-box { margin-top: 16px; background-color: var(--input-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px; }
-        .calc-title { font-size: 13px; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;}
+        .qty-input {
+            width: 50px;
+            background-color: var(--container-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 4px;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 700;
+            outline: none;
+        }
+        .qty-input:focus { border-color: var(--accent-blue); }
+
+        .qty-btn {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 4px 6px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+        .qty-btn:hover { background-color: var(--tkd-blue); color: white; border-color: var(--tkd-blue); }
+
+        .cost-row {
+            border-top: 1px dashed rgba(255,255,255,0.05);
+            padding-top: 8px;
+            margin-top: 4px;
+        }
         
-        /* 직접 타이핑 가능하도록 개선된 입력창 */
-        .calc-display { width: 100%; background-color: var(--container-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 10px; border-radius: 6px; font-size: 18px; font-weight: 700; text-align: right; margin-bottom: 10px; outline: none; font-family: monospace; }
-        .calc-display:focus { border-color: var(--accent-green); box-shadow: 0 0 5px rgba(74, 222, 128, 0.3); }
+        .cost-input-wrapper { display: flex; align-items: center; gap: 6px; }
+        .cost-input-wrapper span { font-size: 11px; color: var(--accent-red); font-weight: 700; }
+        .cost-input { width: 70px; }
         
-        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
-        .calc-btn { background-color: var(--container-bg); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 6px; padding: 10px 0; font-size: 15px; font-weight: 700; cursor: pointer; transition: 0.1s; }
-        .calc-btn:hover { background-color: #334155; }
+        .item-profit { font-size: 13px; font-weight: 800; }
+        .profit-good { color: var(--accent-green); }
+        .profit-bad { color: var(--accent-red); }
+
+        .cart-summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 700;
+        }
+        .cart-summary-row.total-profit {
+            border-top: 2px dashed var(--border-color);
+            padding-top: 12px;
+            margin-top: 12px;
+            margin-bottom: 0;
+        }
+        .cart-summary-row.total-profit span:first-child {
+            font-weight: 900;
+            color: var(--text-main);
+            font-size: 16px;
+        }
+        .cart-summary-row.total-profit .cart-summary-value {
+            font-size: 26px;
+            font-weight: 900;
+            color: var(--accent-green);
+        }
+        .text-red { color: var(--accent-red) !important; }
+
+        .cart-total-box {
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 2px dashed var(--border-color);
+            text-align: right;
+            background: linear-gradient(180deg, transparent, rgba(56, 189, 248, 0.05));
+            border-radius: 0 0 10px 10px;
+        }
+
+        .utility-section {
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 2px solid var(--border-color);
+        }
+        .utility-header {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .shop-status-box {
+            background: rgba(56, 189, 248, 0.05);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 16px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .shop-status-box.shop-refreshed {
+            background: rgba(248, 113, 113, 0.15);
+            border-color: var(--accent-red);
+            animation: pulse-border 1.5s infinite;
+        }
+        @keyframes pulse-border {
+            0% { box-shadow: 0 0 0 0 rgba(248, 113, 113, 0.4); }
+            70% { box-shadow: 0 0 0 8px rgba(248, 113, 113, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(248, 113, 113, 0); }
+        }
+        
+        .shop-title {
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+        .shop-time {
+            font-size: 14px;
+            color: var(--accent-blue);
+            line-height: 1.4;
+        }
+        .shop-refreshed .shop-time {
+            color: var(--accent-red);
+        }
+
+        .timer-item {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .timer-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .timer-name {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+        .timer-val {
+            font-family: 'Orbitron', monospace, sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+        .timer-val.expired {
+            color: var(--accent-red);
+            animation: blink-text 1s infinite;
+        }
+        @keyframes blink-text { 50% { opacity: 0.3; } }
+        
+        .timer-controls {
+            display: flex;
+            gap: 6px;
+        }
+        .t-btn {
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .t-start {
+            background-color: rgba(74, 222, 128, 0.15);
+            color: var(--accent-green);
+        }
+        .t-start:hover { background-color: rgba(74, 222, 128, 0.3); }
+        .t-stop {
+            background-color: rgba(248, 113, 113, 0.1);
+            color: var(--text-muted);
+        }
+        .t-stop:hover { background-color: rgba(248, 113, 113, 0.3); color: var(--accent-red); }
+
+        .calc-container {
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 2px solid var(--border-color);
+        }
+        .calc-header {
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .calc-display {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: right;
+            font-family: 'Orbitron', monospace, sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent-green);
+            margin-bottom: 12px;
+            overflow-x: auto;
+            white-space: nowrap;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
+        }
+        .calc-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+        .calc-btn {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 12px 0;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.1s;
+        }
+        .calc-btn:hover { background-color: #1e293b; }
         .calc-btn:active { transform: scale(0.95); }
-        .calc-op { background-color: rgba(56, 189, 248, 0.1); color: var(--accent-blue); border-color: rgba(56, 189, 248, 0.3); }
-        .calc-op:hover { background-color: rgba(56, 189, 248, 0.2); }
-        .calc-eq { background-color: var(--accent-green); color: #000; border: none; }
-        .calc-eq:hover { background-color: #22c55e; }
-        .calc-clear { background-color: rgba(248, 113, 113, 0.1); color: var(--accent-red); border-color: rgba(248, 113, 113, 0.3); }
-        .calc-clear:hover { background-color: rgba(248, 113, 113, 0.2); }
+        .calc-btn.op { background-color: rgba(56, 189, 248, 0.1); color: var(--accent-blue); border-color: rgba(56, 189, 248, 0.3); }
+        .calc-btn.op:hover { background-color: rgba(56, 189, 248, 0.2); }
+        .calc-btn.clear { color: var(--accent-red); }
+        .calc-btn.equal { background-color: var(--tkd-blue); color: white; border: none; }
+        .calc-btn.equal:hover { background-color: #2563eb; }
+        
+        .footer-note {
+            text-align: center;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 16px;
+            line-height: 1.5;
+        }
     </style>
 </head>
 <body>
 
 <div class="main-wrapper">
-    <!-- 왼쪽 사이드바 (장부 + 퀵 계산기) -->
+    <!-- 왼쪽 사이드바 (장부, 유틸리티, 계산기) -->
     <div class="sidebar-container">
-        <div class="cart-header">💰 예상 수익</div>
-        
-        <div class="cart-scroll-area">
-            <div id="cartItemsList"></div>
-        </div>
-
+        <div class="cart-header">💰 예상 수익 장부</div>
+        <div id="cartItemsList"></div>
         <div class="cart-total-box">
-            <div class="total-line"><span>총 예상 매출</span><span id="sumRevenue">0원</span></div>
-            <div class="total-line"><span>총 재료비</span><span id="sumCost">0원</span></div>
-            <div class="total-line final"><span>최종 순수익</span><span id="sumProfit" style="color:var(--accent-green);">0원</span></div>
+            <div class="cart-summary-row">
+                <span>총 예상 매출</span>
+                <span id="cartTotalRev" style="color: var(--text-main);">0원</span>
+            </div>
+            <div class="cart-summary-row">
+                <span class="text-red">총 재료비</span>
+                <span class="text-red" id="cartTotalCost">- 0원</span>
+            </div>
+            <div class="cart-summary-row total-profit">
+                <span>총 순수익</span>
+                <span class="cart-summary-value" id="cartTotalProfit">0원</span>
+            </div>
         </div>
 
-        <!-- 키보드 직접 입력 지원 퀵 계산기 -->
-        <div class="calculator-box">
-            <div class="calc-title">
-                <span>🧮 퀵 재료비 계산기</span>
-                <span style="font-size: 10px;">(키보드 입력 지원)</span>
+        <!-- 마을 유틸리티 (변동상점 및 타이머) -->
+        <div class="utility-section">
+            <div class="utility-header"><i class="fa-solid fa-bell"></i> 마을 유틸리티</div>
+            
+            <div class="shop-status-box" id="shopStatusBox">
+                <div class="shop-title"><i class="fa-solid fa-store"></i> 변동상점 시세 갱신</div>
+                <div class="shop-time" id="shopTimeText">계산 중...</div>
             </div>
-            <!-- 직접 입력 가능! 엔터 누르면 자동 계산됨 -->
-            <input type="text" id="calcDisplay" class="calc-display" placeholder="예: 30*3+15*2" onkeydown="handleCalcKey(event)">
+
+            <div class="timer-item">
+                <div class="timer-info">
+                    <span class="timer-name">💖 호감도 아이템</span>
+                    <span class="timer-val" id="timer_affection">06:00:00</span>
+                </div>
+                <div class="timer-controls">
+                    <button class="t-btn t-start" onclick="startAppTimer('affection', 21600)">시작</button>
+                    <button class="t-btn t-stop" onclick="stopAppTimer('affection')">정지</button>
+                </div>
+            </div>
+
+            <div class="timer-item">
+                <div class="timer-info">
+                    <span class="timer-name">🌱 농작물 재배</span>
+                    <span class="timer-val" id="timer_crop">17:00</span>
+                </div>
+                <div class="timer-controls">
+                    <button class="t-btn t-start" onclick="startAppTimer('crop', 1020)">시작</button>
+                    <button class="t-btn t-stop" onclick="stopAppTimer('crop')">정지</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 퀵 재료비 계산기 -->
+        <div class="calc-container">
+            <div class="calc-header"><i class="fa-solid fa-calculator"></i> 퀵 재료비 계산기</div>
+            <div class="calc-display" id="calcDisplay">0</div>
             <div class="calc-grid">
-                <button class="calc-btn" onclick="calcAppend('7')">7</button>
-                <button class="calc-btn" onclick="calcAppend('8')">8</button>
-                <button class="calc-btn" onclick="calcAppend('9')">9</button>
-                <button class="calc-btn calc-op" onclick="calcAppend('+')">+</button>
-                <button class="calc-btn" onclick="calcAppend('4')">4</button>
-                <button class="calc-btn" onclick="calcAppend('5')">5</button>
-                <button class="calc-btn" onclick="calcAppend('6')">6</button>
-                <button class="calc-btn calc-op" onclick="calcAppend('-')">-</button>
-                <button class="calc-btn" onclick="calcAppend('1')">1</button>
-                <button class="calc-btn" onclick="calcAppend('2')">2</button>
-                <button class="calc-btn" onclick="calcAppend('3')">3</button>
-                <button class="calc-btn calc-op" onclick="calcAppend('*')">×</button>
-                <button class="calc-btn calc-clear" onclick="calcClear()">C</button>
-                <button class="calc-btn" onclick="calcAppend('0')">0</button>
-                <button class="calc-btn calc-eq" onclick="calcCalculate()">=</button>
-                <button class="calc-btn calc-op" onclick="calcAppend('/')">÷</button>
+                <button class="calc-btn" onclick="calcNum(7)">7</button>
+                <button class="calc-btn" onclick="calcNum(8)">8</button>
+                <button class="calc-btn" onclick="calcNum(9)">9</button>
+                <button class="calc-btn op" onclick="calcOp('/')">÷</button>
+                
+                <button class="calc-btn" onclick="calcNum(4)">4</button>
+                <button class="calc-btn" onclick="calcNum(5)">5</button>
+                <button class="calc-btn" onclick="calcNum(6)">6</button>
+                <button class="calc-btn op" onclick="calcOp('*')">×</button>
+                
+                <button class="calc-btn" onclick="calcNum(1)">1</button>
+                <button class="calc-btn" onclick="calcNum(2)">2</button>
+                <button class="calc-btn" onclick="calcNum(3)">3</button>
+                <button class="calc-btn op" onclick="calcOp('-')">-</button>
+                
+                <button class="calc-btn clear" onclick="calcClear()">C</button>
+                <button class="calc-btn" onclick="calcNum(0)">0</button>
+                <button class="calc-btn equal" onclick="calcEqual()">=</button>
+                <button class="calc-btn op" onclick="calcOp('+')">+</button>
             </div>
         </div>
     </div>
 
-    <!-- 오른쪽 메인 앱 -->
     <div class="app-container">
         <div class="header">
             <h1>🥋 <span class="title-tkd">태권도장 시세계산기</span></h1>
-            <p>텍스트를 붙여넣고 우측 [+] 버튼을 눌러 장부를 기록하세요</p>
+            <p>시세를 입력하고 [+] 버튼을 눌러 내 예상 수익을 확인하세요</p>
         </div>
 
-        <!-- 스마트 파서 (정규식 업그레이드 됨) -->
         <div class="parser-container">
             <label class="parser-label" id="parserLabel">📋 통합 시세 복사+붙여넣기</label>
-            <textarea id="smartParser" class="parser-textarea" placeholder="디스코드 내용을 통째로 복사해서 이곳에 넣으세요!&#10;예: [룬 ㅣ 신속] | 263 → 290"></textarea>
+            <textarea id="smartParser" class="parser-textarea" placeholder="디스코드 내용 등을 통째로 복사해서 이곳에 넣으세요!&#10;예: 신속 320 / 화염 250 / 고로케 금별 19 / 샐러드 72"></textarea>
         </div>
 
         <div class="tabs">
-            <div class="tab-cell"><button class="tab-btn active" id="tab-rune" onclick="switchTab('rune')">☯️ 룬 상점</button></div>
-            <div class="tab-cell"><button class="tab-btn" id="tab-cooking" onclick="switchTab('cooking')">🍳 요리 상점</button></div>
+            <div class="tab-cell">
+                <button class="tab-btn active" id="tab-rune" onclick="switchTab('rune')">☯️ 룬 상점</button>
+            </div>
+            <div class="tab-cell">
+                <button class="tab-btn" id="tab-cooking" onclick="switchTab('cooking')">🍳 요리 상점</button>
+            </div>
         </div>
 
         <div id="runeView">
@@ -307,6 +815,11 @@
                 <button class="sub-tab-btn" id="sub-tab-c5" onclick="switchSubTab('c5')">요리 5차</button>
             </div>
             <div id="cookingListContainer"></div>
+        </div>
+
+        <div class="footer-note">
+            동글랜드 최고의 무공 마을 <b>[태권도장]</b> 맞춤형 시세 엔진 v1.2<br>
+            실시간 자동 분석 및 스마트 유틸리티로 자산 증식을 극대화하세요.
         </div>
     </div>
 </div>
@@ -356,6 +869,7 @@
     };
 
     const labels = ["무별", "은별", "금별"];
+    let currentCookingTab = 'c1';
     let cart = {};
 
     function init() {
@@ -364,19 +878,30 @@
         renderCart();
         switchTab('rune');
         document.getElementById('smartParser').addEventListener('input', handleSmartParse);
+        
+        // 유틸리티 타이머/상점 루프 시작
+        setInterval(utilityLoop, 1000);
+        utilityLoop(); // 초기 1회 즉시 실행
     }
 
-    /* 네비게이션 */
     function switchTab(tab) {
         document.getElementById('tab-rune').classList.remove('active');
         document.getElementById('tab-cooking').classList.remove('active');
         document.getElementById(`tab-${tab}`).classList.add('active');
-        document.getElementById('runeView').style.display = tab === 'rune' ? 'block' : 'none';
-        document.getElementById('cookingView').style.display = tab === 'cooking' ? 'block' : 'none';
+
+        if (tab === 'rune') {
+            document.getElementById('runeView').style.display = 'block';
+            document.getElementById('cookingView').style.display = 'none';
+        } else {
+            document.getElementById('runeView').style.display = 'none';
+            document.getElementById('cookingView').style.display = 'block';
+        }
     }
 
     function switchSubTab(catKey) {
-        ['c1', 'c2', 'c3', 'c4', 'c5'].forEach(k => {
+        currentCookingTab = catKey;
+        const keys = ['c1', 'c2', 'c3', 'c4', 'c5'];
+        keys.forEach(k => {
             document.getElementById(`sub-tab-${k}`).classList.remove('active');
             document.getElementById(`section-container-${k}`).style.display = 'none';
         });
@@ -384,7 +909,6 @@
         document.getElementById(`section-container-${catKey}`).style.display = 'block';
     }
 
-    /* 렌더링 - 룬 */
     function renderRuneList() {
         const container = document.getElementById('runeListContainer');
         container.innerHTML = '';
@@ -392,11 +916,19 @@
             const card = document.createElement('div');
             card.className = 'item-card';
             card.innerHTML = `
-                <div class="item-header"><span class="item-name">${rune.name}</span><div class="item-recipe">범위: ${rune.min} ~ ${rune.max}원</div></div>
+                <div class="item-header">
+                    <span class="item-name">${rune.name}</span>
+                    <div class="item-recipe">안전 범위: ${rune.min} ~ ${rune.max}원</div>
+                </div>
                 <div class="tier-table">
                     <div class="tier-row">
-                        <div class="tier-cell cell-label"><span class="star-badge rune-badge">🔮 단가</span></div>
-                        <div class="tier-cell cell-input"><input type="number" id="rune_input_${index}" placeholder="단가" oninput="updateRune(${index})"></div>
+                        <div class="tier-cell cell-label">
+                            <span class="star-badge rune-badge">🔮 룬 단가</span>
+                            <span class="range-text">실시간 단가</span>
+                        </div>
+                        <div class="tier-cell cell-input">
+                            <input type="number" id="rune_input_${index}" placeholder="단가" oninput="updateRune(${index})">
+                        </div>
                         <div class="tier-cell cell-result">
                             <span class="diff-text diff-none" id="rune_diff_${index}">-</span>
                             <span class="status-badge status-none" id="rune_status_${index}">-</span>
@@ -414,34 +946,54 @@
         const inputVal = document.getElementById(`rune_input_${index}`).value;
         const diffEl = document.getElementById(`rune_diff_${index}`);
         const statusEl = document.getElementById(`rune_status_${index}`);
-        
-        if (!inputVal || isNaN(inputVal)) {
-            diffEl.textContent = "-"; diffEl.className = "diff-text diff-none";
-            statusEl.textContent = "-"; statusEl.className = "status-badge status-none";
-            syncCartPrice(`rune_${index}_0_0`, 0); return;
+
+        if (!inputVal || isNaN(inputVal) || inputVal < 0) {
+            diffEl.textContent = "-";
+            diffEl.className = "diff-text diff-none";
+            statusEl.textContent = "-";
+            statusEl.className = "status-badge status-none";
+            syncCartPrice(`rune_${index}_0_0`, 0); 
+            return;
         }
 
         const currentPrice = parseInt(inputVal);
         const diff = rune.max - currentPrice;
         const pct = ((diff / rune.max) * 100).toFixed(1);
-        let pricePositionPct = rune.max !== rune.min ? ((currentPrice - rune.min) / (rune.max - rune.min)) * 100 : 0;
+        
+        let pricePositionPct = 0;
+        if (rune.max !== rune.min) {
+            pricePositionPct = ((currentPrice - rune.min) / (rune.max - rune.min)) * 100;
+        }
 
-        diffEl.textContent = diff >= 0 ? `-${diff}원 (${pct}%)` : `+${Math.abs(diff)}원 상회`;
-        diffEl.className = (diff < 0 || pricePositionPct >= 60) ? "diff-text diff-good" : "diff-text diff-bad";
+        if (diff >= 0) {
+            diffEl.textContent = `-${diff.toLocaleString()}원 (${pct}%)`;
+            diffEl.className = pricePositionPct >= 60 ? "diff-text diff-good" : "diff-text diff-bad";
+        } else {
+            diffEl.textContent = `+${Math.abs(diff).toLocaleString()}원 상회`;
+            diffEl.className = "diff-text diff-good";
+        }
 
         statusEl.className = 'status-badge';
-        if (pricePositionPct >= 90) { statusEl.textContent = '🔥 최적'; statusEl.classList.add('status-perfect'); }
-        else if (pricePositionPct >= 60) { statusEl.textContent = '🟢 추천'; statusEl.classList.add('status-good'); }
-        else if (pricePositionPct >= 30) { statusEl.textContent = '🟡 보통'; statusEl.classList.add('status-normal'); }
-        else { statusEl.textContent = '❌ 비추'; statusEl.classList.add('status-bad'); }
-
+        if (pricePositionPct >= 90) {
+            statusEl.textContent = '🔥 최적';
+            statusEl.classList.add('status-perfect');
+        } else if (pricePositionPct >= 60) {
+            statusEl.textContent = '🟢 추천';
+            statusEl.classList.add('status-good');
+        } else if (pricePositionPct >= 30) {
+            statusEl.textContent = '🟡 보통';
+            statusEl.classList.add('status-normal');
+        } else {
+            statusEl.textContent = '❌ 비추';
+            statusEl.classList.add('status-bad');
+        }
         syncCartPrice(`rune_${index}_0_0`, currentPrice);
     }
 
-    /* 렌더링 - 요리 */
     function renderCookingList() {
         const container = document.getElementById('cookingListContainer');
         container.innerHTML = '';
+
         Object.keys(serverData.cooking).forEach((catKey, catIdx) => {
             const sectionWrapper = document.createElement('div');
             sectionWrapper.id = `section-container-${catKey}`;
@@ -454,8 +1006,13 @@
                 item.tiers.forEach((tier, tierIdx) => {
                     tierHtml += `
                         <div class="tier-row">
-                            <div class="tier-cell cell-label"><span class="star-badge star-${labels[tierIdx]}">★ ${labels[tierIdx]}</span></div>
-                            <div class="tier-cell cell-input"><input type="number" id="cook_${catIdx}_${itemIdx}_${tierIdx}" placeholder="단가" oninput="updateCooking(${catIdx}, ${itemIdx}, ${tierIdx})"></div>
+                            <div class="tier-cell cell-label">
+                                <span class="star-badge star-${labels[tierIdx]}">★ ${labels[tierIdx]}</span>
+                                <span class="range-text">${tier.min}~${tier.max}원</span>
+                            </div>
+                            <div class="tier-cell cell-input">
+                                <input type="number" id="cook_${catIdx}_${itemIdx}_${tierIdx}" placeholder="단가" oninput="updateCooking(${catIdx}, ${itemIdx}, ${tierIdx})">
+                            </div>
                             <div class="tier-cell cell-result">
                                 <span class="diff-text diff-none" id="cook_diff_${catIdx}_${itemIdx}_${tierIdx}">-</span>
                                 <span class="status-badge status-none" id="cook_status_${catIdx}_${itemIdx}_${tierIdx}">-</span>
@@ -464,7 +1021,13 @@
                         </div>
                     `;
                 });
-                card.innerHTML = `<div class="item-header"><span class="item-name">${item.name}</span><div class="item-recipe">재료: ${item.recipe}</div></div><div class="tier-table">${tierHtml}</div>`;
+                card.innerHTML = `
+                    <div class="item-header">
+                        <span class="item-name">${item.name}</span>
+                        <div class="item-recipe">재료: ${item.recipe}</div>
+                    </div>
+                    <div class="tier-table">${tierHtml}</div>
+                `;
                 sectionWrapper.appendChild(card);
             });
             container.appendChild(sectionWrapper);
@@ -479,89 +1042,141 @@
         const diffEl = document.getElementById(`cook_diff_${catIdx}_${itemIdx}_${tierIdx}`);
         const statusEl = document.getElementById(`cook_status_${catIdx}_${itemIdx}_${tierIdx}`);
 
-        if (!inputVal || isNaN(inputVal)) {
-            diffEl.textContent = "-"; diffEl.className = "diff-text diff-none";
-            statusEl.textContent = "-"; statusEl.className = "status-badge status-none";
-            syncCartPrice(`cook_${catIdx}_${itemIdx}_${tierIdx}`, 0); return;
+        if (!inputVal || isNaN(inputVal) || inputVal < 0) {
+            diffEl.textContent = "-";
+            diffEl.className = "diff-text diff-none";
+            statusEl.textContent = "-";
+            statusEl.className = "status-badge status-none";
+            syncCartPrice(`cook_${catIdx}_${itemIdx}_${tierIdx}`, 0);
+            return;
         }
 
         const currentPrice = parseInt(inputVal);
         const diff = tier.max - currentPrice;
         const pct = ((diff / tier.max) * 100).toFixed(1);
-        let pricePositionPct = tier.max !== tier.min ? ((currentPrice - tier.min) / (tier.max - tier.min)) * 100 : 0;
+        
+        let pricePositionPct = 0;
+        if (tier.max !== tier.min) {
+            pricePositionPct = ((currentPrice - tier.min) / (tier.max - tier.min)) * 100;
+        }
 
-        diffEl.textContent = diff >= 0 ? `-${diff}원 (${pct}%)` : `+${Math.abs(diff)}원 상회`;
-        diffEl.className = (diff < 0 || pricePositionPct >= 60) ? "diff-text diff-good" : "diff-text diff-bad";
+        if (diff >= 0) {
+            diffEl.textContent = `-${diff.toLocaleString()}원 (${pct}%)`;
+            diffEl.className = pricePositionPct >= 60 ? "diff-text diff-good" : "diff-text diff-bad";
+        } else {
+            diffEl.textContent = `+${Math.abs(diff).toLocaleString()}원 상회`;
+            diffEl.className = "diff-text diff-good";
+        }
 
         statusEl.className = 'status-badge';
-        if (pricePositionPct >= 90) { statusEl.textContent = '🔥 최적'; statusEl.classList.add('status-perfect'); }
-        else if (pricePositionPct >= 60) { statusEl.textContent = '🟢 추천'; statusEl.classList.add('status-good'); }
-        else if (pricePositionPct >= 30) { statusEl.textContent = '🟡 보통'; statusEl.classList.add('status-normal'); }
-        else { statusEl.textContent = '❌ 비추'; statusEl.classList.add('status-bad'); }
-
+        if (pricePositionPct >= 90) {
+            statusEl.textContent = '🔥 최적';
+            statusEl.classList.add('status-perfect');
+        } else if (pricePositionPct >= 60) {
+            statusEl.textContent = '🟢 추천';
+            statusEl.classList.add('status-good');
+        } else if (pricePositionPct >= 30) {
+            statusEl.textContent = '🟡 보통';
+            statusEl.classList.add('status-normal');
+        } else {
+            statusEl.textContent = '❌ 비추';
+            statusEl.classList.add('status-bad');
+        }
         syncCartPrice(`cook_${catIdx}_${itemIdx}_${tierIdx}`, currentPrice);
     }
 
-    /* ---------- 장부(카트) 시스템 ---------- */
     function addToCart(type, groupIdx, itemIdx, tierIdx) {
         let key = `${type}_${groupIdx}_${itemIdx}_${tierIdx}`;
-        let name = '', price = 0;
+        let name = '';
+        let price = 0;
 
         if (type === 'rune') {
             name = serverData.rune[groupIdx].name;
-            price = parseInt(document.getElementById(`rune_input_${groupIdx}`).value);
+            const inputVal = document.getElementById(`rune_input_${groupIdx}`).value;
+            price = parseInt(inputVal);
         } else {
             const catKey = ['c1', 'c2', 'c3', 'c4', 'c5'][groupIdx];
-            name = `${serverData.cooking[catKey][itemIdx].name} (${labels[tierIdx]})`;
-            price = parseInt(document.getElementById(`cook_${groupIdx}_${itemIdx}_${tierIdx}`).value);
+            const item = serverData.cooking[catKey][itemIdx];
+            name = `${item.name} (${labels[tierIdx]})`;
+            const inputVal = document.getElementById(`cook_${groupIdx}_${itemIdx}_${tierIdx}`).value;
+            price = parseInt(inputVal);
         }
 
-        if (!price || isNaN(price) || price <= 0) { alert("상점 단가가 입력되지 않았습니다."); return; }
+        if (!price || isNaN(price) || price <= 0) {
+            alert("먼저 상점 단가를 입력하거나 파서를 통해 기입해주세요!");
+            return;
+        }
 
         if (cart[key]) cart[key].qty += 1;
-        else cart[key] = { name, price, cost: 0, qty: 1 };
+        else cart[key] = { name, price, qty: 1, materialCost: 0 };
+        renderCart();
+    }
+
+    function addCartQty(key, amount) {
+        if (!cart[key]) return;
+        cart[key].qty += amount;
+        if (cart[key].qty < 1) cart[key].qty = 1;
+        renderCart();
+    }
+
+    function updateMaterialCost(key, cost) {
+        if (!cart[key]) return;
+        let val = parseInt(cost);
+        if (isNaN(val) || val < 0) val = 0;
+        cart[key].materialCost = val;
         renderCart();
     }
 
     function updateCartQty(key, newQty) {
         if (!cart[key]) return;
         const qty = parseInt(newQty);
-        cart[key].qty = (isNaN(qty) || qty < 1) ? 1 : qty;
-        renderCart();
-    }
-    
-    function updateCartCost(key, newCost) {
-        if (!cart[key]) return;
-        const cost = parseInt(newCost);
-        cart[key].cost = isNaN(cost) ? 0 : cost;
+        if (isNaN(qty) || qty < 1) cart[key].qty = 1;
+        else cart[key].qty = qty;
         renderCart();
     }
 
-    function removeCartItem(key) { delete cart[key]; renderCart(); }
-    function syncCartPrice(key, newPrice) { if (cart[key]) { cart[key].price = newPrice; renderCart(); } }
+    function removeCartItem(key) {
+        delete cart[key];
+        renderCart();
+    }
+
+    function syncCartPrice(key, newPrice) {
+        if (cart[key]) {
+            cart[key].price = newPrice;
+            renderCart();
+        }
+    }
 
     function renderCart() {
         const container = document.getElementById('cartItemsList');
-        const keys = Object.keys(cart);
-        let sumRev = 0, sumCost = 0, sumProfit = 0;
+        const revContainer = document.getElementById('cartTotalRev');
+        const costContainer = document.getElementById('cartTotalCost');
+        const profitContainer = document.getElementById('cartTotalProfit');
+        container.innerHTML = '';
+
+        let keys = Object.keys(cart);
+        let totalRev = 0;
+        let totalCost = 0;
+        let totalProfit = 0;
 
         if (keys.length === 0) {
-            container.innerHTML = `<div class="cart-empty">우측의 [+] 버튼을 눌러<br>장부에 품목을 추가하세요.</div>`;
-            document.getElementById('sumRevenue').textContent = "0원";
-            document.getElementById('sumCost').textContent = "0원";
-            document.getElementById('sumProfit').textContent = "0원";
-            document.getElementById('sumProfit').style.color = "var(--text-muted)";
+            container.innerHTML = `<div class="cart-empty">리스트 우측의 [+] 버튼을 눌러<br>판매할 품목을 담아주세요.</div>`;
+            revContainer.textContent = "0원";
+            costContainer.textContent = "- 0원";
+            profitContainer.textContent = "0원";
+            profitContainer.style.color = 'var(--accent-green)';
             return;
         }
 
-        container.innerHTML = '';
         keys.forEach(key => {
             const item = cart[key];
-            const rev = item.price * item.qty;
-            const cost = item.cost * item.qty;
-            const profit = rev - cost;
+            const itemRev = item.price * item.qty;
+            const itemCost = item.materialCost * item.qty;
+            const itemProfit = itemRev - itemCost;
             
-            sumRev += rev; sumCost += cost; sumProfit += profit;
+            totalRev += itemRev;
+            totalCost += itemCost;
+            totalProfit += itemProfit;
 
             const div = document.createElement('div');
             div.className = 'cart-item';
@@ -570,67 +1185,42 @@
                     <span class="cart-item-name">${item.name}</span>
                     <button class="cart-remove-btn" onclick="removeCartItem('${key}')"><i class="fa-solid fa-trash"></i></button>
                 </div>
-                <div class="cart-item-controls">
-                    <div class="cart-row-1">
-                        <span class="cart-item-price">판매가: ${item.price.toLocaleString()}원</span>
-                        <div class="qty-wrapper">
-                            <input type="number" class="qty-input" value="${item.qty}" min="1" onchange="updateCartQty('${key}', this.value)">
-                            <button class="qty-btn" onclick="updateCartQty('${key}', ${item.qty + 1})">+1</button>
-                            <button class="qty-btn" onclick="updateCartQty('${key}', ${item.qty + 64})">+64</button>
-                        </div>
+                <div class="cart-item-controls" style="margin-bottom: 8px;">
+                    <span class="cart-item-price">단가: ${item.price.toLocaleString()}원</span>
+                    <div class="cart-qty-wrapper">
+                        <button class="qty-btn" onclick="addCartQty('${key}', 1)">+1</button>
+                        <button class="qty-btn" onclick="addCartQty('${key}', 64)">+64</button>
+                        <input type="number" class="qty-input" value="${item.qty}" min="1" onchange="updateCartQty('${key}', this.value)">
                     </div>
-                    <div class="cart-row-2">
-                        <span style="font-size:12px; color:var(--text-muted);">개당 재료비:</span>
-                        <input type="number" class="cost-input" value="${item.cost || ''}" placeholder="0" onchange="updateCartCost('${key}', this.value)">
+                </div>
+                <div class="cart-item-controls cost-row">
+                    <div class="cost-input-wrapper">
+                        <span>개당 재료비</span>
+                        <input type="number" class="qty-input cost-input" placeholder="0" value="${item.materialCost === 0 ? '' : item.materialCost}" onchange="updateMaterialCost('${key}', this.value)">
                     </div>
-                    <div style="text-align:right; margin-top:6px;">
-                        <span class="item-profit" style="color: ${profit >= 0 ? 'var(--accent-green)' : 'var(--accent-red)'}">순수익: ${profit > 0 ? '+' : ''}${profit.toLocaleString()}원</span>
+                    <div class="item-profit ${itemProfit >= 0 ? 'profit-good' : 'profit-bad'}">
+                        ${itemProfit >= 0 ? '+' : ''}${itemProfit.toLocaleString()}원
                     </div>
                 </div>
             `;
             container.appendChild(div);
         });
 
-        document.getElementById('sumRevenue').textContent = `${sumRev.toLocaleString()}원`;
-        document.getElementById('sumCost').textContent = `-${sumCost.toLocaleString()}원`;
-        const profitEl = document.getElementById('sumProfit');
-        profitEl.textContent = `${sumProfit > 0 ? '+' : ''}${sumProfit.toLocaleString()}원`;
-        profitEl.style.color = sumProfit >= 0 ? 'var(--accent-green)' : 'var(--accent-red)';
+        revContainer.textContent = `${totalRev.toLocaleString()}원`;
+        costContainer.textContent = `- ${totalCost.toLocaleString()}원`;
+        profitContainer.textContent = `${totalProfit > 0 ? '+' : ''}${totalProfit.toLocaleString()}원`;
+        
+        if (totalProfit < 0) profitContainer.style.color = 'var(--accent-red)';
+        else profitContainer.style.color = 'var(--accent-green)';
     }
 
-    /* ---------- 퀵 재료비 계산기 (직접 입력 지원) ---------- */
-    function calcAppend(val) {
-        const display = document.getElementById('calcDisplay');
-        display.value += val;
-        display.focus(); // 타이핑 편의를 위해 포커스 유지
-    }
-    function calcClear() { document.getElementById('calcDisplay').value = ''; }
-    function calcCalculate() {
-        const display = document.getElementById('calcDisplay');
-        try {
-            // 사용자가 키보드로 쳤을 때 x 나 ÷ 를 수식 기호로 변환
-            let safeExpr = display.value.replace(/x|X|×/g, '*').replace(/÷/g, '/');
-            // 보안을 위해 수학 기호와 숫자만 남김
-            safeExpr = safeExpr.replace(/[^0-9+\-*/.()]/g, ''); 
-            if (safeExpr) {
-                let result = new Function('return ' + safeExpr)();
-                display.value = Math.round(result); // 마인크래프트 머니 특성상 반올림
-            }
-        } catch (e) {
-            // 수식 미완성 시 무시
-        }
-    }
-    function handleCalcKey(e) {
-        if (e.key === 'Enter') calcCalculate();
-    }
-
-    /* ---------- 강력한 정규식 스마트 파서 ---------- */
     function handleSmartParse() {
         const rawText = document.getElementById('smartParser').value;
         if (!rawText.trim()) return;
 
         const regex = /\[([^\]]+)\]\s*\|\s*\d+\s*→\s*(\d+)/g;
-        let match, matchCount = 0;
+        let match;
+        let matchCount = 0;
 
         while ((match = regex.exec(rawText)) !== null) {
             matchCount++;
@@ -640,7 +1230,9 @@
 
             serverData.rune.forEach((rune, index) => {
                 let matched = false;
-                rune.keywords.forEach(kw => { if (normalizedInput.includes(kw.replace(/\s+/g, ''))) matched = true; });
+                rune.keywords.forEach(kw => {
+                    if (normalizedInput.includes(kw.replace(/\s+/g, ''))) matched = true;
+                });
                 if (matched) {
                     const inputEl = document.getElementById(`rune_input_${index}`);
                     if(inputEl) { inputEl.value = price; updateRune(index); }
@@ -650,12 +1242,14 @@
             Object.keys(serverData.cooking).forEach((groupName, groupIdx) => {
                 serverData.cooking[groupName].forEach((item, itemIdx) => {
                     let itemMatched = false;
-                    item.keywords.forEach(kw => { if (normalizedInput.includes(kw.replace(/\s+/g, ''))) itemMatched = true; });
-
+                    item.keywords.forEach(kw => {
+                        if (normalizedInput.includes(kw.replace(/\s+/g, ''))) itemMatched = true;
+                    });
                     if (itemMatched) {
                         let bestTierIdx = 0, minDistance = Infinity;
                         item.tiers.forEach((t, tIdx) => {
-                            let distance = Math.abs(price - ((t.min + t.max) / 2));
+                            let centerPrice = (t.min + t.max) / 2;
+                            let distance = Math.abs(price - centerPrice);
                             if (distance < minDistance) { minDistance = distance; bestTierIdx = tIdx; }
                         });
                         const inputEl = document.getElementById(`cook_${groupIdx}_${itemIdx}_${bestTierIdx}`);
@@ -663,6 +1257,230 @@
                     }
                 });
             });
+        }
+
+        if (matchCount === 0) {
+            const lines = rawText.split(/[\n\,\/|]+/);
+            lines.forEach(line => {
+                const trimmedLine = line.trim().replace(/\s+/g, ' ');
+                if (!trimmedLine) return;
+
+                const numMatch = trimmedLine.match(/\d+/);
+                if (!numMatch) return;
+                const price = parseInt(numMatch[0]);
+
+                serverData.rune.forEach((rune, index) => {
+                    let matched = false;
+                    rune.keywords.forEach(kw => { if (trimmedLine.includes(kw)) matched = true; });
+                    if (matched) {
+                        const inputEl = document.getElementById(`rune_input_${index}`);
+                        if(inputEl) { inputEl.value = price; updateRune(index); }
+                    }
+                });
+
+                Object.keys(serverData.cooking).forEach((groupName, groupIdx) => {
+                    serverData.cooking[groupName].forEach((item, itemIdx) => {
+                        let itemMatched = false;
+                        item.keywords.forEach(kw => { if (trimmedLine.includes(kw)) itemMatched = true; });
+                        if (itemMatched) {
+                            let tierIdx = -1;
+                            if (trimmedLine.includes('은별') || trimmedLine.includes('은')) tierIdx = 1;
+                            else if (trimmedLine.includes('금별') || trimmedLine.includes('금')) tierIdx = 2;
+                            else if (trimmedLine.includes('무별') || trimmedLine.includes('무')) tierIdx = 0;
+
+                            if (tierIdx === -1) {
+                                let bestTierIdx = 0, minDistance = Infinity;
+                                item.tiers.forEach((t, tIdx) => {
+                                    let centerPrice = (t.min + t.max) / 2;
+                                    let distance = Math.abs(price - centerPrice);
+                                    if (distance < minDistance) { minDistance = distance; bestTierIdx = tIdx; }
+                                });
+                                tierIdx = bestTierIdx;
+                            }
+
+                            const inputEl = document.getElementById(`cook_${groupIdx}_${itemIdx}_${tierIdx}`);
+                            if (inputEl) { inputEl.value = price; updateCooking(groupIdx, itemIdx, tierIdx); }
+                        }
+                    });
+                });
+            });
+        }
+    }
+
+    let calcCurrent = '0';
+    let calcPrev = '';
+    let calcOperator = null;
+
+    function updateCalcDisplay() {
+        const displayVal = calcCurrent === 'Error' ? 'Error' : Number(calcCurrent).toLocaleString();
+        document.getElementById('calcDisplay').textContent = displayVal;
+    }
+
+    function calcNum(num) {
+        if (calcCurrent === '0' || calcCurrent === 'Error') calcCurrent = num.toString();
+        else if (calcCurrent.length < 15) calcCurrent += num.toString();
+        updateCalcDisplay();
+    }
+
+    function calcOp(op) {
+        if (calcCurrent === 'Error') return;
+        if (calcOperator !== null && calcCurrent !== '0') calcEqual();
+        calcPrev = calcCurrent;
+        calcCurrent = '0';
+        calcOperator = op;
+    }
+
+    function calcEqual() {
+        if (calcOperator === null || calcPrev === '' || calcCurrent === 'Error') return;
+        let result = 0;
+        const prev = parseFloat(calcPrev);
+        const current = parseFloat(calcCurrent);
+        switch (calcOperator) {
+            case '+': result = prev + current; break;
+            case '-': result = prev - current; break;
+            case '*': result = prev * current; break;
+            case '/': 
+                if (current === 0) { calcCurrent = 'Error'; updateCalcDisplay(); return; }
+                result = prev / current; break;
+        }
+        calcCurrent = Math.round(result).toString(); 
+        calcOperator = null; calcPrev = '';
+        updateCalcDisplay();
+    }
+
+    function calcClear() {
+        calcCurrent = '0'; calcPrev = ''; calcOperator = null;
+        updateCalcDisplay();
+    }
+
+    // --- Web Audio & Notification API ---
+    let audioCtx = null;
+    function initAudioAndNotification() {
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        
+        if ("Notification" in window && Notification.permission !== "granted" && Notification.permission !== "denied") {
+            Notification.requestPermission();
+        }
+    }
+
+    function playAlarmSound() {
+        if (!audioCtx) return;
+        const now = audioCtx.currentTime;
+        function playNote(freq, startTime, duration) {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.value = freq;
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(startTime);
+            gain.gain.setValueAtTime(0.5, startTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
+            osc.stop(startTime + duration);
+        }
+        playNote(523.25, now, 0.5);       // C5
+        playNote(659.25, now + 0.15, 0.5); // E5
+        playNote(783.99, now + 0.3, 1.0);  // G5
+    }
+
+    function showNotification(title, msg) {
+        if ("Notification" in window && Notification.permission === "granted") {
+            new Notification(title, { body: msg, icon: "🥋" });
+        }
+    }
+
+    // --- Timer System ---
+    const timerDefs = {
+        affection: { key: 'tkd_timer_affection', displayId: 'timer_affection', defaultVal: '06:00:00', label: '호감도 아이템' },
+        crop: { key: 'tkd_timer_crop', displayId: 'timer_crop', defaultVal: '17:00', label: '농작물 재배' }
+    };
+    let timerNotified = { affection: false, crop: false };
+
+    function startAppTimer(type, durationSecs) {
+        initAudioAndNotification();
+        const endTime = Date.now() + (durationSecs * 1000);
+        localStorage.setItem(timerDefs[type].key, endTime);
+        timerNotified[type] = false;
+        
+        const el = document.getElementById(timerDefs[type].displayId);
+        el.classList.remove('expired');
+        utilityLoop(); // 즉시 업데이트
+    }
+
+    function stopAppTimer(type) {
+        localStorage.removeItem(timerDefs[type].key);
+        const el = document.getElementById(timerDefs[type].displayId);
+        el.textContent = timerDefs[type].defaultVal;
+        el.classList.remove('expired');
+        timerNotified[type] = false;
+    }
+
+    function formatTime(totalSeconds) {
+        if (totalSeconds <= 0) return "00:00";
+        const h = Math.floor(totalSeconds / 3600);
+        const m = Math.floor((totalSeconds % 3600) / 60);
+        const s = totalSeconds % 60;
+        const pad = n => n.toString().padStart(2, '0');
+        return h > 0 ? `${pad(h)}:${pad(m)}:${pad(s)}` : `${pad(m)}:${pad(s)}`;
+    }
+
+    // --- Main Utility Loop (Shop + Timers) ---
+    function utilityLoop() {
+        const now = new Date();
+        const nowMs = Date.now();
+        
+        // 1. 타이머 처리
+        for (const type in timerDefs) {
+            const def = timerDefs[type];
+            const el = document.getElementById(def.displayId);
+            const endTimeStr = localStorage.getItem(def.key);
+            
+            if (endTimeStr) {
+                const diffMs = parseInt(endTimeStr) - nowMs;
+                if (diffMs > 0) {
+                    el.textContent = formatTime(Math.ceil(diffMs / 1000));
+                    el.classList.remove('expired');
+                } else {
+                    el.textContent = "00:00";
+                    el.classList.add('expired');
+                    if (!timerNotified[type]) {
+                        playAlarmSound();
+                        showNotification("타이머 알림", `${def.label} 시간이 다 되었습니다!`);
+                        timerNotified[type] = true;
+                    }
+                }
+            }
+        }
+        
+        // 2. 변동상점 갱신 시간 계산 (3시간 간격: 0, 3, 6, 9, 12, 15, 18, 21)
+        const currentHour = now.getHours();
+        const currentMinute = now.getMinutes();
+        
+        const isRefreshHour = (currentHour % 3 === 0);
+        const isJustRefreshed = isRefreshHour && currentMinute < 10; // 정각부터 10분간 강조
+        
+        // 다음 갱신 시간 계산 (현재 9시면 다음은 12시)
+        let nextHour = Math.floor(currentHour / 3) * 3 + 3;
+        let nextRefresh = new Date(now);
+        nextRefresh.setHours(nextHour, 0, 0, 0);
+        
+        let diffShopMs = nextRefresh - now;
+        let diffShopMins = Math.floor(diffShopMs / 60000);
+        let hoursLeft = Math.floor(diffShopMins / 60);
+        let minsLeft = diffShopMins % 60;
+        
+        const shopBox = document.getElementById('shopStatusBox');
+        const shopTimeText = document.getElementById('shopTimeText');
+        
+        if (isJustRefreshed) {
+            shopBox.classList.add('shop-refreshed');
+            shopTimeText.innerHTML = `🔥 <b>방금 시세가 변동되었습니다!</b><br><span style="font-size:12px; font-weight: 500;">(${currentMinute}분 전 갱신 완료 / 다음 갱신: ${nextHour % 24}시)</span>`;
+        } else {
+            shopBox.classList.remove('shop-refreshed');
+            shopTimeText.innerHTML = `다음 갱신: <b>${nextHour % 24}시 00분</b><br><span style="font-size:12px; font-weight: 500;">(${hoursLeft}시간 ${minsLeft}분 남음)</span>`;
         }
     }
 
