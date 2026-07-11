@@ -328,6 +328,19 @@
             <button class="t-test-mini" onclick="startAppTimer('crop', 10)">10s</button>
         </div>
 
+        <!-- 타이머: 다이버 던전 (NEW) -->
+        <div class="timer-dark-box">
+            <div class="timer-dark-left">
+                <div class="timer-dark-name">🌊 다이버 던전</div>
+                <div class="timer-dark-val" id="timer_diver">01:00:00</div>
+            </div>
+            <div class="timer-dark-right">
+                <button class="t-dark-btn t-start" onclick="startAppTimer('diver', 3600)">시작</button>
+                <button class="t-dark-btn t-stop" onclick="stopAppTimer('diver')">정지</button>
+            </div>
+            <button class="t-test-mini" onclick="startAppTimer('diver', 10)">10s</button>
+        </div>
+
         <div style="height: 16px;"></div>
 
         <!-- 2. 예상 수익 장부 -->
@@ -853,7 +866,7 @@
     let activeTimers = {};
 
     function initTimers() {
-        ['affection', 'crop'].forEach(type => {
+        ['affection', 'crop', 'diver'].forEach(type => {
             const saved = localStorage.getItem('tkdTimer_' + type);
             if (saved) {
                 const endTime = parseInt(saved, 10);
@@ -884,6 +897,7 @@
         el.classList.remove('timer-expired');
         if (type === 'affection') el.textContent = "06:00:00";
         if (type === 'crop') el.textContent = "17:00";
+        if (type === 'diver') el.textContent = "01:00:00";
     }
 
     function startTimerLoop(type, endTime) {
@@ -906,7 +920,7 @@
         const s = Math.floor((diff % 60000) / 1000);
         
         const el = document.getElementById('timer_' + type);
-        if (type === 'affection') {
+        if (type === 'affection' || type === 'diver') {
             el.textContent = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
         } else {
             el.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
@@ -922,10 +936,15 @@
         el.classList.add('timer-expired');
         if (type === 'affection') el.textContent = "00:00:00";
         if (type === 'crop') el.textContent = "00:00";
+        if (type === 'diver') el.textContent = "00:00:00";
 
         playAlarmSound(); 
         
-        const name = type === 'affection' ? '호감도 템' : '농작물 재배';
+        let name = '알림';
+        if (type === 'affection') name = '호감도 템';
+        else if (type === 'crop') name = '농작물 재배';
+        else if (type === 'diver') name = '다이버 던전';
+
         if ("Notification" in window && Notification.permission === "granted") {
             new Notification(`⏰ [${name}] 완료!`, { body: "시간이 다 되었습니다. 게임을 확인하세요." });
         }
