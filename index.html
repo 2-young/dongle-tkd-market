@@ -53,7 +53,7 @@
         /* 왼쪽 사이드바 */
         .sidebar-container {
             flex: 1 1 320px;
-            max-width: 400px;
+            max-width: 420px;
             background-color: var(--container-bg);
             border-radius: 20px;
             padding: 20px;
@@ -103,12 +103,12 @@
             .app-container { width: 100%; }
         }
 
-        /* 커스텀 배너 디자인 (자동 사이즈 최적화 적용) */
+        /* 커스텀 배너 디자인 */
         .banner-container {
             width: 100%;
-            aspect-ratio: 21 / 5; /* 울트라와이드 영화관 비율로 자동 조절 */
-            min-height: 100px;    /* 모바일에서 너무 작아지는 것 방지 */
-            max-height: 250px;    /* 초대형 모니터에서 너무 커지는 것 방지 */
+            aspect-ratio: 21 / 5;
+            min-height: 100px;
+            max-height: 250px;
             border-radius: 12px;
             overflow: hidden;
             margin-bottom: 20px;
@@ -122,7 +122,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: center; /* 이미지가 잘릴 때 항상 가운데를 중심으로 */
+            object-position: center;
             display: block;
             transition: transform 0.3s, opacity 0.3s ease-in-out;
         }
@@ -209,20 +209,7 @@
         .settings-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 15px; transition: 0.2s; padding: 4px; border-radius: 4px; }
         .settings-btn:hover { color: var(--accent-amber); background: rgba(255,255,255,0.1); }
 
-        .shop-alert-box {
-            background-color: rgba(0, 0, 0, 0.2); 
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 16px;
-            text-align: center;
-            margin-bottom: 16px;
-            transition: all 0.3s;
-            box-shadow: inset 0 2px 10px rgba(0,0,0,0.2);
-        }
-        .shop-alert-title { font-size: 14px; font-weight: 800; color: var(--text-main); margin-bottom: 8px; display: flex; justify-content: center; align-items: center; gap: 6px; }
-        .shop-alert-msg { font-size: 15px; font-weight: 900; color: var(--text-muted); margin-bottom: 4px; }
-        .shop-alert-sub { font-size: 12px; color: var(--text-muted); }
-
+        /* 타이머 디자인 */
         .timer-dark-box {
             background-color: #0d1117; 
             border-radius: 12px;
@@ -268,9 +255,9 @@
         .cart-remove-btn { background: none; border: none; color: var(--accent-red); cursor: pointer; opacity: 0.7; }
         .cart-item-price { font-size: 12px; color: var(--accent-amber); font-weight: 700; }
         
-        .qty-wrapper { display: flex; align-items: center; gap: 4px; }
+        .qty-wrapper { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; justify-content: flex-end;}
         .qty-input, .cost-input { background-color: var(--container-bg); border: 1px solid var(--border-color); color: var(--text-main); border-radius: 4px; text-align: center; font-size: 12px; font-weight: 700; outline: none; }
-        .qty-input { width: 45px; padding: 4px; }
+        .qty-input { width: 70px; padding: 4px; } /* 수량칸 널널하게 변경 */
         .cost-input { width: 70px; padding: 4px; text-align: right; }
         .qty-btn { background-color: var(--border-color); color: var(--text-main); border: none; border-radius: 4px; padding: 4px 6px; font-size: 11px; cursor: pointer; font-weight: bold; }
         .qty-btn:hover { background-color: #475569; }
@@ -286,11 +273,11 @@
         .calc-display { width: 100%; background-color: var(--container-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 10px; border-radius: 6px; font-size: 18px; font-weight: 700; text-align: right; margin-bottom: 10px; outline: none; font-family: monospace; }
         .calc-display:focus { border-color: var(--accent-green); box-shadow: 0 0 5px rgba(74, 222, 128, 0.3); }
         .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
-        .calc-btn { background-color: var(--container-bg); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 6px; padding: 10px 0; font-size: 15px; font-weight: 700; cursor: pointer; }
+        .calc-btn { background-color: var(--container-bg); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 6px; padding: 10px 0; font-size: 15px; font-weight: 700; cursor: pointer; border: none; }
         .calc-btn:hover { background-color: #334155; }
-        .calc-op { background-color: rgba(56, 189, 248, 0.1); color: var(--accent-blue); border-color: rgba(56, 189, 248, 0.3); }
+        .calc-op { background-color: rgba(56, 189, 248, 0.1); color: var(--accent-blue); border-color: rgba(56, 189, 248, 0.3); border: 1px solid;}
         .calc-eq { background-color: var(--accent-green); color: #000; border: none; }
-        .calc-clear { background-color: rgba(248, 113, 113, 0.1); color: var(--accent-red); border-color: rgba(248, 113, 113, 0.3); }
+        .calc-clear { background-color: rgba(248, 113, 113, 0.1); color: var(--accent-red); border-color: rgba(248, 113, 113, 0.3); border: 1px solid;}
 
         /* ---------- 모달 창 (사운드 설정) ---------- */
         .modal-overlay {
@@ -312,6 +299,12 @@
         .modal-header button:hover { color: var(--accent-red); }
         .sound-status { font-size: 14px; margin-bottom: 15px; }
         .sound-controls { display: flex; gap: 8px; flex-wrap: wrap; }
+
+        /* ---------- 변동상점 알림 ---------- */
+        .shop-alert-box { background-color: rgba(0, 0, 0, 0.2); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; text-align: center; margin-bottom: 12px; transition: all 0.3s; box-shadow: inset 0 2px 10px rgba(0,0,0,0.2); }
+        .shop-alert-title { font-size: 14px; font-weight: 800; color: var(--text-main); margin-bottom: 8px; display: flex; justify-content: center; align-items: center; gap: 6px; }
+        .shop-alert-msg { font-size: 15px; font-weight: 900; color: var(--text-muted); margin-bottom: 4px; }
+        .shop-alert-sub { font-size: 12px; color: var(--text-muted); }
     </style>
 </head>
 <body>
@@ -320,20 +313,20 @@
     <!-- 왼쪽 사이드바 -->
     <div class="sidebar-container">
         
-        <!-- 1. 마을 유틸리티 -->
+        <!-- 알림 (구: 마을 유틸리티) -->
         <div class="cart-header">
-            <div><i class="fa-solid fa-bell"></i> 마을 유틸리티</div>
-            <button class="settings-btn" onclick="openSoundModal()" title="알림 사운드 커스텀"><i class="fa-solid fa-music"></i> 설정</button>
+            <div><i class="fa-solid fa-bell"></i> 알림</div>
+            <button class="settings-btn" onclick="openSoundModal()" title="화면 크기 및 사운드 설정"><i class="fa-solid fa-gear"></i></button>
         </div>
-        
+
         <!-- 변동상점 시세 갱신 박스 -->
         <div class="shop-alert-box" id="shopScheduleInfoBox">
-            <div class="shop-alert-title"><i class="fa-solid fa-store"></i> 변동상점 시세 갱신</div>
+            <div class="shop-alert-title"><i class="fa-solid fa-store"></i> 3시간 변동상점 스케줄</div>
             <div class="shop-alert-msg" id="shopAlertMsg">계산 중...</div>
             <div class="shop-alert-sub" id="shopAlertSub"></div>
         </div>
 
-        <!-- 타이머: 호감도 -->
+        <!-- 타이머 3종 -->
         <div class="timer-dark-box">
             <div class="timer-dark-left">
                 <div class="timer-dark-name">💖 호감도 아이템</div>
@@ -346,7 +339,6 @@
             <button class="t-test-mini" onclick="startAppTimer('affection', 10)">10s</button>
         </div>
 
-        <!-- 타이머: 농작물 -->
         <div class="timer-dark-box">
             <div class="timer-dark-left">
                 <div class="timer-dark-name">🌱 농작물 재배</div>
@@ -359,7 +351,6 @@
             <button class="t-test-mini" onclick="startAppTimer('crop', 10)">10s</button>
         </div>
 
-        <!-- 타이머: 다이버 던전 -->
         <div class="timer-dark-box">
             <div class="timer-dark-left">
                 <div class="timer-dark-name">🌊 다이버 던전</div>
@@ -374,7 +365,7 @@
 
         <div style="height: 16px;"></div>
 
-        <!-- 2. 예상 수익 장부 -->
+        <!-- 예상 수익 장부 -->
         <div class="cart-header"><i class="fa-solid fa-wallet"></i> 예상 수익 장부</div>
         <div>
             <div id="cartItemsList"></div>
@@ -385,27 +376,44 @@
             <div class="total-line final"><span>최종 순수익</span><span id="sumProfit" style="color:var(--accent-green);">0원</span></div>
         </div>
 
-        <!-- 3. 퀵 재료비 계산기 -->
+        <!-- 퀵 재료비 계산기 -->
         <div class="calculator-box">
             <div class="cart-header" style="font-size: 14px; margin-bottom: 12px; border:none; padding-bottom:0;"><i class="fa-solid fa-calculator"></i> 퀵 재료비 계산기</div>
             <input type="text" id="calcDisplay" class="calc-display" placeholder="예: 30*3+15*2" onkeydown="handleCalcKey(event)">
+            
             <div class="calc-grid">
+                <!-- 추가된 백스페이스 버튼 -->
+                <button class="calc-btn" style="grid-column: span 4; background-color: #334155; color: white;" onclick="calcBackspace()">지우기 (←)</button>
+                
                 <button class="calc-btn" onclick="calcAppend('7')">7</button>
                 <button class="calc-btn" onclick="calcAppend('8')">8</button>
                 <button class="calc-btn" onclick="calcAppend('9')">9</button>
                 <button class="calc-btn calc-op" onclick="calcAppend('+')">+</button>
+                
                 <button class="calc-btn" onclick="calcAppend('4')">4</button>
                 <button class="calc-btn" onclick="calcAppend('5')">5</button>
                 <button class="calc-btn" onclick="calcAppend('6')">6</button>
                 <button class="calc-btn calc-op" onclick="calcAppend('-')">-</button>
+                
                 <button class="calc-btn" onclick="calcAppend('1')">1</button>
                 <button class="calc-btn" onclick="calcAppend('2')">2</button>
                 <button class="calc-btn" onclick="calcAppend('3')">3</button>
                 <button class="calc-btn calc-op" onclick="calcAppend('*')">×</button>
+                
                 <button class="calc-btn calc-clear" onclick="calcClear()">C</button>
                 <button class="calc-btn" onclick="calcAppend('0')">0</button>
                 <button class="calc-btn calc-eq" onclick="calcCalculate()">=</button>
                 <button class="calc-btn calc-op" onclick="calcAppend('/')">÷</button>
+            </div>
+            
+            <!-- 계산 결과 장부 전송 기능 (이전 드롭다운 버전으로 복구) -->
+            <div style="display: flex; gap: 5px; margin-top: 10px;">
+                <select id="costTargetSelect" style="flex: 1; padding: 4px; border-radius: 4px; border: 1px solid var(--border-color); background-color: var(--input-bg); color: var(--text-main); font-size: 12px;">
+                    <option value="">장부가 비어있습니다</option>
+                </select>
+                <button class="calc-btn" style="background-color: var(--accent-amber); color: black; font-weight: bold; padding: 6px 12px; font-size: 13px;" onclick="transferToCost()">
+                    선택 전송
+                </button>
             </div>
         </div>
 
@@ -484,7 +492,6 @@
         </div>
         <div class="sound-controls">
             <input type="file" id="customAudioInput" accept="audio/*" style="display:none;" onchange="handleAudioUpload(event)">
-            
             <button class="t-dark-btn t-start" style="flex:1;" onclick="document.getElementById('customAudioInput').click()">
                 <i class="fa-solid fa-upload"></i> 파일 업로드 (MP3)
             </button>
@@ -496,7 +503,7 @@
             </button>
         </div>
         <p style="font-size: 11px; color: var(--text-muted); margin-top: 15px; line-height: 1.4;">
-            ※ 업로드한 MP3 파일은 브라우저 내부 저장소(IndexedDB)에 안전하게 보관되어, 새로고침을 하거나 컴퓨터를 껐다 켜도 유지됩니다.
+            ※ 업로드한 MP3 파일은 브라우저 내부 저장소에 안전하게 보관되어 새로고침을 해도 유지됩니다.
         </p>
     </div>
 </div>
@@ -553,9 +560,9 @@
         renderCookingList();
         renderCart();
         initTimers(); 
-        initTkdDB(); // 오디오 데이터베이스 초기화
-        startBannerSlideshow(); // 자체 파일 슬라이드쇼 시작
-        loadUIScale(); // 화면 크기 자동 최적화 및 불러오기 (NEW)
+        initTkdDB(); 
+        startBannerSlideshow(); 
+        loadUIScale();
         switchTab('rune');
         document.getElementById('smartParser').addEventListener('input', handleSmartParse);
         
@@ -716,22 +723,25 @@
 
         if (!price || isNaN(price) || price <= 0) { alert("상점 단가가 입력되지 않았습니다."); return; }
 
-        if (cart[key]) cart[key].qty += 1;
-        else cart[key] = { name, price, qty: 1, cost: 0 };
+        if (cart[key]) {
+            alert("이미 장부에 추가된 품목입니다. 우측 장부에서 수량을 조절해 주세요.");
+        } else {
+            cart[key] = { name: name, price: price, qty: 0, cost: 0 };
+        }
         renderCart();
     }
 
     function updateCartQty(key, newQty) {
         if (!cart[key]) return;
         const qty = parseInt(newQty);
-        cart[key].qty = (isNaN(qty) || qty < 1) ? 1 : qty;
+        cart[key].qty = (isNaN(qty) || qty < 0) ? 0 : qty;
         renderCart();
     }
     
     function addCartQty(key, amount) {
         if (!cart[key]) return;
         cart[key].qty += amount;
-        if(cart[key].qty < 1) cart[key].qty = 1;
+        if(cart[key].qty < 0) cart[key].qty = 0;
         renderCart();
     }
 
@@ -756,63 +766,73 @@
             document.getElementById('sumCost').textContent = "- 0원";
             document.getElementById('sumProfit').textContent = "0원";
             document.getElementById('sumProfit').style.color = "var(--accent-green)";
-            return;
+        } else {
+            container.innerHTML = '';
+            keys.forEach(key => {
+                const item = cart[key];
+                const rev = item.price * item.qty;
+                const cost = item.cost; // 💡 'item.cost * item.qty' 였던 개당 계산법을 '항목 총 재료비'로 변경했습니다.
+                const profit = rev - cost;
+                
+                sumRev += rev; sumCost += cost; sumProfit += profit;
+
+                const div = document.createElement('div');
+                div.className = 'cart-item';
+                div.innerHTML = `
+                    <div class="cart-item-header">
+                        <span class="cart-item-name">${item.name}</span>
+                        <button class="cart-remove-btn" onclick="removeCartItem('${key}')"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                        <span class="cart-item-price">단가: ${item.price.toLocaleString()}원</span>
+                        <div class="qty-wrapper">
+                            <button class="qty-btn" onclick="addCartQty('${key}', 1)" title="1개">+1</button>
+                            <button class="qty-btn" onclick="addCartQty('${key}', 64)" title="1세트">+64</button>
+                            <button class="qty-btn" onclick="addCartQty('${key}', 1728)" title="1셜커 박스">+1728</button>
+                            <input type="number" class="qty-input" value="${item.qty}" min="0" onchange="updateCartQty('${key}', this.value)">
+                        </div>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px dashed rgba(255,255,255,0.1); padding-top:8px;">
+                        <div style="display:flex; align-items:center; gap:4px;">
+                            <span style="font-size:11px; color:var(--accent-red); font-weight:700;">총 재료비</span>
+                            <input type="number" class="cost-input" value="${item.cost || ''}" placeholder="0" onchange="updateCartCost('${key}', this.value)">
+                        </div>
+                        <span class="item-profit" style="color: ${profit >= 0 ? 'var(--accent-green)' : 'var(--accent-red)'}">순수익: ${profit > 0 ? '+' : ''}${profit.toLocaleString()}원</span>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+
+            document.getElementById('sumRevenue').textContent = `${sumRev.toLocaleString()}원`;
+            document.getElementById('sumCost').textContent = `- ${sumCost.toLocaleString()}원`;
+            const profitEl = document.getElementById('sumProfit');
+            profitEl.textContent = `${sumProfit > 0 ? '+' : ''}${sumProfit.toLocaleString()}원`;
+            profitEl.style.color = sumProfit >= 0 ? 'var(--accent-green)' : 'var(--accent-red)';
         }
 
-        container.innerHTML = '';
-        keys.forEach(key => {
-            const item = cart[key];
-            const rev = item.price * item.qty;
-            const cost = item.cost * item.qty;
-            const profit = rev - cost;
+        // 💡 장부 목록이 갱신될 때 계산기 재료비 전송 대상 목록도 같이 동기화 업데이트 (복구)
+        let targetSelect = document.getElementById('costTargetSelect');
+        if (targetSelect) {
+            targetSelect.innerHTML = ''; 
             
-            sumRev += rev; sumCost += cost; sumProfit += profit;
-
-            const div = document.createElement('div');
-            div.className = 'cart-item';
-            div.innerHTML = `
-                <div class="cart-item-header">
-                    <span class="cart-item-name">${item.name}</span>
-                    <button class="cart-remove-btn" onclick="removeCartItem('${key}')"><i class="fa-solid fa-trash"></i></button>
-                </div>
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                    <span class="cart-item-price">단가: ${item.price.toLocaleString()}원</span>
-                    <div class="qty-wrapper">
-                        <button class="qty-btn" onclick="addCartQty('${key}', 1)">+1</button>
-                        <button class="qty-btn" onclick="addCartQty('${key}', 64)">+64</button>
-                        <input type="number" class="qty-input" value="${item.qty}" min="1" onchange="updateCartQty('${key}', this.value)">
-                    </div>
-                </div>
-                <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px dashed rgba(255,255,255,0.1); padding-top:8px;">
-                    <div style="display:flex; align-items:center; gap:4px;">
-                        <span style="font-size:11px; color:var(--accent-red); font-weight:700;">개당 재료비</span>
-                        <input type="number" class="cost-input" value="${item.cost || ''}" placeholder="0" onchange="updateCartCost('${key}', this.value)">
-                    </div>
-                    <span class="item-profit" style="color: ${profit >= 0 ? 'var(--accent-green)' : 'var(--accent-red)'}">순수익: ${profit > 0 ? '+' : ''}${profit.toLocaleString()}원</span>
-                </div>
-            `;
-            container.appendChild(div);
-        });
-
-        document.getElementById('sumRevenue').textContent = `${sumRev.toLocaleString()}원`;
-        document.getElementById('sumCost').textContent = `- ${sumCost.toLocaleString()}원`;
-        const profitEl = document.getElementById('sumProfit');
-        profitEl.textContent = `${sumProfit > 0 ? '+' : ''}${sumProfit.toLocaleString()}원`;
-        profitEl.style.color = sumProfit >= 0 ? 'var(--accent-green)' : 'var(--accent-red)';
+            if (keys.length === 0) {
+                targetSelect.innerHTML = '<option value="">장부가 비어있습니다</option>';
+            } else {
+                keys.forEach(k => {
+                    let opt = document.createElement('option');
+                    opt.value = k;
+                    opt.textContent = cart[k].name;
+                    targetSelect.appendChild(opt);
+                });
+            }
+        }
     }
 
     /* ---------------- 커스텀 알림음 IndexedDB 및 배너 슬라이드 로직 ---------------- */
     let tkdDB;
     let customAudioUrl = null;
 
-    // 💡 여기에 깃허브에 올리실 이미지 파일 이름들을 적어주세요! (원하는 만큼 추가 가능)
-    const bannerImages = [
-	"5.png",
-        "1.png",
-        "2.png",
-        "3.png",
-	"4.png"
-    ];
+    let bannerImages = [];
     let currentBannerIndex = 0;
     let bannerInterval = null;
 
@@ -826,44 +846,68 @@
         };
         req.onsuccess = e => {
             tkdDB = e.target.result;
-            loadCustomAudio(); // 페이지 로드 시 기존에 저장된 MP3 파일 불러오기
+            loadCustomAudio(); 
         };
         req.onerror = e => console.error("IndexedDB Error", e);
     }
 
-    // --- 자체 파일 슬라이드쇼 처리 ---
+    // --- 자체 파일 슬라이드쇼 처리 (자동 스캔 방식) ---
     function startBannerSlideshow() {
         if (bannerInterval) clearInterval(bannerInterval);
         
+        const maxScan = 10; // 최대 10개의 배너까지 자동으로 찾습니다. (필요시 숫자 늘림 가능)
+        let checkCount = 0;
+        let foundBanners = [];
+
+        // 1번부터 10번까지 파일이 있는지 백그라운드에서 찔러보기
+        for (let i = 1; i <= maxScan; i++) {
+            let img = new Image();
+            let fileName = `banner${i}.png`; // 💡 배너 이름은 무조건 banner1.png, banner2.png 로 통일해주세요!
+            
+            img.onload = function() {
+                foundBanners.push({ index: i, src: fileName }); // 존재하는 파일만 기록
+                checkComplete();
+            };
+            img.onerror = function() {
+                checkComplete(); // 없으면 그냥 넘어감
+            };
+            img.src = fileName;
+        }
+
+        function checkComplete() {
+            checkCount++;
+            if (checkCount === maxScan) {
+                // 스캔 완료 후 1번부터 순서대로 예쁘게 정렬
+                foundBanners.sort((a, b) => a.index - b.index);
+                bannerImages = foundBanners.map(b => b.src);
+                runSlideshow();
+            }
+        }
+    }
+
+    function runSlideshow() {
         const imgEl = document.getElementById('topBannerImage');
         
+        // 발견된 배너가 아예 없을 때 (기본 엑스박스 방지 이미지)
         if (bannerImages.length === 0) {
-            imgEl.parentElement.style.display = 'none';
+            imgEl.src = "https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&w=800&q=80";
             return;
         }
 
-        // 파일이 깃허브에 아직 없어서 엑스박스가 뜰 경우를 대비한 기본 임시 이미지
-        imgEl.onerror = function() {
-            this.src = "https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&w=800&q=80";
-        };
-        
+        // 첫 번째 배너 띄우기
         imgEl.src = bannerImages[0];
 
-        // 1장 이하면 슬라이드 효과 없이 고정
-        if (bannerImages.length <= 1) {
-            imgEl.style.opacity = 1;
-            return;
+        // 2장 이상일 때만 슬라이드 작동
+        if (bannerImages.length > 1) {
+            bannerInterval = setInterval(() => {
+                imgEl.style.opacity = 0; 
+                setTimeout(() => {
+                    currentBannerIndex = (currentBannerIndex + 1) % bannerImages.length;
+                    imgEl.src = bannerImages[currentBannerIndex];
+                    imgEl.style.opacity = 1; 
+                }, 300); 
+            }, 3000); // 3초마다 변경
         }
-
-        bannerInterval = setInterval(() => {
-            imgEl.style.opacity = 0; // 살짝 페이드 아웃
-            
-            setTimeout(() => {
-                currentBannerIndex = (currentBannerIndex + 1) % bannerImages.length;
-                imgEl.src = bannerImages[currentBannerIndex];
-                imgEl.style.opacity = 1; // 새 이미지로 교체 후 페이드 인
-            }, 300); // 0.3초 뒤에 이미지 교체
-        }, 3000); // 2초마다 실행
     }
 
     // --- 사운드 업로드 처리 ---
@@ -910,28 +954,16 @@
         };
     }
 
-    function openSoundModal() {
-        document.getElementById('soundModal').style.display = 'flex';
-    }
-    
-    function closeSoundModal() {
-        document.getElementById('soundModal').style.display = 'none';
-    }
+    function openSoundModal() { document.getElementById('soundModal').style.display = 'flex'; }
+    function closeSoundModal() { document.getElementById('soundModal').style.display = 'none'; }
 
-    function testSound() {
-        playAlarmSound();
-    }
+    function testSound() { playAlarmSound(); }
 
     function playAlarmSound() {
         if (customAudioUrl) {
-            // 사용자가 업로드한 파일 재생
             const audio = new Audio(customAudioUrl);
-            audio.play().catch(e => {
-                console.log("사용자 오디오 재생 실패, 기본음으로 대체", e);
-                playDefaultBeep();
-            });
+            audio.play().catch(e => { playDefaultBeep(); });
         } else {
-            // 커스텀 사운드가 없으면 기본음
             playDefaultBeep();
         }
     }
@@ -952,47 +984,39 @@
                 osc.stop(startTime + duration);
             }
             const now = audioCtx.currentTime;
-        playNote(523.25, now, 0.5);       
-        playNote(659.25, now + 0.15, 0.5); 
-        playNote(783.99, now + 0.3, 1.0);  
-    } catch(e) { console.log("Audio API 미지원 브라우저입니다."); }
-}
-
-/* ---------------- 화면 크기(Zoom) 자동 최적화 로직 ---------------- */
-function loadUIScale() {
-    let savedScale = localStorage.getItem('tkdUIScale');
-    
-    // 이전에 저장한 설정이 없다면, 화면 넓이를 감지하여 자동으로 배율 축소
-    if (!savedScale) {
-        if (window.innerWidth < 1200 && window.innerWidth > 900) {
-            savedScale = "90"; // 노트북 등 애매한 크기일 때 90% 축소
-        } else {
-            savedScale = "100";
-        }
+            playNote(523.25, now, 0.5);       
+            playNote(659.25, now + 0.15, 0.5); 
+            playNote(783.99, now + 0.3, 1.0);  
+        } catch(e) { console.log("Audio API 미지원 브라우저입니다."); }
     }
-    
-    changeUIScale(savedScale);
-    
-    // 설정 창의 슬라이더 위치도 동기화
-    const slider = document.getElementById('uiScaleSlider');
-    if (slider) slider.value = savedScale;
-}
 
-function changeUIScale(val) {
-    document.body.style.zoom = (val / 100);
-    document.getElementById('currentScaleText').textContent = val + '%';
-    localStorage.setItem('tkdUIScale', val);
-}
+    /* ---------------- 화면 크기(Zoom) 자동 최적화 로직 ---------------- */
+    function loadUIScale() {
+        let savedScale = localStorage.getItem('tkdUIScale');
+        if (!savedScale) {
+            if (window.innerWidth < 1200 && window.innerWidth > 900) savedScale = "90"; 
+            else savedScale = "100";
+        }
+        changeUIScale(savedScale);
+        const slider = document.getElementById('uiScaleSlider');
+        if (slider) slider.value = savedScale;
+    }
 
-function resetUIScale() {
-    changeUIScale(100);
-    document.getElementById('uiScaleSlider').value = 100;
-}
+    function changeUIScale(val) {
+        document.body.style.zoom = (val / 100);
+        document.getElementById('currentScaleText').textContent = val + '%';
+        localStorage.setItem('tkdUIScale', val);
+    }
 
-/* ---------------- 타이머 및 상점 스케줄 로직 (블랙 에디션) ---------------- */
-let activeTimers = {};
+    function resetUIScale() {
+        changeUIScale(100);
+        document.getElementById('uiScaleSlider').value = 100;
+    }
 
-function initTimers() {
+    /* ---------------- 타이머 및 상점 스케줄 로직 ---------------- */
+    let activeTimers = {};
+
+    function initTimers() {
         ['affection', 'crop', 'diver'].forEach(type => {
             const saved = localStorage.getItem('tkdTimer_' + type);
             if (saved) {
@@ -1001,7 +1025,6 @@ function initTimers() {
                 else timerExpired(type);
             }
         });
-        
         checkShopSchedule();
         setInterval(checkShopSchedule, 60000); 
     }
@@ -1096,31 +1119,45 @@ function initTimers() {
         if (isChangedNow) {
             box.style.borderColor = "rgba(239, 68, 68, 0.5)";
             box.style.backgroundColor = "rgba(239, 68, 68, 0.08)";
-            msg.textContent = "🔥 방금 시세가 변동되었습니다!";
-            msg.style.color = "var(--accent-red)";
-            sub.textContent = `(${m}분 전 갱신 완료 / 다음 갱신: ${nextHour >= 24 ? nextHour - 24 : nextHour}시)`;
-            sub.style.color = "#fca5a5";
+            if(msg) {
+                msg.textContent = "🔥 방금 시세가 변동되었습니다!";
+                msg.style.color = "var(--accent-red)";
+                sub.textContent = `(${m}분 전 갱신 완료 / 다음 갱신: ${nextHour >= 24 ? nextHour - 24 : nextHour}시)`;
+                sub.style.color = "#fca5a5";
+            }
         } else {
             box.style.borderColor = "var(--border-color)";
             box.style.backgroundColor = "rgba(0, 0, 0, 0.2)";
-            msg.textContent = "⏳ 변동상점 시세 유지중";
-            msg.style.color = "var(--text-muted)";
-            
-            const nextHDisplay = nextHour >= 24 ? nextHour - 24 : nextHour;
-            const leftH = nextHour - h - (m > 0 ? 1 : 0);
-            const leftM = m > 0 ? 60 - m : 0;
-            sub.textContent = `(다음 갱신까지 ${leftH}시간 ${leftM}분 / ${nextHDisplay}시)`;
-            sub.style.color = "var(--text-muted)";
+            if(msg) {
+                msg.textContent = "⏳ 변동상점 시세 유지중";
+                msg.style.color = "var(--text-muted)";
+                
+                const nextHDisplay = nextHour >= 24 ? nextHour - 24 : nextHour;
+                const leftH = nextHour - h - (m > 0 ? 1 : 0);
+                const leftM = m > 0 ? 60 - m : 0;
+                sub.textContent = `(다음 갱신까지 ${leftH}시간 ${leftM}분 / ${nextHDisplay}시)`;
+                sub.style.color = "var(--text-muted)";
+            }
         }
     }
 
-    /* ---------------- 퀵 계산기 로직 ---------------- */
+    /* ---------------- 퀵 계산기 로직 (지우기 및 전송 추가) ---------------- */
     function calcAppend(val) {
         const display = document.getElementById('calcDisplay');
         display.value += val;
         display.focus();
     }
+    
     function calcClear() { document.getElementById('calcDisplay').value = ''; }
+    
+    // 계산기 지우기 (한 칸 백스페이스)
+    function calcBackspace() {
+        let display = document.getElementById('calcDisplay'); 
+        if (display.value.length > 0) {
+            display.value = display.value.slice(0, -1);
+        }
+    }
+
     function calcCalculate() {
         const display = document.getElementById('calcDisplay');
         try {
@@ -1133,6 +1170,31 @@ function initTimers() {
         } catch (e) {}
     }
     function handleCalcKey(e) { if (e.key === 'Enter') calcCalculate(); }
+
+    // 재료비 선택 전송하기 (이전 버전으로 복구)
+    function transferToCost() {
+        let display = document.getElementById('calcDisplay'); 
+        let calcResult = parseInt(display.value);
+
+        if (!calcResult || isNaN(calcResult)) {
+            alert("전송할 계산 결과가 없습니다.");
+            return;
+        }
+
+        let targetSelect = document.getElementById('costTargetSelect');
+        let targetKey = targetSelect.value;
+
+        if (!targetKey || !cart[targetKey]) {
+            alert("재료비를 전송할 품목을 선택해 주세요.");
+            return;
+        }
+
+        // 선택한 대상에 총 재료비 입력
+        cart[targetKey].cost = calcResult;
+        renderCart(); 
+        
+        alert(`[${cart[targetKey].name}] 항목에 총 재료비 ${calcResult.toLocaleString()}원이 적용되었습니다!`);
+    }
 
     /* ---------------- 강력한 스마트 파서 (정규식) ---------------- */
     function handleSmartParse() {
