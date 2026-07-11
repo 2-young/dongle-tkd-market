@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🥋 태권도장 마스터 시스템 v1.3</title>
+    <title>🥋 태권도장 마스터 시스템</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
@@ -43,7 +43,8 @@
             display: flex;
             flex-direction: row;
             gap: 20px;
-            max-width: 1100px;
+            width: 98%;
+            max-width: 1400px;
             margin: 0 auto;
             align-items: flex-start;
             justify-content: center;
@@ -51,7 +52,8 @@
 
         /* 왼쪽 사이드바 */
         .sidebar-container {
-            flex: 0 0 340px;
+            flex: 1 1 320px;
+            max-width: 400px;
             background-color: var(--container-bg);
             border-radius: 20px;
             padding: 20px;
@@ -71,8 +73,8 @@
 
         /* 오른쪽 메인앱 */
         .app-container {
-            flex: 1;
-            max-width: 650px;
+            flex: 2 1 600px;
+            max-width: 1000px;
             background-color: var(--container-bg);
             border-radius: 20px;
             padding: 24px;
@@ -92,6 +94,7 @@
             height: 8px;
             background: linear-gradient(90deg, var(--tkd-blue) 50%, var(--tkd-red) 50%);
             border-radius: 20px 20px 0 0;
+            z-index: 10;
         }
 
         @media (max-width: 900px) {
@@ -100,8 +103,36 @@
             .app-container { width: 100%; }
         }
 
+        /* 커스텀 배너 디자인 (자동 사이즈 최적화 적용) */
+        .banner-container {
+            width: 100%;
+            aspect-ratio: 21 / 5; /* 울트라와이드 영화관 비율로 자동 조절 */
+            min-height: 100px;    /* 모바일에서 너무 작아지는 것 방지 */
+            max-height: 250px;    /* 초대형 모니터에서 너무 커지는 것 방지 */
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            background-color: var(--input-bg);
+        }
+        
+        .banner-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center; /* 이미지가 잘릴 때 항상 가운데를 중심으로 */
+            display: block;
+            transition: transform 0.3s, opacity 0.3s ease-in-out;
+        }
+
+        .banner-container:hover img {
+            transform: scale(1.02);
+        }
+
         /* 공통 헤더 */
-        .header { text-align: center; margin-bottom: 24px; padding-top: 12px; }
+        .header { text-align: center; margin-bottom: 24px; padding-top: 0; }
         .header h1 { font-size: 24px; font-weight: 900; margin-bottom: 6px; }
         .title-tkd { background: linear-gradient(90deg, #38bdf8, #f87171); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .header p { font-size: 13px; color: var(--text-muted); }
@@ -289,7 +320,7 @@
     <!-- 왼쪽 사이드바 -->
     <div class="sidebar-container">
         
-        <!-- 1. 마을 유틸리티 (블랙 에디션 스타일) -->
+        <!-- 1. 마을 유틸리티 -->
         <div class="cart-header">
             <div><i class="fa-solid fa-bell"></i> 마을 유틸리티</div>
             <button class="settings-btn" onclick="openSoundModal()" title="알림 사운드 커스텀"><i class="fa-solid fa-music"></i> 설정</button>
@@ -328,7 +359,7 @@
             <button class="t-test-mini" onclick="startAppTimer('crop', 10)">10s</button>
         </div>
 
-        <!-- 타이머: 다이버 던전 (NEW) -->
+        <!-- 타이머: 다이버 던전 -->
         <div class="timer-dark-box">
             <div class="timer-dark-left">
                 <div class="timer-dark-name">🌊 다이버 던전</div>
@@ -382,6 +413,12 @@
 
     <!-- 오른쪽 메인 앱 (파서 + 리스트) -->
     <div class="app-container">
+        
+        <!-- 상단 깃허브 연동 배너 영역 -->
+        <div class="banner-container">
+            <img id="topBannerImage" src="" alt="상단 배너">
+        </div>
+
         <div class="header">
             <h1>🥋 <span class="title-tkd">태권도장 시세계산기</span></h1>
             <p>시세를 입력하고 우측 [+] 버튼을 눌러 장부에 기록하세요</p>
@@ -428,14 +465,24 @@
 <div id="soundModal" class="modal-overlay" style="display:none;">
     <div class="modal-content">
         <div class="modal-header">
-            <h3><i class="fa-solid fa-music"></i> 알림 사운드 설정</h3>
+            <h3><i class="fa-solid fa-gear"></i> 환경 설정 (화면 최적화 & 사운드)</h3>
             <button onclick="closeSoundModal()"><i class="fa-solid fa-xmark"></i></button>
         </div>
+        
+        <!-- 화면 최적화 (Zoom) 설정 -->
+        <div class="sound-status" style="margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                <span>🖥️ 화면 크기 (Zoom): <strong id="currentScaleText" style="color:var(--accent-green);">100%</strong></span>
+                <button class="t-dark-btn" style="padding: 4px 10px; font-size: 11px;" onclick="resetUIScale()">기본값</button>
+            </div>
+            <input type="range" id="uiScaleSlider" min="70" max="150" step="5" value="100" style="width: 100%; accent-color: var(--accent-green);" oninput="changeUIScale(this.value)">
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 6px; text-align: center;">모니터 해상도에 맞춰 UI 크기를 자유롭게 조절할 수 있습니다.</div>
+        </div>
+
         <div class="sound-status">
-            현재 사운드: <strong id="currentSoundName" style="color:var(--accent-amber);">기본 띠로링 소리</strong>
+            🎵 현재 사운드: <strong id="currentSoundName" style="color:var(--accent-amber);">기본 띠로링 소리</strong>
         </div>
         <div class="sound-controls">
-            <!-- 숨겨진 파일 인풋 -->
             <input type="file" id="customAudioInput" accept="audio/*" style="display:none;" onchange="handleAudioUpload(event)">
             
             <button class="t-dark-btn t-start" style="flex:1;" onclick="document.getElementById('customAudioInput').click()">
@@ -506,7 +553,9 @@
         renderCookingList();
         renderCart();
         initTimers(); 
-        initAudioDB(); // 오디오 데이터베이스 초기화
+        initTkdDB(); // 오디오 데이터베이스 초기화
+        startBannerSlideshow(); // 자체 파일 슬라이드쇼 시작
+        loadUIScale(); // 화면 크기 자동 최적화 및 불러오기 (NEW)
         switchTab('rune');
         document.getElementById('smartParser').addEventListener('input', handleSmartParse);
         
@@ -752,32 +801,79 @@
         profitEl.style.color = sumProfit >= 0 ? 'var(--accent-green)' : 'var(--accent-red)';
     }
 
-    /* ---------------- 커스텀 알림음 IndexedDB 로직 ---------------- */
-    let audioDB;
+    /* ---------------- 커스텀 알림음 IndexedDB 및 배너 슬라이드 로직 ---------------- */
+    let tkdDB;
     let customAudioUrl = null;
 
-    function initAudioDB() {
-        const req = indexedDB.open("TkdAudioSettings", 1);
+    // 💡 여기에 깃허브에 올리실 이미지 파일 이름들을 적어주세요! (원하는 만큼 추가 가능)
+    const bannerImages = [
+	"5.png",
+        "1.png",
+        "2.png",
+        "3.png",
+	"4.png"
+    ];
+    let currentBannerIndex = 0;
+    let bannerInterval = null;
+
+    function initTkdDB() {
+        const req = indexedDB.open("TkdUserSettings", 2);
         req.onupgradeneeded = e => {
-            audioDB = e.target.result;
-            if (!audioDB.objectStoreNames.contains("sounds")) {
-                audioDB.createObjectStore("sounds");
+            tkdDB = e.target.result;
+            if (!tkdDB.objectStoreNames.contains("files")) {
+                tkdDB.createObjectStore("files");
             }
         };
         req.onsuccess = e => {
-            audioDB = e.target.result;
+            tkdDB = e.target.result;
             loadCustomAudio(); // 페이지 로드 시 기존에 저장된 MP3 파일 불러오기
         };
         req.onerror = e => console.error("IndexedDB Error", e);
     }
 
+    // --- 자체 파일 슬라이드쇼 처리 ---
+    function startBannerSlideshow() {
+        if (bannerInterval) clearInterval(bannerInterval);
+        
+        const imgEl = document.getElementById('topBannerImage');
+        
+        if (bannerImages.length === 0) {
+            imgEl.parentElement.style.display = 'none';
+            return;
+        }
+
+        // 파일이 깃허브에 아직 없어서 엑스박스가 뜰 경우를 대비한 기본 임시 이미지
+        imgEl.onerror = function() {
+            this.src = "https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&w=800&q=80";
+        };
+        
+        imgEl.src = bannerImages[0];
+
+        // 1장 이하면 슬라이드 효과 없이 고정
+        if (bannerImages.length <= 1) {
+            imgEl.style.opacity = 1;
+            return;
+        }
+
+        bannerInterval = setInterval(() => {
+            imgEl.style.opacity = 0; // 살짝 페이드 아웃
+            
+            setTimeout(() => {
+                currentBannerIndex = (currentBannerIndex + 1) % bannerImages.length;
+                imgEl.src = bannerImages[currentBannerIndex];
+                imgEl.style.opacity = 1; // 새 이미지로 교체 후 페이드 인
+            }, 300); // 0.3초 뒤에 이미지 교체
+        }, 3000); // 2초마다 실행
+    }
+
+    // --- 사운드 업로드 처리 ---
     function handleAudioUpload(e) {
         const file = e.target.files[0];
         if (!file) return;
 
-        if (audioDB) {
-            const tx = audioDB.transaction("sounds", "readwrite");
-            tx.objectStore("sounds").put(file, "userAlarm");
+        if (tkdDB) {
+            const tx = tkdDB.transaction("files", "readwrite");
+            tx.objectStore("files").put(file, "userAlarm");
             tx.oncomplete = () => {
                 loadCustomAudio();
                 alert("알림음이 저장되었습니다! (새로고침을 해도 유지됩니다)");
@@ -786,9 +882,9 @@
     }
 
     function loadCustomAudio() {
-        if (!audioDB) return;
-        const tx = audioDB.transaction("sounds", "readonly");
-        const req = tx.objectStore("sounds").get("userAlarm");
+        if (!tkdDB) return;
+        const tx = tkdDB.transaction("files", "readonly");
+        const req = tx.objectStore("files").get("userAlarm");
         req.onsuccess = e => {
             const file = e.target.result;
             if (file) {
@@ -802,9 +898,9 @@
     }
 
     function clearCustomAudio() {
-        if (!audioDB) return;
-        const tx = audioDB.transaction("sounds", "readwrite");
-        tx.objectStore("sounds").delete("userAlarm");
+        if (!tkdDB) return;
+        const tx = tkdDB.transaction("files", "readwrite");
+        tx.objectStore("files").delete("userAlarm");
         tx.oncomplete = () => {
             if (customAudioUrl) URL.revokeObjectURL(customAudioUrl);
             customAudioUrl = null;
@@ -856,16 +952,47 @@
                 osc.stop(startTime + duration);
             }
             const now = audioCtx.currentTime;
-            playNote(523.25, now, 0.5);       
-            playNote(659.25, now + 0.15, 0.5); 
-            playNote(783.99, now + 0.3, 1.0);  
-        } catch(e) { console.log("Audio API 미지원 브라우저입니다."); }
+        playNote(523.25, now, 0.5);       
+        playNote(659.25, now + 0.15, 0.5); 
+        playNote(783.99, now + 0.3, 1.0);  
+    } catch(e) { console.log("Audio API 미지원 브라우저입니다."); }
+}
+
+/* ---------------- 화면 크기(Zoom) 자동 최적화 로직 ---------------- */
+function loadUIScale() {
+    let savedScale = localStorage.getItem('tkdUIScale');
+    
+    // 이전에 저장한 설정이 없다면, 화면 넓이를 감지하여 자동으로 배율 축소
+    if (!savedScale) {
+        if (window.innerWidth < 1200 && window.innerWidth > 900) {
+            savedScale = "90"; // 노트북 등 애매한 크기일 때 90% 축소
+        } else {
+            savedScale = "100";
+        }
     }
+    
+    changeUIScale(savedScale);
+    
+    // 설정 창의 슬라이더 위치도 동기화
+    const slider = document.getElementById('uiScaleSlider');
+    if (slider) slider.value = savedScale;
+}
 
-    /* ---------------- 타이머 및 상점 스케줄 로직 (블랙 에디션) ---------------- */
-    let activeTimers = {};
+function changeUIScale(val) {
+    document.body.style.zoom = (val / 100);
+    document.getElementById('currentScaleText').textContent = val + '%';
+    localStorage.setItem('tkdUIScale', val);
+}
 
-    function initTimers() {
+function resetUIScale() {
+    changeUIScale(100);
+    document.getElementById('uiScaleSlider').value = 100;
+}
+
+/* ---------------- 타이머 및 상점 스케줄 로직 (블랙 에디션) ---------------- */
+let activeTimers = {};
+
+function initTimers() {
         ['affection', 'crop', 'diver'].forEach(type => {
             const saved = localStorage.getItem('tkdTimer_' + type);
             if (saved) {
