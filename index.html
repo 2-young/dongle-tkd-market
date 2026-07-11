@@ -1096,7 +1096,7 @@
         else if (type === 'diver') name = '다이버 던전';
 
         if ("Notification" in window && Notification.permission === "granted") {
-            new Notification(`⏰ [${name}] 완료!`, { body: "시간이 다 되었습니다. 게임을 확인하세요." });
+            new Notification(`⏰ [${name}] 완료!`, { body: "시간이 다 되었습니다. 알림을 확인해주세요." });
         }
         
         setTimeout(() => alert(`⏰ [${name}] 완료되었습니다!`), 100);
