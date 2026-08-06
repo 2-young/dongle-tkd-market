@@ -1,120 +1,158 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🥋 태권도장 마스터 시스템</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        :root {
-            --bg-color: #0b0f19;
-            --container-bg: #151d30;
-            --input-bg: #090c15;
-            --text-main: #f1f5f9;
-            --text-muted: #94a3b8;
-            --accent-green: #4ade80;
-            --accent-amber: #fbbf24;
-            --accent-red: #f87171;
-            --accent-blue: #38bdf8;
-            --border-color: #1e293b;
+        /* =========================================================
+           태권도장 컨셉 프리미엄 다크/라이트 테마 변수
+           ========================================================= */
+        [data-theme="dark"] {
+            --bg-color: #0b0f17;
+            --container-bg: #161c28;
+            --input-bg: #0f1420;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --border-color: #263147;
             --tkd-red: #ef4444;
             --tkd-blue: #3b82f6;
+            --accent-amber: #f59e0b;
+            --accent-green: #10b981;
+            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.4);
+            --card-hover: #1e2638;
+        }
+
+        [data-theme="light"] {
+            --bg-color: #f4f6f9;
+            --container-bg: #ffffff;
+            --input-bg: #f8fafc;
+            --text-main: #111827;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+            --tkd-red: #dc2626;
+            --tkd-blue: #2563eb;
+            --accent-amber: #d97706;
+            --accent-green: #059669;
+            --shadow-lg: 0 15px 35px rgba(0, 0, 0, 0.06);
+            --card-hover: #f1f5f9;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Noto Sans KR', sans-serif;
+            font-family: 'Noto Sans KR', -apple-system, sans-serif;
             -webkit-tap-highlight-color: transparent;
+            transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
         }
 
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
-            padding: 16px;
+            padding: 24px 16px;
             min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
         }
+
+        /* 야간/주간 모드 토글 버튼 */
+        .theme-toggle-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 999;
+            background: var(--container-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 10px 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow-lg);
+        }
+        .theme-toggle-btn:hover { transform: translateY(-2px); }
 
         .main-wrapper {
             display: flex;
             flex-direction: row;
-            gap: 20px;
-            width: 98%;
+            gap: 24px;
+            width: 100%;
             max-width: 1400px;
             margin: 0 auto;
             align-items: flex-start;
             justify-content: center;
         }
 
-        /* 왼쪽 사이드바 */
-        .sidebar-container {
-            flex: 1 1 320px;
-            max-width: 420px;
+        /* 태권도 띠 상징 상단 그라데이션 라인 */
+        .sidebar-container, .app-container {
             background-color: var(--container-bg);
             border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-            border: 2px solid var(--border-color);
-            margin-top: 10px;
-            position: sticky;
-            top: 20px;
-            max-height: 95vh;
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-        }
-        
-        .sidebar-container::-webkit-scrollbar { width: 4px; }
-        .sidebar-container::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
-
-        /* 오른쪽 메인앱 */
-        .app-container {
-            flex: 2 1 600px;
-            max-width: 1000px;
-            background-color: var(--container-bg);
-            border-radius: 20px;
-            padding: 24px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-            border: 2px solid var(--border-color);
-            margin-top: 10px;
-            margin-bottom: 30px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
             position: relative;
+            overflow: hidden;
         }
 
-        .app-container::before, .sidebar-container::before {
+        .sidebar-container::before, .app-container::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            height: 8px;
-            background: linear-gradient(90deg, var(--tkd-blue) 50%, var(--tkd-red) 50%);
-            border-radius: 20px 20px 0 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--tkd-red) 0%, var(--tkd-blue) 100%);
             z-index: 10;
+        }
+
+        /* 사이드바 스타일 */
+        .sidebar-container {
+            flex: 1 1 340px;
+            max-width: 420px;
+            padding: 28px 24px;
+            position: sticky;
+            top: 20px;
+            max-height: 92vh;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        
+        .sidebar-container::-webkit-scrollbar { width: 5px; }
+        .sidebar-container::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
+
+        /* 메인 앱 영역 */
+        .app-container {
+            flex: 2 1 650px;
+            max-width: 960px;
+            padding: 32px;
+            margin-bottom: 30px;
         }
 
         @media (max-width: 900px) {
             .main-wrapper { flex-direction: column-reverse; align-items: center; }
-            .sidebar-container { width: 100%; max-width: 650px; position: static; max-height: none; }
+            .sidebar-container { width: 100%; max-width: 100%; position: static; max-height: none; }
             .app-container { width: 100%; }
         }
 
-        /* 커스텀 배너 디자인 */
+        /* 배너 영역 */
         .banner-container {
             width: 100%;
             aspect-ratio: 21 / 5;
-            min-height: 100px;
-            max-height: 250px;
-            border-radius: 12px;
+            min-height: 110px;
+            max-height: 220px;
+            border-radius: 14px;
             overflow: hidden;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             border: 1px solid var(--border-color);
             position: relative;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             background-color: var(--input-bg);
         }
         
@@ -124,94 +162,104 @@
             object-fit: cover;
             object-position: center;
             display: block;
-            transition: transform 0.3s, opacity 0.3s ease-in-out;
+            /* 부드러운 페이드인/아웃 전환 (0.8초) */
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s ease;
+            will-change: opacity, transform;
+            opacity: 1;
         }
 
-        .banner-container:hover img {
-            transform: scale(1.02);
-        }
+        .header { text-align: center; margin-bottom: 28px; }
+        .header h1 { font-size: 26px; font-weight: 900; letter-spacing: -0.02em; margin-bottom: 6px; }
+        .title-tkd { background: linear-gradient(90deg, var(--tkd-red), var(--tkd-blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .header p { font-size: 14px; color: var(--text-muted); }
 
-        /* 공통 헤더 */
-        .header { text-align: center; margin-bottom: 24px; padding-top: 0; }
-        .header h1 { font-size: 24px; font-weight: 900; margin-bottom: 6px; }
-        .title-tkd { background: linear-gradient(90deg, #38bdf8, #f87171); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .header p { font-size: 13px; color: var(--text-muted); }
-
-        /* 파서 및 디스코드 영역 */
+        /* 시세 파서 영역 */
         .parser-container {
-            background-color: rgba(255, 255, 255, 0.02);
-            border: 2px dashed var(--border-color);
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
             border-radius: 14px;
-            padding: 16px;
+            padding: 20px;
             margin-bottom: 24px;
-            box-shadow: inset 0 2px 8px rgba(0,0,0,0.4);
         }
-        .parser-label { font-size: 13px; font-weight: 700; color: var(--accent-blue); }
+        .parser-label { font-size: 14px; font-weight: 700; color: var(--tkd-blue); }
         .discord-btn {
-            background-color: #5865F2; color: white; border: none; border-radius: 6px;
-            padding: 6px 10px; font-size: 11px; font-weight: 700; text-decoration: none;
-            display: inline-flex; align-items: center; gap: 6px; cursor: pointer; transition: 0.1s;
+            background-color: #5865F2; color: white; border: none; border-radius: 8px;
+            padding: 7px 12px; font-size: 12px; font-weight: 700; text-decoration: none;
+            display: inline-flex; align-items: center; gap: 6px; transition: transform 0.15s;
         }
-        .discord-btn:hover { opacity: 0.9; transform: scale(1.05); }
+        .discord-btn:hover { transform: translateY(-1px); }
         .parser-textarea {
-            width: 100%; height: 90px; background-color: var(--input-bg);
+            width: 100%; height: 90px; background-color: var(--container-bg);
             border: 1px solid var(--border-color); color: var(--text-main);
-            padding: 12px; border-radius: 10px; font-size: 14px; resize: none; outline: none; margin-top: 10px;
+            padding: 12px 14px; border-radius: 10px; font-size: 13px; resize: none; outline: none; margin-top: 12px;
         }
-        .parser-textarea:focus { border-color: var(--accent-blue); box-shadow: 0 0 10px rgba(56, 189, 248, 0.2); }
+        .parser-textarea:focus { border-color: var(--tkd-blue); }
 
         /* 탭 디자인 */
-        .tabs { display: table; width: 100%; background-color: var(--input-bg); padding: 4px; border-radius: 10px; margin-bottom: 20px; border: 1px solid var(--border-color); }
-        .tab-cell { display: table-cell; width: 50%; text-align: center; }
+        .tabs { display: flex; gap: 8px; background-color: var(--input-bg); padding: 6px; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--border-color); }
+        .tab-cell { flex: 1; }
         .tab-btn { width: 100%; background: none; border: none; color: var(--text-muted); padding: 12px; font-size: 15px; font-weight: 700; cursor: pointer; border-radius: 8px; }
-        .tab-btn.active { background-color: var(--container-bg); color: var(--text-main); border: 1px solid var(--border-color); }
-        #tab-rune.active { color: var(--accent-blue); }
+        .tab-btn.active { background-color: var(--container-bg); color: var(--text-main); border: 1px solid var(--border-color); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        #tab-rune.active { color: var(--tkd-blue); }
         #tab-cooking.active { color: var(--accent-amber); }
 
-        .sub-tabs { display: flex; gap: 6px; margin-bottom: 20px; background-color: var(--input-bg); padding: 4px; border-radius: 8px; border: 1px solid var(--border-color); }
-        .sub-tab-btn { flex: 1; background: none; border: none; color: var(--text-muted); padding: 8px 4px; font-size: 12px; font-weight: 700; cursor: pointer; border-radius: 6px; text-align: center; }
-        .sub-tab-btn.active { background-color: var(--container-bg); color: var(--accent-amber); }
+        .sub-tabs { display: flex; gap: 6px; margin-bottom: 20px; background-color: var(--input-bg); padding: 6px; border-radius: 10px; border: 1px solid var(--border-color); }
+        .sub-tab-btn { flex: 1; background: none; border: none; color: var(--text-muted); padding: 8px 4px; font-size: 13px; font-weight: 700; cursor: pointer; border-radius: 6px; text-align: center; }
+        .sub-tab-btn.active { background-color: var(--container-bg); color: var(--accent-amber); border: 1px solid var(--border-color); }
 
         /* 아이템 카드 */
-        .item-card { background-color: var(--input-bg); border: 1px solid var(--border-color); border-radius: 14px; padding: 16px; margin-bottom: 14px; }
-        .item-header { margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px; }
-        .item-name { font-weight: 800; font-size: 16px; color: var(--text-main); }
-        .item-recipe { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+        .item-card { background-color: var(--input-bg); border: 1px solid var(--border-color); border-radius: 14px; padding: 20px; margin-bottom: 16px; transition: border-color 0.2s; }
+        .item-card:hover { border-color: var(--text-muted); }
+        .item-header { margin-bottom: 12px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        .item-name { font-weight: 800; font-size: 17px; color: var(--text-main); }
+        .item-recipe { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
         .tier-table { display: table; width: 100%; border-collapse: collapse; }
         .tier-row { display: table-row; }
-        .tier-row + .tier-row .tier-cell { border-top: 1px dashed rgba(255, 255, 255, 0.05); }
-        .tier-cell { display: table-cell; vertical-align: middle; padding: 8px 0; }
-        .cell-label { width: 25%; font-size: 12px; }
-        .star-badge { font-weight: 800; font-size: 12px; }
-        .star-무별 { color: #e2e8f0; } .star-은별 { color: #94a3b8; } .star-금별 { color: #fbbf24; }
-        .rune-badge { color: var(--accent-blue); }
-        .range-text { display: block; font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+        .tier-row + .tier-row .tier-cell { border-top: 1px dashed var(--border-color); }
+        .tier-cell { display: table-cell; vertical-align: middle; padding: 10px 0; }
+        .cell-label { width: 25%; font-size: 13px; }
+        .star-badge { font-weight: 800; font-size: 13px; }
+        .star-무별 { color: var(--text-muted); } .star-은별 { color: #cbd5e1; } .star-금별 { color: var(--accent-amber); }
+        .rune-badge { color: var(--tkd-blue); }
         
-        .cell-input { width: 25%; padding-right: 8px; }
-        .cell-input input { width: 100%; background-color: var(--container-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 7px 8px; border-radius: 8px; font-size: 14px; outline: none; text-align: center; font-weight: 700; }
-        .cell-input input:focus { border-color: var(--accent-blue); }
+        .cell-input { width: 25%; padding-right: 12px; }
+        .cell-input input { width: 100%; background-color: var(--container-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 8px; border-radius: 8px; font-size: 14px; outline: none; text-align: center; font-weight: 700; }
+        .cell-input input:focus { border-color: var(--tkd-blue); }
         
-        .cell-result { width: 50%; text-align: right; font-size: 11px; display: flex; justify-content: flex-end; align-items: center; gap: 6px; }
-        .status-badge { font-size: 11px; padding: 3px 7px; border-radius: 5px; font-weight: 700; }
-        .status-perfect { background-color: rgba(74, 222, 128, 0.15); color: var(--accent-green); }
-        .status-good { background-color: rgba(56, 189, 248, 0.15); color: var(--accent-blue); }
-        .status-normal { background-color: rgba(251, 191, 36, 0.15); color: var(--accent-amber); }
-        .status-bad { background-color: rgba(248, 113, 113, 0.15); color: var(--accent-red); }
+        .cell-result { width: 50%; text-align: right; font-size: 12px; display: flex; justify-content: flex-end; align-items: center; gap: 8px; }
+        .status-badge { font-size: 12px; padding: 4px 8px; border-radius: 6px; font-weight: 700; }
+        .status-perfect { background-color: rgba(16, 185, 129, 0.15); color: var(--accent-green); }
+        .status-good { background-color: rgba(59, 130, 246, 0.15); color: var(--tkd-blue); }
+        .status-normal { background-color: rgba(245, 158, 11, 0.15); color: var(--accent-amber); }
+        .status-bad { background-color: rgba(239, 68, 68, 0.15); color: var(--tkd-red); }
         .status-none { background-color: transparent; color: var(--text-muted); }
-        .diff-text { font-weight: 700; } .diff-good { color: var(--accent-green); } .diff-bad { color: var(--accent-red); } .diff-none { color: var(--text-muted); }
+        .diff-text { font-weight: 700; } .diff-good { color: var(--accent-green); } .diff-bad { color: var(--tkd-red); } .diff-none { color: var(--text-muted); }
 
-        .add-cart-btn { background-color: var(--tkd-blue); color: white; border: none; border-radius: 6px; width: 28px; height: 28px; font-size: 14px; font-weight: bold; cursor: pointer; transition: 0.1s; }
-        .add-cart-btn:hover { background-color: #2563eb; transform: scale(1.05); }
+        .add-cart-btn { background-color: var(--tkd-red); color: white; border: none; border-radius: 8px; width: 32px; height: 32px; font-size: 14px; font-weight: bold; cursor: pointer; transition: transform 0.15s; }
+        .add-cart-btn:hover { transform: scale(1.08); }
 
-        /* ---------- 사이드바 헤더 및 유틸리티 ---------- */
-        .cart-header { font-size: 16px; font-weight: 900; margin-bottom: 12px; border-bottom: 2px solid var(--border-color); padding-bottom: 8px; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; }
-        
-        .settings-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 15px; transition: 0.2s; padding: 4px; border-radius: 4px; }
-        .settings-btn:hover { color: var(--accent-amber); background: rgba(255,255,255,0.1); }
+        /* 연금술 가이드 */
+        .alchemy-guide-box {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 20px;
+        }
+        .alchemy-title { font-size: 14px; font-weight: 800; color: var(--tkd-blue); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+        .alchemy-table { width: 100%; border-collapse: collapse; font-size: 12px; text-align: left; }
+        .alchemy-table th { background-color: var(--container-bg); color: var(--text-muted); padding: 8px; border-bottom: 1px solid var(--border-color); }
+        .alchemy-table td { padding: 8px; border-bottom: 1px dashed var(--border-color); color: var(--text-main); }
+        .alchemy-formula { margin-top: 12px; padding: 10px 12px; background-color: rgba(59, 130, 246, 0.08); border-radius: 8px; font-size: 12px; color: var(--tkd-blue); line-height: 1.5; }
 
-        /* 타이머 디자인 */
+        /* 사이드바 요소 */
+        .cart-header { font-size: 16px; font-weight: 900; margin-bottom: 14px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; }
+        .settings-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 16px; padding: 4px; border-radius: 6px; }
+        .settings-btn:hover { color: var(--accent-amber); }
+
+        /* 타이머 */
         .timer-dark-box {
-            background-color: #0d1117; 
+            background-color: var(--input-bg); 
             border-radius: 12px;
             padding: 16px;
             display: flex;
@@ -219,114 +267,89 @@
             align-items: center;
             margin-bottom: 12px;
             position: relative;
-            border: 1px solid rgba(255,255,255,0.05);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            border: 1px solid var(--border-color);
         }
         .timer-dark-left { display: flex; flex-direction: column; gap: 4px; }
         .timer-dark-name { font-size: 13px; font-weight: 700; color: var(--text-muted); display: flex; align-items: center; gap: 4px; }
         .timer-dark-val {
-            font-size: 26px;
+            font-size: 24px;
             font-weight: 900;
             font-family: 'Orbitron', monospace;
-            color: #ffffff;
-            text-shadow: 0 0 5px rgba(255,255,255,0.3);
+            color: var(--text-main);
             letter-spacing: 1px;
-            line-height: 1.1;
         }
-        .timer-dark-right { display: flex; gap: 8px; }
-        
-        .t-dark-btn { padding: 8px 14px; border-radius: 6px; font-size: 13px; font-weight: 800; border: none; cursor: pointer; transition: 0.2s; }
-        .t-start { background-color: rgba(74, 222, 128, 0.1); color: var(--accent-green); }
-        .t-start:hover { background-color: rgba(74, 222, 128, 0.2); }
-        .t-stop { background-color: rgba(248, 113, 113, 0.05); color: #fca5a5; }
-        .t-stop:hover { background-color: rgba(248, 113, 113, 0.15); color: var(--accent-red); }
-        
-        .timer-expired { animation: blinkRed 1s infinite; color: var(--accent-red) !important; text-shadow: 0 0 8px rgba(239, 68, 68, 0.6) !important; }
-        @keyframes blinkRed { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+        .timer-dark-right { display: flex; gap: 6px; }
+        .t-dark-btn { padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 800; border: none; cursor: pointer; }
+        .t-start { background-color: rgba(16, 185, 129, 0.15); color: var(--accent-green); }
+        .t-stop { background-color: rgba(239, 68, 68, 0.15); color: var(--tkd-red); }
+        .timer-expired { animation: blinkRed 1s infinite; color: var(--tkd-red) !important; }
+        @keyframes blinkRed { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+        .t-test-mini { position: absolute; top: 6px; right: 8px; font-size: 10px; background: none; border: none; color: var(--border-color); cursor: pointer; }
 
-        .t-test-mini { position: absolute; top: 6px; right: 8px; font-size: 9px; background: none; border: none; color: var(--border-color); cursor: pointer; }
-        .t-test-mini:hover { color: var(--accent-amber); }
-
-        /* ---------- 장부 디자인 ---------- */
-        .cart-empty { font-size: 13px; color: var(--text-muted); text-align: center; padding: 20px 0; background: var(--input-bg); border-radius: 10px; border: 1px dashed var(--border-color); }
-        .cart-item { background-color: var(--input-bg); border: 1px solid var(--border-color); border-radius: 10px; padding: 12px; margin-bottom: 10px; }
+        /* 장부 */
+        .cart-empty { font-size: 13px; color: var(--text-muted); text-align: center; padding: 24px 0; background: var(--input-bg); border-radius: 12px; border: 1px dashed var(--border-color); }
+        .cart-item { background-color: var(--input-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 14px; margin-bottom: 10px; }
         .cart-item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
-        .cart-item-name { font-size: 13px; font-weight: 800; color: var(--text-main); max-width: 85%; }
-        .cart-remove-btn { background: none; border: none; color: var(--accent-red); cursor: pointer; opacity: 0.7; }
+        .cart-item-name { font-size: 14px; font-weight: 800; color: var(--text-main); }
+        .cart-remove-btn { background: none; border: none; color: var(--tkd-red); cursor: pointer; opacity: 0.8; }
         .cart-item-price { font-size: 12px; color: var(--accent-amber); font-weight: 700; }
         
         .qty-wrapper { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; justify-content: flex-end;}
-        .qty-input, .cost-input { background-color: var(--container-bg); border: 1px solid var(--border-color); color: var(--text-main); border-radius: 4px; text-align: center; font-size: 12px; font-weight: 700; outline: none; }
-        .qty-input { width: 70px; padding: 4px; } /* 수량칸 널널하게 변경 */
-        .cost-input { width: 70px; padding: 4px; text-align: right; }
-        .qty-btn { background-color: var(--border-color); color: var(--text-main); border: none; border-radius: 4px; padding: 4px 6px; font-size: 11px; cursor: pointer; font-weight: bold; }
-        .qty-btn:hover { background-color: #475569; }
+        .qty-input, .cost-input { background-color: var(--container-bg); border: 1px solid var(--border-color); color: var(--text-main); border-radius: 6px; text-align: center; font-size: 12px; font-weight: 700; outline: none; }
+        .qty-input { width: 65px; padding: 5px; }
+        .cost-input { width: 75px; padding: 5px; text-align: right; }
+        .qty-btn { background-color: var(--border-color); color: var(--text-main); border: none; border-radius: 6px; padding: 4px 7px; font-size: 11px; cursor: pointer; font-weight: bold; }
 
-        .item-profit { font-size: 12px; font-weight: 900; }
-        
-        .cart-total-box { margin-top: 16px; padding: 12px; background-color: var(--input-bg); border: 1px solid var(--border-color); border-radius: 12px; }
-        .total-line { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px; color: var(--text-muted); font-weight: 700;}
-        .total-line.final { border-top: 2px dashed var(--border-color); margin-top: 8px; padding-top: 8px; font-size: 16px; font-weight: 900; color: var(--text-main); }
+        .item-profit { font-size: 13px; font-weight: 900; }
+        .cart-total-box { margin-top: 16px; padding: 16px; background-color: var(--input-bg); border: 1px solid var(--border-color); border-radius: 12px; }
+        .total-line { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; color: var(--text-muted); font-weight: 700;}
+        .total-line.final { border-top: 1px dashed var(--border-color); margin-top: 10px; padding-top: 10px; font-size: 17px; font-weight: 900; color: var(--text-main); }
 
-        /* ---------- 계산기 ---------- */
-        .calculator-box { margin-top: 24px; background-color: var(--input-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px; }
-        .calc-display { width: 100%; background-color: var(--container-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 10px; border-radius: 6px; font-size: 18px; font-weight: 700; text-align: right; margin-bottom: 10px; outline: none; font-family: monospace; }
-        .calc-display:focus { border-color: var(--accent-green); box-shadow: 0 0 5px rgba(74, 222, 128, 0.3); }
+        /* 계산기 */
+        .calculator-box { margin-top: 20px; background-color: var(--input-bg); border: 1px solid var(--border-color); border-radius: 14px; padding: 16px; }
+        .calc-display { width: 100%; background-color: var(--container-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 12px; border-radius: 8px; font-size: 18px; font-weight: 700; text-align: right; margin-bottom: 12px; outline: none; font-family: 'Orbitron', monospace; }
         .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
-        .calc-btn { background-color: var(--container-bg); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 6px; padding: 10px 0; font-size: 15px; font-weight: 700; cursor: pointer; border: none; }
-        .calc-btn:hover { background-color: #334155; }
-        .calc-op { background-color: rgba(56, 189, 248, 0.1); color: var(--accent-blue); border-color: rgba(56, 189, 248, 0.3); border: 1px solid;}
-        .calc-eq { background-color: var(--accent-green); color: #000; border: none; }
-        .calc-clear { background-color: rgba(248, 113, 113, 0.1); color: var(--accent-red); border-color: rgba(248, 113, 113, 0.3); border: 1px solid;}
+        .calc-btn { background-color: var(--container-bg); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 0; font-size: 15px; font-weight: 700; cursor: pointer; }
+        .calc-op { background-color: rgba(59, 130, 246, 0.1); color: var(--tkd-blue); border-color: rgba(59, 130, 246, 0.3); }
+        .calc-eq { background-color: var(--accent-green); color: white; border: none; }
+        .calc-clear { background-color: rgba(239, 68, 68, 0.1); color: var(--tkd-red); border-color: rgba(239, 68, 68, 0.3); }
 
-        /* ---------- 모달 창 (사운드 설정) ---------- */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7); z-index: 1000;
-            display: flex; justify-content: center; align-items: center;
-        }
-        .modal-content {
-            background: var(--container-bg); border: 2px solid var(--border-color);
-            border-radius: 12px; padding: 20px; width: 400px; max-width: 90%;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-        }
-        .modal-header {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;
-        }
+        /* 모달 */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; display: flex; justify-content: center; align-items: center; }
+        .modal-content { background: var(--container-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; width: 420px; max-width: 90%; box-shadow: var(--shadow-lg); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; }
         .modal-header h3 { font-size: 16px; margin: 0; color: var(--text-main); }
         .modal-header button { background: none; border: none; color: var(--text-muted); font-size: 18px; cursor: pointer; }
-        .modal-header button:hover { color: var(--accent-red); }
-        .sound-status { font-size: 14px; margin-bottom: 15px; }
-        .sound-controls { display: flex; gap: 8px; flex-wrap: wrap; }
 
-        /* ---------- 변동상점 알림 ---------- */
-        .shop-alert-box { background-color: rgba(0, 0, 0, 0.2); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; text-align: center; margin-bottom: 12px; transition: all 0.3s; box-shadow: inset 0 2px 10px rgba(0,0,0,0.2); }
-        .shop-alert-title { font-size: 14px; font-weight: 800; color: var(--text-main); margin-bottom: 8px; display: flex; justify-content: center; align-items: center; gap: 6px; }
+        /* 변동상점 알림 */
+        .shop-alert-box { background-color: var(--input-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; text-align: center; margin-bottom: 14px; }
+        .shop-alert-title { font-size: 13px; font-weight: 800; color: var(--text-main); margin-bottom: 6px; display: flex; justify-content: center; align-items: center; gap: 6px; }
         .shop-alert-msg { font-size: 15px; font-weight: 900; color: var(--text-muted); margin-bottom: 4px; }
         .shop-alert-sub { font-size: 12px; color: var(--text-muted); }
     </style>
 </head>
 <body>
 
+<!-- 야간 / 주간 모드 전환 버튼 -->
+<button class="theme-toggle-btn" onclick="toggleTheme()">
+    <span id="theme-icon">🌙</span> <span id="theme-text">야간 모드</span>
+</button>
+
 <div class="main-wrapper">
     <!-- 왼쪽 사이드바 -->
     <div class="sidebar-container">
         
-        <!-- 알림 (구: 마을 유틸리티) -->
         <div class="cart-header">
             <div><i class="fa-solid fa-bell"></i> 알림</div>
             <button class="settings-btn" onclick="openSoundModal()" title="화면 크기 및 사운드 설정"><i class="fa-solid fa-gear"></i></button>
         </div>
 
-        <!-- 변동상점 시세 갱신 박스 -->
         <div class="shop-alert-box" id="shopScheduleInfoBox">
             <div class="shop-alert-title"><i class="fa-solid fa-store"></i> 3시간 변동상점 스케줄</div>
             <div class="shop-alert-msg" id="shopAlertMsg">계산 중...</div>
             <div class="shop-alert-sub" id="shopAlertSub"></div>
         </div>
 
-        <!-- 타이머 3종 -->
         <div class="timer-dark-box">
             <div class="timer-dark-left">
                 <div class="timer-dark-name">💖 호감도 아이템</div>
@@ -363,27 +386,24 @@
             <button class="t-test-mini" onclick="startAppTimer('diver', 10)">10s</button>
         </div>
 
-        <div style="height: 16px;"></div>
+        <div style="height: 12px;"></div>
 
-        <!-- 예상 수익 장부 -->
         <div class="cart-header"><i class="fa-solid fa-wallet"></i> 예상 수익 장부</div>
         <div>
             <div id="cartItemsList"></div>
         </div>
         <div class="cart-total-box">
             <div class="total-line"><span>총 예상 매출</span><span id="sumRevenue">0원</span></div>
-            <div class="total-line"><span style="color:var(--accent-red)">총 재료비</span><span id="sumCost" style="color:var(--accent-red)">- 0원</span></div>
+            <div class="total-line"><span style="color:var(--tkd-red)">총 재료비</span><span id="sumCost" style="color:var(--tkd-red)">- 0원</span></div>
             <div class="total-line final"><span>최종 순수익</span><span id="sumProfit" style="color:var(--accent-green);">0원</span></div>
         </div>
 
-        <!-- 퀵 재료비 계산기 -->
         <div class="calculator-box">
             <div class="cart-header" style="font-size: 14px; margin-bottom: 12px; border:none; padding-bottom:0;"><i class="fa-solid fa-calculator"></i> 퀵 재료비 계산기</div>
             <input type="text" id="calcDisplay" class="calc-display" placeholder="예: 30*3+15*2" onkeydown="handleCalcKey(event)">
             
             <div class="calc-grid">
-                <!-- 추가된 백스페이스 버튼 -->
-                <button class="calc-btn" style="grid-column: span 4; background-color: #334155; color: white;" onclick="calcBackspace()">지우기 (←)</button>
+                <button class="calc-btn" style="grid-column: span 4; background-color: var(--border-color);" onclick="calcBackspace()">지우기 (←)</button>
                 
                 <button class="calc-btn" onclick="calcAppend('7')">7</button>
                 <button class="calc-btn" onclick="calcAppend('8')">8</button>
@@ -406,12 +426,11 @@
                 <button class="calc-btn calc-op" onclick="calcAppend('/')">÷</button>
             </div>
             
-            <!-- 계산 결과 장부 전송 기능 (이전 드롭다운 버전으로 복구) -->
-            <div style="display: flex; gap: 5px; margin-top: 10px;">
-                <select id="costTargetSelect" style="flex: 1; padding: 4px; border-radius: 4px; border: 1px solid var(--border-color); background-color: var(--input-bg); color: var(--text-main); font-size: 12px;">
+            <div style="display: flex; gap: 6px; margin-top: 12px;">
+                <select id="costTargetSelect" style="flex: 1; padding: 6px; border-radius: 6px; border: 1px solid var(--border-color); background-color: var(--container-bg); color: var(--text-main); font-size: 12px;">
                     <option value="">장부가 비어있습니다</option>
                 </select>
-                <button class="calc-btn" style="background-color: var(--accent-amber); color: black; font-weight: bold; padding: 6px 12px; font-size: 13px;" onclick="transferToCost()">
+                <button class="calc-btn" style="background-color: var(--accent-amber); color: white; font-weight: bold; padding: 6px 12px; font-size: 13px;" onclick="transferToCost()">
                     선택 전송
                 </button>
             </div>
@@ -419,10 +438,9 @@
 
     </div>
 
-    <!-- 오른쪽 메인 앱 (파서 + 리스트) -->
+    <!-- 오른쪽 메인 앱 -->
     <div class="app-container">
         
-        <!-- 상단 깃허브 연동 배너 영역 -->
         <div class="banner-container">
             <img id="topBannerImage" src="" alt="상단 배너">
         </div>
@@ -432,15 +450,14 @@
             <p>시세를 입력하고 우측 [+] 버튼을 눌러 장부에 기록하세요</p>
         </div>
 
-        <!-- 통합 스마트 분석 영역 + 디스코드 버튼 -->
         <div class="parser-container">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                <label class="parser-label" id="parserLabel" style="margin-bottom: 0;">📋 통합 시세 복사+붙여넣기</label>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <label class="parser-label" id="parserLabel">📋 통합 시세 복사+붙여넣기</label>
                 <div style="display: flex; gap: 8px;">
-                    <a href="https://discord.com/channels/1207535228730474587/1362482704553214023" target="_blank" class="discord-btn" title="룬 변동상점 채널로 즉시 이동합니다.">
+                    <a href="https://discord.com/channels/1207535228730474587/1362482704553214023" target="_blank" class="discord-btn" title="룬 채널로 이동">
                         <i class="fa-brands fa-discord"></i> 룬 시세
                     </a>
-                    <a href="https://discord.com/channels/1207535228730474587/1362843048098271475" target="_blank" class="discord-btn" style="background-color: #eb459e;" title="요리 변동상점 채널로 즉시 이동합니다.">
+                    <a href="https://discord.com/channels/1207535228730474587/1362843048098271475" target="_blank" class="discord-btn" style="background-color: #eb459e;" title="요리 채널로 이동">
                         <i class="fa-brands fa-discord"></i> 요리 시세
                     </a>
                 </div>
@@ -448,13 +465,58 @@
             <textarea id="smartParser" class="parser-textarea" placeholder="디스코드 내용을 통째로 복사해서 이곳에 넣으세요!&#10;예: [룬 ㅣ 신속] | 263 → 290"></textarea>
         </div>
 
-        <!-- 메인 상점 구분 탭 -->
         <div class="tabs">
             <div class="tab-cell"><button class="tab-btn active" id="tab-rune" onclick="switchTab('rune')">☯️ 룬 상점</button></div>
             <div class="tab-cell"><button class="tab-btn" id="tab-cooking" onclick="switchTab('cooking')">🍳 요리 상점</button></div>
         </div>
 
-        <div id="runeView"><div class="item-list" id="runeListContainer"></div></div>
+        <div id="runeView">
+            <div class="alchemy-guide-box">
+                <div class="alchemy-title"><i class="fa-solid fa-flask"></i> 연금 룬 제작 레시피 가이드</div>
+                <table class="alchemy-table">
+                    <thead>
+                        <tr>
+                            <th>속성</th>
+                            <th>2단계 (어색한 결정 + 해산물)</th>
+                            <th>3단계 (속성 결정 + 해산물)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>🔥 화염</td>
+                            <td>어색한 결정 + <strong>굴</strong> ➔ 결정ㅣ화염</td>
+                            <td>결정ㅣ화염 + <strong>소라</strong> ➔ 정제 결정ㅣ화염</td>
+                        </tr>
+                        <tr>
+                            <td>💧 호흡</td>
+                            <td>어색한 결정 + <strong>미역</strong> ➔ 결정ㅣ호흡</td>
+                            <td>결정ㅣ호흡 + <strong>키조개</strong> ➔ 정제 결정ㅣ호흡</td>
+                        </tr>
+                        <tr>
+                            <td>💨 신속</td>
+                            <td>어색한 결정 + <strong>전복</strong> ➔ 결정ㅣ신속</td>
+                            <td>결정ㅣ신속 + <strong>멍게</strong> ➔ 정제 결정ㅣ신속</td>
+                        </tr>
+                        <tr>
+                            <td>⚡ 성급</td>
+                            <td>어색한 결정 + <strong>홍합</strong> ➔ 결정ㅣ성급</td>
+                            <td>결정ㅣ성급 + <strong>해삼</strong> ➔ 정제 결정ㅣ성급</td>
+                        </tr>
+                        <tr>
+                            <td>💪 힘</td>
+                            <td>어색한 결정 + <strong>해삼</strong> ➔ 결정ㅣ힘</td>
+                            <td>결정ㅣ힘 + <strong>홍합</strong> ➔ 정제 결정ㅣ힘</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="alchemy-formula">
+                    ✨ <strong>최종 룬 제작 공식:</strong> 정제 결정 × 3 + 보석 × 1 ➔ 효과 룬 × 1 (12초)<br>
+                    📦 <strong>대량 제작:</strong> 정제 결정 × 48 + 보석 × 16 ➔ 효과 룬 × 16 (192초)
+                </div>
+            </div>
+
+            <div class="item-list" id="runeListContainer"></div>
+        </div>
 
         <div id="cookingView" style="display: none;">
             <div class="sub-tabs">
@@ -469,53 +531,58 @@
     </div>
 </div>
 
-<!-- 알림 사운드 모달 창 -->
 <div id="soundModal" class="modal-overlay" style="display:none;">
     <div class="modal-content">
         <div class="modal-header">
-            <h3><i class="fa-solid fa-gear"></i> 환경 설정 (화면 최적화 & 사운드)</h3>
+            <h3><i class="fa-solid fa-gear"></i> 환경 설정</h3>
             <button onclick="closeSoundModal()"><i class="fa-solid fa-xmark"></i></button>
         </div>
         
-        <!-- 화면 최적화 (Zoom) 설정 -->
-        <div class="sound-status" style="margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px;">
+        <div style="margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 16px;">
             <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                 <span>🖥️ 화면 크기 (Zoom): <strong id="currentScaleText" style="color:var(--accent-green);">100%</strong></span>
                 <button class="t-dark-btn" style="padding: 4px 10px; font-size: 11px;" onclick="resetUIScale()">기본값</button>
             </div>
             <input type="range" id="uiScaleSlider" min="70" max="150" step="5" value="100" style="width: 100%; accent-color: var(--accent-green);" oninput="changeUIScale(this.value)">
-            <div style="font-size: 11px; color: var(--text-muted); margin-top: 6px; text-align: center;">모니터 해상도에 맞춰 UI 크기를 자유롭게 조절할 수 있습니다.</div>
         </div>
 
-        <div class="sound-status">
+        <div>
             🎵 현재 사운드: <strong id="currentSoundName" style="color:var(--accent-amber);">기본 띠로링 소리</strong>
         </div>
-        <div class="sound-controls">
+        <div style="display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap;">
             <input type="file" id="customAudioInput" accept="audio/*" style="display:none;" onchange="handleAudioUpload(event)">
             <button class="t-dark-btn t-start" style="flex:1;" onclick="document.getElementById('customAudioInput').click()">
-                <i class="fa-solid fa-upload"></i> 파일 업로드 (MP3)
+                <i class="fa-solid fa-upload"></i> 파일 업로드
             </button>
-            <button class="t-dark-btn" style="background:#334155; color:white;" onclick="testSound()">
+            <button class="t-dark-btn" style="background:var(--border-color); color:var(--text-main);" onclick="testSound()">
                 <i class="fa-solid fa-play"></i> 미리듣기
             </button>
             <button class="t-dark-btn t-stop" style="flex:1;" onclick="clearCustomAudio()">
-                <i class="fa-solid fa-rotate-left"></i> 기본음 초기화
+                <i class="fa-solid fa-rotate-left"></i> 초기화
             </button>
         </div>
-        <p style="font-size: 11px; color: var(--text-muted); margin-top: 15px; line-height: 1.4;">
-            ※ 업로드한 MP3 파일은 브라우저 내부 저장소에 안전하게 보관되어 새로고침을 해도 유지됩니다.
-        </p>
     </div>
 </div>
 
 <script>
+    // 테마 전환 함수 (다크/라이트)
+    function toggleTheme() {
+        const html = document.documentElement;
+        const currentTheme = html.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        html.setAttribute('data-theme', newTheme);
+        document.getElementById('theme-icon').textContent = newTheme === 'dark' ? '🌙' : '☀️';
+        document.getElementById('theme-text').textContent = newTheme === 'dark' ? '야간 모드' : '주간 모드';
+    }
+
     const serverData = {
         rune: [
             { name: "룬ㅣ화염저항", keywords: ["화염", "화염저항"], min: 180, max: 270 },
             { name: "룬ㅣ호흡", keywords: ["호흡"], min: 207, max: 311 },
             { name: "룬ㅣ신속", keywords: ["신속"], min: 228, max: 342 },
-            { name: "룬ㅣ성급", keywords: ["성급"], min: 402, max: 603 },
-            { name: "룬ㅣ힘", keywords: ["힘"], min: 405, max: 608 }
+            { name: "룬ㅣ성급", keywords: ["성급"], min: 252, max: 378 },
+            { name: "룬ㅣ힘", keywords: ["힘"], min: 255, max: 383 }
         ],
         cooking: {
             "c1": [
@@ -532,9 +599,9 @@
                 { name: "아스파라거스 라페", keywords: ["아스파라거스 라페"], recipe: "당근 큐브×1, 레몬 슬라이스×1, 아스파라거스 피클×1", tiers: [{min:69, max:90}, {min:90, max:104}, {min:104, max:117}] }
             ],
             "c3": [
-                { name: "파프리카 비프 스튜", keywords: ["파프리카 비프 스튜", "비프 스튜"], recipe: "손질 소고기×1, 양파 슬라이스×1, 감자 큐브×1, 로메스코 소스×1", tiers: [{min:120, max:156}, {min:156, max:180}, {min:180, max:204}] },
+                { name: "파프리카 비프 스튜", keywords: ["파프리카 비프 스튜", "비프 스튜"], recipe: "손질 소고기×1, 양파 슬라이스×2, 감자 큐브×1, 로메스코 소스×1", tiers: [{min:120, max:156}, {min:156, max:180}, {min:180, max:204}] },
                 { name: "피치 레몬 치킨", keywords: ["피치 레몬 치킨", "레몬 치킨", "피치 레몬"], recipe: "손질 닭고기×1, 복숭아 슬라이스×2, 당근 큐브×1, 레몬청×1", tiers: [{min:120, max:156}, {min:156, max:180}, {min:180, max:204}] },
-                { name: "허브 램 플래터", keywords: ["허브 램 플래터", "램 플래터", "허브 램"], recipe: "손질 양고기×1, 다진 파슬리×1, 당근 큐브×1, 아스파라거스 피클×1", tiers: [{min:120, max:156}, {min:156, max:180}, {min:180, max:204}] },
+                { name: "허브 램 플래터", keywords: ["허브 램 플래터", "램 플래터", "허브 램"], recipe: "손질 양고기×1, 다진 파슬리×2, 당근 큐브×1, 아스파라거스 피클×1", tiers: [{min:120, max:156}, {min:156, max:180}, {min:180, max:204}] },
                 { name: "스파이시 갈릭 포크", keywords: ["스파이시 갈릭 포크", "갈릭 포크", "스파이시 갈릭"], recipe: "손질 돼지고기×1, 다진 마늘×2, 감자 큐브×1, 고추장×1", tiers: [{min:120, max:156}, {min:156, max:180}, {min:180, max:204}] }
             ],
             "c4": [
@@ -571,7 +638,6 @@
         }
     }
 
-    /* ---------------- 네비게이션 ---------------- */
     function switchTab(tab) {
         document.getElementById('tab-rune').classList.remove('active');
         document.getElementById('tab-cooking').classList.remove('active');
@@ -589,7 +655,6 @@
         document.getElementById(`section-container-${catKey}`).style.display = 'block';
     }
 
-    /* ---------------- 렌더링 ---------------- */
     function renderRuneList() {
         const container = document.getElementById('runeListContainer');
         container.innerHTML = '';
@@ -707,7 +772,6 @@
         syncCartPrice(`cook_${catIdx}_${itemIdx}_${tierIdx}`, currentPrice);
     }
 
-    /* ---------------- 장부(계산기) 관련 로직 ---------------- */
     function addToCart(type, groupIdx, itemIdx, tierIdx) {
         let key = `${type}_${groupIdx}_${itemIdx}_${tierIdx}`;
         let name = '', price = 0;
@@ -724,7 +788,7 @@
         if (!price || isNaN(price) || price <= 0) { alert("상점 단가가 입력되지 않았습니다."); return; }
 
         if (cart[key]) {
-            alert("이미 장부에 추가된 품목입니다. 우측 장부에서 수량을 조절해 주세요.");
+            alert("이미 장부에 추가된 품목입니다.");
         } else {
             cart[key] = { name: name, price: price, qty: 0, cost: 0 };
         }
@@ -771,7 +835,7 @@
             keys.forEach(key => {
                 const item = cart[key];
                 const rev = item.price * item.qty;
-                const cost = item.cost; // 💡 'item.cost * item.qty' 였던 개당 계산법을 '항목 총 재료비'로 변경했습니다.
+                const cost = item.cost;
                 const profit = rev - cost;
                 
                 sumRev += rev; sumCost += cost; sumProfit += profit;
@@ -788,16 +852,16 @@
                         <div class="qty-wrapper">
                             <button class="qty-btn" onclick="addCartQty('${key}', 1)" title="1개">+1</button>
                             <button class="qty-btn" onclick="addCartQty('${key}', 64)" title="1세트">+64</button>
-                            <button class="qty-btn" onclick="addCartQty('${key}', 1728)" title="1셜커 박스">+1728</button>
+                            <button class="qty-btn" onclick="addCartQty('${key}', 1728)" title="1셜커">+1728</button>
                             <input type="number" class="qty-input" value="${item.qty}" min="0" onchange="updateCartQty('${key}', this.value)">
                         </div>
                     </div>
-                    <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px dashed rgba(255,255,255,0.1); padding-top:8px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px dashed var(--border-color); padding-top:8px;">
                         <div style="display:flex; align-items:center; gap:4px;">
-                            <span style="font-size:11px; color:var(--accent-red); font-weight:700;">총 재료비</span>
+                            <span style="font-size:11px; color:var(--tkd-red); font-weight:700;">총 재료비</span>
                             <input type="number" class="cost-input" value="${item.cost || ''}" placeholder="0" onchange="updateCartCost('${key}', this.value)">
                         </div>
-                        <span class="item-profit" style="color: ${profit >= 0 ? 'var(--accent-green)' : 'var(--accent-red)'}">순수익: ${profit > 0 ? '+' : ''}${profit.toLocaleString()}원</span>
+                        <span class="item-profit" style="color: ${profit >= 0 ? 'var(--accent-green)' : 'var(--tkd-red)'}">순수익: ${profit > 0 ? '+' : ''}${profit.toLocaleString()}원</span>
                     </div>
                 `;
                 container.appendChild(div);
@@ -807,14 +871,12 @@
             document.getElementById('sumCost').textContent = `- ${sumCost.toLocaleString()}원`;
             const profitEl = document.getElementById('sumProfit');
             profitEl.textContent = `${sumProfit > 0 ? '+' : ''}${sumProfit.toLocaleString()}원`;
-            profitEl.style.color = sumProfit >= 0 ? 'var(--accent-green)' : 'var(--accent-red)';
+            profitEl.style.color = sumProfit >= 0 ? 'var(--accent-green)' : 'var(--tkd-red)';
         }
 
-        // 💡 장부 목록이 갱신될 때 계산기 재료비 전송 대상 목록도 같이 동기화 업데이트 (복구)
         let targetSelect = document.getElementById('costTargetSelect');
         if (targetSelect) {
             targetSelect.innerHTML = ''; 
-            
             if (keys.length === 0) {
                 targetSelect.innerHTML = '<option value="">장부가 비어있습니다</option>';
             } else {
@@ -828,10 +890,8 @@
         }
     }
 
-    /* ---------------- 커스텀 알림음 IndexedDB 및 배너 슬라이드 로직 ---------------- */
     let tkdDB;
     let customAudioUrl = null;
-
     let bannerImages = [];
     let currentBannerIndex = 0;
     let bannerInterval = null;
@@ -848,36 +908,25 @@
             tkdDB = e.target.result;
             loadCustomAudio(); 
         };
-        req.onerror = e => console.error("IndexedDB Error", e);
     }
 
-    // --- 자체 파일 슬라이드쇼 처리 (자동 스캔 방식) ---
     function startBannerSlideshow() {
         if (bannerInterval) clearInterval(bannerInterval);
-        
-        const maxScan = 10; // 최대 10개의 배너까지 자동으로 찾습니다. (필요시 숫자 늘림 가능)
+        const maxScan = 10;
         let checkCount = 0;
         let foundBanners = [];
 
-        // 1번부터 10번까지 파일이 있는지 백그라운드에서 찔러보기
         for (let i = 1; i <= maxScan; i++) {
             let img = new Image();
-            let fileName = `banner${i}.png`; // 💡 배너 이름은 무조건 banner1.png, banner2.png 로 통일해주세요!
-            
-            img.onload = function() {
-                foundBanners.push({ index: i, src: fileName }); // 존재하는 파일만 기록
-                checkComplete();
-            };
-            img.onerror = function() {
-                checkComplete(); // 없으면 그냥 넘어감
-            };
+            let fileName = `banner${i}.png`;
+            img.onload = function() { foundBanners.push({ index: i, src: fileName }); checkComplete(); };
+            img.onerror = function() { checkComplete(); };
             img.src = fileName;
         }
 
         function checkComplete() {
             checkCount++;
             if (checkCount === maxScan) {
-                // 스캔 완료 후 1번부터 순서대로 예쁘게 정렬
                 foundBanners.sort((a, b) => a.index - b.index);
                 bannerImages = foundBanners.map(b => b.src);
                 runSlideshow();
@@ -887,30 +936,26 @@
 
     function runSlideshow() {
         const imgEl = document.getElementById('topBannerImage');
-        
-        // 발견된 배너가 아예 없을 때 (기본 엑스박스 방지 이미지)
         if (bannerImages.length === 0) {
             imgEl.src = "https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&w=800&q=80";
             return;
         }
-
-        // 첫 번째 배너 띄우기
         imgEl.src = bannerImages[0];
-
-        // 2장 이상일 때만 슬라이드 작동
         if (bannerImages.length > 1) {
             bannerInterval = setInterval(() => {
-                imgEl.style.opacity = 0; 
+                // 1. 서서히 페이드아웃 (0.8초 동안 투명화)
+                imgEl.style.opacity = '0'; 
+                
+                // 2. 투명해진 직후(800ms 뒤) 소스를 교체하고 다시 페이드인
                 setTimeout(() => {
                     currentBannerIndex = (currentBannerIndex + 1) % bannerImages.length;
                     imgEl.src = bannerImages[currentBannerIndex];
-                    imgEl.style.opacity = 1; 
-                }, 300); 
-            }, 3000); // 3초마다 변경
+                    imgEl.style.opacity = '1'; 
+                }, 800); 
+            }, 4000); // 전체 슬라이드 간격을 4초로 설정
         }
     }
 
-    // --- 사운드 업로드 처리 ---
     function handleAudioUpload(e) {
         const file = e.target.files[0];
         if (!file) return;
@@ -918,10 +963,7 @@
         if (tkdDB) {
             const tx = tkdDB.transaction("files", "readwrite");
             tx.objectStore("files").put(file, "userAlarm");
-            tx.oncomplete = () => {
-                loadCustomAudio();
-                alert("알림음이 저장되었습니다! (새로고침을 해도 유지됩니다)");
-            };
+            tx.oncomplete = () => { loadCustomAudio(); alert("알림음이 저장되었습니다!"); };
         }
     }
 
@@ -956,13 +998,12 @@
 
     function openSoundModal() { document.getElementById('soundModal').style.display = 'flex'; }
     function closeSoundModal() { document.getElementById('soundModal').style.display = 'none'; }
-
     function testSound() { playAlarmSound(); }
 
     function playAlarmSound() {
         if (customAudioUrl) {
             const audio = new Audio(customAudioUrl);
-            audio.play().catch(e => { playDefaultBeep(); });
+            audio.play().catch(e => playDefaultBeep());
         } else {
             playDefaultBeep();
         }
@@ -987,16 +1028,11 @@
             playNote(523.25, now, 0.5);       
             playNote(659.25, now + 0.15, 0.5); 
             playNote(783.99, now + 0.3, 1.0);  
-        } catch(e) { console.log("Audio API 미지원 브라우저입니다."); }
+        } catch(e) {}
     }
 
-    /* ---------------- 화면 크기(Zoom) 자동 최적화 로직 ---------------- */
     function loadUIScale() {
-        let savedScale = localStorage.getItem('tkdUIScale');
-        if (!savedScale) {
-            if (window.innerWidth < 1200 && window.innerWidth > 900) savedScale = "90"; 
-            else savedScale = "100";
-        }
+        let savedScale = localStorage.getItem('tkdUIScale') || "100";
         changeUIScale(savedScale);
         const slider = document.getElementById('uiScaleSlider');
         if (slider) slider.value = savedScale;
@@ -1008,12 +1044,8 @@
         localStorage.setItem('tkdUIScale', val);
     }
 
-    function resetUIScale() {
-        changeUIScale(100);
-        document.getElementById('uiScaleSlider').value = 100;
-    }
+    function resetUIScale() { changeUIScale(100); document.getElementById('uiScaleSlider').value = 100; }
 
-    /* ---------------- 타이머 및 상점 스케줄 로직 ---------------- */
     let activeTimers = {};
 
     function initTimers() {
@@ -1053,17 +1085,13 @@
     function startTimerLoop(type, endTime) {
         if (activeTimers[type]) clearInterval(activeTimers[type]);
         document.getElementById('timer_' + type).classList.remove('timer-expired');
-        
         updateTimerDisplay(type, endTime);
         activeTimers[type] = setInterval(() => updateTimerDisplay(type, endTime), 1000);
     }
 
     function updateTimerDisplay(type, endTime) {
         const diff = endTime - Date.now();
-        if (diff <= 0) {
-            timerExpired(type);
-            return;
-        }
+        if (diff <= 0) { timerExpired(type); return; }
 
         const h = Math.floor(diff / 3600000);
         const m = Math.floor((diff % 3600000) / 60000);
@@ -1089,16 +1117,11 @@
         if (type === 'diver') el.textContent = "00:00:00";
 
         playAlarmSound(); 
-        
-        let name = '알림';
-        if (type === 'affection') name = '호감도 템';
-        else if (type === 'crop') name = '농작물 재배';
-        else if (type === 'diver') name = '다이버 던전';
+        let name = type === 'affection' ? '호감도 템' : (type === 'crop' ? '농작물 재배' : '다이버 던전');
 
         if ("Notification" in window && Notification.permission === "granted") {
-            new Notification(`⏰ [${name}] 완료!`, { body: "시간이 다 되었습니다. 알림을 확인해주세요." });
+            new Notification(`⏰ [${name}] 완료!`, { body: "시간이 다 되었습니다." });
         }
-        
         setTimeout(() => alert(`⏰ [${name}] 완료되었습니다!`), 100);
     }
 
@@ -1117,31 +1140,25 @@
         const sub = document.getElementById('shopAlertSub');
         
         if (isChangedNow) {
-            box.style.borderColor = "rgba(239, 68, 68, 0.5)";
-            box.style.backgroundColor = "rgba(239, 68, 68, 0.08)";
+            box.style.borderColor = "var(--tkd-red)";
             if(msg) {
                 msg.textContent = "🔥 방금 시세가 변동되었습니다!";
-                msg.style.color = "var(--accent-red)";
+                msg.style.color = "var(--tkd-red)";
                 sub.textContent = `(${m}분 전 갱신 완료 / 다음 갱신: ${nextHour >= 24 ? nextHour - 24 : nextHour}시)`;
-                sub.style.color = "#fca5a5";
             }
         } else {
             box.style.borderColor = "var(--border-color)";
-            box.style.backgroundColor = "rgba(0, 0, 0, 0.2)";
             if(msg) {
                 msg.textContent = "⏳ 변동상점 시세 유지중";
                 msg.style.color = "var(--text-muted)";
-                
                 const nextHDisplay = nextHour >= 24 ? nextHour - 24 : nextHour;
                 const leftH = nextHour - h - (m > 0 ? 1 : 0);
                 const leftM = m > 0 ? 60 - m : 0;
                 sub.textContent = `(다음 갱신까지 ${leftH}시간 ${leftM}분 / ${nextHDisplay}시)`;
-                sub.style.color = "var(--text-muted)";
             }
         }
     }
 
-    /* ---------------- 퀵 계산기 로직 (지우기 및 전송 추가) ---------------- */
     function calcAppend(val) {
         const display = document.getElementById('calcDisplay');
         display.value += val;
@@ -1150,12 +1167,9 @@
     
     function calcClear() { document.getElementById('calcDisplay').value = ''; }
     
-    // 계산기 지우기 (한 칸 백스페이스)
     function calcBackspace() {
         let display = document.getElementById('calcDisplay'); 
-        if (display.value.length > 0) {
-            display.value = display.value.slice(0, -1);
-        }
+        if (display.value.length > 0) display.value = display.value.slice(0, -1);
     }
 
     function calcCalculate() {
@@ -1171,32 +1185,22 @@
     }
     function handleCalcKey(e) { if (e.key === 'Enter') calcCalculate(); }
 
-    // 재료비 선택 전송하기 (이전 버전으로 복구)
     function transferToCost() {
         let display = document.getElementById('calcDisplay'); 
         let calcResult = parseInt(display.value);
 
-        if (!calcResult || isNaN(calcResult)) {
-            alert("전송할 계산 결과가 없습니다.");
-            return;
-        }
+        if (!calcResult || isNaN(calcResult)) { alert("전송할 계산 결과가 없습니다."); return; }
 
         let targetSelect = document.getElementById('costTargetSelect');
         let targetKey = targetSelect.value;
 
-        if (!targetKey || !cart[targetKey]) {
-            alert("재료비를 전송할 품목을 선택해 주세요.");
-            return;
-        }
+        if (!targetKey || !cart[targetKey]) { alert("재료비를 전송할 품목을 선택해 주세요."); return; }
 
-        // 선택한 대상에 총 재료비 입력
         cart[targetKey].cost = calcResult;
         renderCart(); 
-        
         alert(`[${cart[targetKey].name}] 항목에 총 재료비 ${calcResult.toLocaleString()}원이 적용되었습니다!`);
     }
 
-    /* ---------------- 강력한 스마트 파서 (정규식) ---------------- */
     function handleSmartParse() {
         const rawText = document.getElementById('smartParser').value;
         if (!rawText.trim()) return;
