@@ -162,7 +162,6 @@
             object-fit: cover;
             object-position: center;
             display: block;
-            /* 부드러운 페이드인/아웃 전환 (0.8초) */
             transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s ease;
             will-change: opacity, transform;
             opacity: 1;
@@ -350,6 +349,7 @@
             <div class="shop-alert-sub" id="shopAlertSub"></div>
         </div>
 
+        <!-- 타이머 1: 호감도 -->
         <div class="timer-dark-box">
             <div class="timer-dark-left">
                 <div class="timer-dark-name">💖 호감도 아이템</div>
@@ -362,6 +362,7 @@
             <button class="t-test-mini" onclick="startAppTimer('affection', 10)">10s</button>
         </div>
 
+        <!-- 타이머 2: 농작물 -->
         <div class="timer-dark-box">
             <div class="timer-dark-left">
                 <div class="timer-dark-name">🌱 농작물 재배</div>
@@ -374,6 +375,7 @@
             <button class="t-test-mini" onclick="startAppTimer('crop', 10)">10s</button>
         </div>
 
+        <!-- 타이머 3: 다이버 -->
         <div class="timer-dark-box">
             <div class="timer-dark-left">
                 <div class="timer-dark-name">🌊 다이버 던전</div>
@@ -384,6 +386,32 @@
                 <button class="t-dark-btn t-stop" onclick="stopAppTimer('diver')">정지</button>
             </div>
             <button class="t-test-mini" onclick="startAppTimer('diver', 10)">10s</button>
+        </div>
+
+        <!-- 타이머 4: 대장장이 보석 (26분 20초 = 1,580초) -->
+        <div class="timer-dark-box">
+            <div class="timer-dark-left">
+                <div class="timer-dark-name">🔨 대장장이 보석</div>
+                <div class="timer-dark-val" id="timer_blacksmith">26:20</div>
+            </div>
+            <div class="timer-dark-right">
+                <button class="t-dark-btn t-start" onclick="startAppTimer('blacksmith', 1580)">시작</button>
+                <button class="t-dark-btn t-stop" onclick="stopAppTimer('blacksmith')">정지</button>
+            </div>
+            <button class="t-test-mini" onclick="startAppTimer('blacksmith', 10)">10s</button>
+        </div>
+
+        <!-- 타이머 5: 연금 룬 (신규 추가: 32분 = 1,920초) -->
+        <div class="timer-dark-box">
+            <div class="timer-dark-left">
+                <div class="timer-dark-name">🧪 연금 룬</div>
+                <div class="timer-dark-val" id="timer_alchemy_rune">32:00</div>
+            </div>
+            <div class="timer-dark-right">
+                <button class="t-dark-btn t-start" onclick="startAppTimer('alchemy_rune', 1920)">시작</button>
+                <button class="t-dark-btn t-stop" onclick="stopAppTimer('alchemy_rune')">정지</button>
+            </div>
+            <button class="t-test-mini" onclick="startAppTimer('alchemy_rune', 10)">10s</button>
         </div>
 
         <div style="height: 12px;"></div>
@@ -943,16 +971,13 @@
         imgEl.src = bannerImages[0];
         if (bannerImages.length > 1) {
             bannerInterval = setInterval(() => {
-                // 1. 서서히 페이드아웃 (0.8초 동안 투명화)
                 imgEl.style.opacity = '0'; 
-                
-                // 2. 투명해진 직후(800ms 뒤) 소스를 교체하고 다시 페이드인
                 setTimeout(() => {
                     currentBannerIndex = (currentBannerIndex + 1) % bannerImages.length;
                     imgEl.src = bannerImages[currentBannerIndex];
                     imgEl.style.opacity = '1'; 
                 }, 800); 
-            }, 4000); // 전체 슬라이드 간격을 4초로 설정
+            }, 4000); 
         }
     }
 
@@ -1049,7 +1074,7 @@
     let activeTimers = {};
 
     function initTimers() {
-        ['affection', 'crop', 'diver'].forEach(type => {
+        ['affection', 'crop', 'diver', 'blacksmith', 'alchemy_rune'].forEach(type => {
             const saved = localStorage.getItem('tkdTimer_' + type);
             if (saved) {
                 const endTime = parseInt(saved, 10);
@@ -1080,6 +1105,8 @@
         if (type === 'affection') el.textContent = "06:00:00";
         if (type === 'crop') el.textContent = "17:00";
         if (type === 'diver') el.textContent = "01:00:00";
+        if (type === 'blacksmith') el.textContent = "26:20";
+        if (type === 'alchemy_rune') el.textContent = "32:00";
     }
 
     function startTimerLoop(type, endTime) {
@@ -1115,9 +1142,11 @@
         if (type === 'affection') el.textContent = "00:00:00";
         if (type === 'crop') el.textContent = "00:00";
         if (type === 'diver') el.textContent = "00:00:00";
+        if (type === 'blacksmith') el.textContent = "00:00";
+        if (type === 'alchemy_rune') el.textContent = "00:00";
 
         playAlarmSound(); 
-        let name = type === 'affection' ? '호감도 템' : (type === 'crop' ? '농작물 재배' : '다이버 던전');
+        let name = type === 'affection' ? '호감도 템' : (type === 'crop' ? '농작물 재배' : (type === 'diver' ? '다이버 던전' : (type === 'blacksmith' ? '대장장이 보석' : '연금 룬')));
 
         if ("Notification" in window && Notification.permission === "granted") {
             new Notification(`⏰ [${name}] 완료!`, { body: "시간이 다 되었습니다." });
