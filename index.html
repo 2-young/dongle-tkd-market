@@ -10,32 +10,32 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         [data-theme="dark"] {
-            --bg-color: #0b0f17;
-            --container-bg: #161c28;
-            --input-bg: #0f1420;
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
-            --border-color: #263147;
+            --bg-color: #0b0f19;
+            --container-bg: #141a29;
+            --input-bg: #0d121d;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #1e293b;
             --tkd-red: #ef4444;
             --tkd-blue: #3b82f6;
             --accent-amber: #f59e0b;
             --accent-green: #10b981;
-            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.4);
-            --card-hover: #1e2638;
+            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.5);
+            --card-hover: #1c2436;
         }
 
         [data-theme="light"] {
-            --bg-color: #f4f6f9;
+            --bg-color: #f1f5f9;
             --container-bg: #ffffff;
             --input-bg: #f8fafc;
-            --text-main: #111827;
-            --text-muted: #6b7280;
-            --border-color: #e5e7eb;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
             --tkd-red: #dc2626;
             --tkd-blue: #2563eb;
             --accent-amber: #d97706;
             --accent-green: #059669;
-            --shadow-lg: 0 15px 35px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 15px 35px rgba(0, 0, 0, 0.08);
             --card-hover: #f1f5f9;
         }
 
@@ -45,7 +45,7 @@
             padding: 0;
             font-family: 'Noto Sans KR', -apple-system, sans-serif;
             -webkit-tap-highlight-color: transparent;
-            transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+            transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease, transform 0.15s ease, box-shadow 0.2s ease;
         }
 
         body {
@@ -73,8 +73,9 @@
             align-items: center;
             gap: 8px;
             box-shadow: var(--shadow-lg);
+            backdrop-filter: blur(10px);
         }
-        .theme-toggle-btn:hover { transform: translateY(-2px); }
+        .theme-toggle-btn:hover { transform: translateY(-2px); border-color: var(--tkd-blue); }
 
         .main-wrapper {
             display: flex;
@@ -140,12 +141,13 @@
             aspect-ratio: 21 / 5;
             min-height: 110px;
             max-height: 220px;
-            border-radius: 14px;
+            border-radius: 16px;
             overflow: hidden;
             margin-bottom: 24px;
             border: 1px solid var(--border-color);
             position: relative;
             background-color: var(--input-bg);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         }
         
         .banner-container img {
@@ -160,14 +162,14 @@
         }
 
         .header { text-align: center; margin-bottom: 28px; }
-        .header h1 { font-size: 26px; font-weight: 900; letter-spacing: -0.02em; margin-bottom: 6px; }
+        .header h1 { font-size: 28px; font-weight: 900; letter-spacing: -0.02em; margin-bottom: 6px; }
         .title-tkd { background: linear-gradient(90deg, var(--tkd-red), var(--tkd-blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .header p { font-size: 14px; color: var(--text-muted); }
 
         .parser-container {
             background-color: var(--input-bg);
             border: 1px solid var(--border-color);
-            border-radius: 14px;
+            border-radius: 16px;
             padding: 20px;
             margin-bottom: 24px;
         }
@@ -175,29 +177,29 @@
         .discord-btn {
             background-color: #5865F2; color: white; border: none; border-radius: 8px;
             padding: 7px 12px; font-size: 12px; font-weight: 700; text-decoration: none;
-            display: inline-flex; align-items: center; gap: 6px; transition: transform 0.15s;
+            display: inline-flex; align-items: center; gap: 6px; transition: transform 0.15s, background-color 0.2s;
         }
-        .discord-btn:hover { transform: translateY(-1px); }
+        .discord-btn:hover { transform: translateY(-1px); filter: brightness(1.1); }
         .parser-textarea {
             width: 100%; height: 90px; background-color: var(--container-bg);
             border: 1px solid var(--border-color); color: var(--text-main);
             padding: 12px 14px; border-radius: 10px; font-size: 13px; resize: none; outline: none; margin-top: 12px;
         }
-        .parser-textarea:focus { border-color: var(--tkd-blue); }
+        .parser-textarea:focus { border-color: var(--tkd-blue); box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); }
 
-        .tabs { display: flex; gap: 8px; background-color: var(--input-bg); padding: 6px; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--border-color); }
+        .tabs { display: flex; gap: 8px; background-color: var(--input-bg); padding: 6px; border-radius: 14px; margin-bottom: 20px; border: 1px solid var(--border-color); }
         .tab-cell { flex: 1; }
-        .tab-btn { width: 100%; background: none; border: none; color: var(--text-muted); padding: 12px; font-size: 15px; font-weight: 700; cursor: pointer; border-radius: 8px; }
-        .tab-btn.active { background-color: var(--container-bg); color: var(--text-main); border: 1px solid var(--border-color); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .tab-btn { width: 100%; background: none; border: none; color: var(--text-muted); padding: 12px; font-size: 15px; font-weight: 700; cursor: pointer; border-radius: 10px; }
+        .tab-btn.active { background-color: var(--container-bg); color: var(--text-main); border: 1px solid var(--border-color); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
         #tab-rune.active { color: var(--tkd-blue); }
         #tab-cooking.active { color: var(--accent-amber); }
 
         .sub-tabs { display: flex; gap: 6px; margin-bottom: 20px; background-color: var(--input-bg); padding: 6px; border-radius: 10px; border: 1px solid var(--border-color); }
-        .sub-tab-btn { flex: 1; background: none; border: none; color: var(--text-muted); padding: 8px 4px; font-size: 13px; font-weight: 700; cursor: pointer; border-radius: 6px; text-align: center; }
-        .sub-tab-btn.active { background-color: var(--container-bg); color: var(--accent-amber); border: 1px solid var(--border-color); }
+        .sub-tab-btn { flex: 1; background: none; border: none; color: var(--text-muted); padding: 8px 4px; font-size: 13px; font-weight: 700; cursor: pointer; border-radius: 8px; text-align: center; }
+        .sub-tab-btn.active { background-color: var(--container-bg); color: var(--accent-amber); border: 1px solid var(--border-color); box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
 
-        .item-card { background-color: var(--input-bg); border: 1px solid var(--border-color); border-radius: 14px; padding: 20px; margin-bottom: 16px; transition: border-color 0.2s; }
-        .item-card:hover { border-color: var(--text-muted); }
+        .item-card { background-color: var(--input-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; margin-bottom: 16px; transition: border-color 0.2s, transform 0.15s; }
+        .item-card:hover { border-color: var(--text-muted); transform: translateY(-2px); }
         .item-header { margin-bottom: 12px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
         .item-name { font-weight: 800; font-size: 17px; color: var(--text-main); }
         .item-recipe { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
@@ -212,24 +214,24 @@
         
         .cell-input { width: 25%; padding-right: 12px; }
         .cell-input input { width: 100%; background-color: var(--container-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 8px; border-radius: 8px; font-size: 14px; outline: none; text-align: center; font-weight: 700; }
-        .cell-input input:focus { border-color: var(--tkd-blue); }
+        .cell-input input:focus { border-color: var(--tkd-blue); box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); }
         
         .cell-result { width: 50%; text-align: right; font-size: 12px; display: flex; justify-content: flex-end; align-items: center; gap: 8px; }
         .status-badge { font-size: 12px; padding: 4px 8px; border-radius: 6px; font-weight: 700; }
-        .status-perfect { background-color: rgba(16, 185, 129, 0.15); color: var(--accent-green); }
-        .status-good { background-color: rgba(59, 130, 246, 0.15); color: var(--tkd-blue); }
-        .status-normal { background-color: rgba(245, 158, 11, 0.15); color: var(--accent-amber); }
-        .status-bad { background-color: rgba(239, 68, 68, 0.15); color: var(--tkd-red); }
+        .status-perfect { background-color: rgba(16, 185, 129, 0.15); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.3); }
+        .status-good { background-color: rgba(59, 130, 246, 0.15); color: var(--tkd-blue); border: 1px solid rgba(59, 130, 246, 0.3); }
+        .status-normal { background-color: rgba(245, 158, 11, 0.15); color: var(--accent-amber); border: 1px solid rgba(245, 158, 11, 0.3); }
+        .status-bad { background-color: rgba(239, 68, 68, 0.15); color: var(--tkd-red); border: 1px solid rgba(239, 68, 68, 0.3); }
         .status-none { background-color: transparent; color: var(--text-muted); }
         .diff-text { font-weight: 700; } .diff-good { color: var(--accent-green); } .diff-bad { color: var(--tkd-red); } .diff-none { color: var(--text-muted); }
 
-        .add-cart-btn { background-color: var(--tkd-red); color: white; border: none; border-radius: 8px; width: 32px; height: 32px; font-size: 14px; font-weight: bold; cursor: pointer; transition: transform 0.15s; }
-        .add-cart-btn:hover { transform: scale(1.08); }
+        .add-cart-btn { background-color: var(--tkd-red); color: white; border: none; border-radius: 8px; width: 32px; height: 32px; font-size: 14px; font-weight: bold; cursor: pointer; transition: transform 0.15s, background-color 0.2s; }
+        .add-cart-btn:hover { transform: scale(1.1); filter: brightness(1.1); }
 
         .alchemy-guide-box {
             background-color: var(--input-bg);
             border: 1px solid var(--border-color);
-            border-radius: 14px;
+            border-radius: 16px;
             padding: 18px;
             margin-bottom: 20px;
         }
@@ -237,11 +239,11 @@
         .alchemy-table { width: 100%; border-collapse: collapse; font-size: 12px; text-align: left; }
         .alchemy-table th { background-color: var(--container-bg); color: var(--text-muted); padding: 8px; border-bottom: 1px solid var(--border-color); }
         .alchemy-table td { padding: 8px; border-bottom: 1px dashed var(--border-color); color: var(--text-main); }
-        .alchemy-formula { margin-top: 12px; padding: 10px 12px; background-color: rgba(59, 130, 246, 0.08); border-radius: 8px; font-size: 12px; color: var(--tkd-blue); line-height: 1.5; }
+        .alchemy-formula { margin-top: 12px; padding: 10px 12px; background-color: rgba(59, 130, 246, 0.08); border: 1px dashed rgba(59, 130, 246, 0.3); border-radius: 8px; font-size: 12px; color: var(--tkd-blue); line-height: 1.5; }
 
         .cart-header { font-size: 16px; font-weight: 900; margin-bottom: 14px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; }
         .settings-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 16px; padding: 4px; border-radius: 6px; }
-        .settings-btn:hover { color: var(--accent-amber); }
+        .settings-btn:hover { color: var(--accent-amber); transform: rotate(30deg); }
 
         .add-custom-timer-btn {
             background: rgba(59, 130, 246, 0.15);
@@ -259,7 +261,6 @@
             color: white;
         }
 
-        /* 전체 카드 드래그 앤 드롭 전용 스타일 */
         .timer-dark-box {
             background-color: var(--input-bg); 
             border-radius: 12px;
@@ -272,21 +273,16 @@
             border: 1px solid var(--border-color);
             cursor: grab;
             user-select: none;
-            transition: transform 0.15s, opacity 0.15s, border-color 0.15s;
+            transition: transform 0.15s, opacity 0.15s, border-color 0.15s, box-shadow 0.2s;
         }
-        .timer-dark-box:active {
-            cursor: grabbing;
-        }
+        .timer-dark-box:hover { border-color: var(--tkd-blue); }
+        .timer-dark-box:active { cursor: grabbing; }
         .timer-dark-box.dragging {
             opacity: 0.3;
             border: 2px dashed var(--tkd-blue);
             background-color: var(--card-hover);
         }
-        .timer-drag-handle {
-            color: var(--text-muted);
-            margin-right: 8px;
-            font-size: 12px;
-        }
+        .timer-drag-handle { color: var(--text-muted); margin-right: 8px; font-size: 12px; }
         .timer-dark-left { display: flex; flex-direction: column; gap: 4px; pointer-events: none; }
         .timer-dark-name { font-size: 13px; font-weight: 700; color: var(--text-muted); display: flex; align-items: center; gap: 4px; }
         .timer-dark-val {
@@ -297,20 +293,25 @@
             letter-spacing: 1px;
         }
         .timer-dark-right { display: flex; gap: 6px; align-items: center; }
-        .t-dark-btn { padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 800; border: none; cursor: pointer; }
-        .t-start { background-color: rgba(16, 185, 129, 0.15); color: var(--accent-green); }
-        .t-stop { background-color: rgba(239, 68, 68, 0.15); color: var(--tkd-red); }
+        .t-dark-btn { padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 800; border: none; cursor: pointer; transition: background-color 0.2s, transform 0.1s; }
+        .t-dark-btn:active { transform: scale(0.95); }
+        .t-start { background-color: rgba(16, 185, 129, 0.15); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.3); }
+        .t-start:hover { background-color: var(--accent-green); color: white; }
+        .t-stop { background-color: rgba(239, 68, 68, 0.15); color: var(--tkd-red); border: 1px solid rgba(239, 68, 68, 0.3); }
+        .t-stop:hover { background-color: var(--tkd-red); color: white; }
         .t-del { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 13px; padding: 4px 6px; margin-left: 2px; }
         .t-del:hover { color: var(--tkd-red); }
         .timer-expired { animation: blinkRed 1s infinite; color: var(--tkd-red) !important; }
-        @keyframes blinkRed { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
-        .t-test-mini { position: absolute; top: 6px; right: 8px; font-size: 10px; background: none; border: none; color: var(--border-color); cursor: pointer; }
+        @keyframes blinkRed { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+        .t-test-mini { position: absolute; top: 6px; right: 8px; font-size: 10px; background: none; border: none; color: var(--text-muted); opacity: 0.5; cursor: pointer; }
+        .t-test-mini:hover { opacity: 1; }
 
         .cart-empty { font-size: 13px; color: var(--text-muted); text-align: center; padding: 24px 0; background: var(--input-bg); border-radius: 12px; border: 1px dashed var(--border-color); }
         .cart-item { background-color: var(--input-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 14px; margin-bottom: 10px; }
         .cart-item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
         .cart-item-name { font-size: 14px; font-weight: 800; color: var(--text-main); }
         .cart-remove-btn { background: none; border: none; color: var(--tkd-red); cursor: pointer; opacity: 0.8; }
+        .cart-remove-btn:hover { opacity: 1; transform: scale(1.1); }
         .cart-item-price { font-size: 12px; color: var(--accent-amber); font-weight: 700; }
         
         .qty-wrapper { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; justify-content: flex-end;}
@@ -318,22 +319,25 @@
         .qty-input { width: 65px; padding: 5px; }
         .cost-input { width: 75px; padding: 5px; text-align: right; }
         .qty-btn { background-color: var(--border-color); color: var(--text-main); border: none; border-radius: 6px; padding: 4px 7px; font-size: 11px; cursor: pointer; font-weight: bold; }
+        .qty-btn:hover { background-color: var(--tkd-blue); color: white; }
 
         .item-profit { font-size: 13px; font-weight: 900; }
         .cart-total-box { margin-top: 16px; padding: 16px; background-color: var(--input-bg); border: 1px solid var(--border-color); border-radius: 12px; }
         .total-line { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; color: var(--text-muted); font-weight: 700;}
         .total-line.final { border-top: 1px dashed var(--border-color); margin-top: 10px; padding-top: 10px; font-size: 17px; font-weight: 900; color: var(--text-main); }
 
-        .calculator-box { margin-top: 20px; background-color: var(--input-bg); border: 1px solid var(--border-color); border-radius: 14px; padding: 16px; }
+        .calculator-box { margin-top: 20px; background-color: var(--input-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; }
         .calc-display { width: 100%; background-color: var(--container-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 12px; border-radius: 8px; font-size: 18px; font-weight: 700; text-align: right; margin-bottom: 12px; outline: none; font-family: 'Orbitron', monospace; }
         .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
         .calc-btn { background-color: var(--container-bg); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 0; font-size: 15px; font-weight: 700; cursor: pointer; }
+        .calc-btn:active { transform: scale(0.95); }
         .calc-op { background-color: rgba(59, 130, 246, 0.1); color: var(--tkd-blue); border-color: rgba(59, 130, 246, 0.3); }
         .calc-eq { background-color: var(--accent-green); color: white; border: none; }
         .calc-clear { background-color: rgba(239, 68, 68, 0.1); color: var(--tkd-red); border-color: rgba(239, 68, 68, 0.3); }
 
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; display: flex; justify-content: center; align-items: center; }
-        .modal-content { background: var(--container-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; width: 420px; max-width: 90%; box-shadow: var(--shadow-lg); }
+        /* 모달 및 커스텀 팝업 스타일 */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); z-index: 1000; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(4px); }
+        .modal-content { background: var(--container-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 24px; width: 420px; max-width: 90%; box-shadow: var(--shadow-lg); }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; }
         .modal-header h3 { font-size: 16px; margin: 0; color: var(--text-main); }
         .modal-header button { background: none; border: none; color: var(--text-muted); font-size: 18px; cursor: pointer; }
@@ -346,9 +350,119 @@
         .shop-alert-title { font-size: 13px; font-weight: 800; color: var(--text-main); margin-bottom: 6px; display: flex; justify-content: center; align-items: center; gap: 6px; }
         .shop-alert-msg { font-size: 15px; font-weight: 900; color: var(--text-muted); margin-bottom: 4px; }
         .shop-alert-sub { font-size: 12px; color: var(--text-muted); }
+
+        /* 개판된 스마트 음소거 토글 스위치 디자인 */
+        .mute-toggle-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: var(--input-bg);
+            padding: 10px 14px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 12px;
+        }
+        .mute-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #334155;
+            transition: .3s;
+            border-radius: 24px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+        input:checked + .slider { background-color: var(--tkd-red); }
+        input:checked + .slider:before { transform: translateX(20px); }
+
+        .slider-disabled { opacity: 0.4; pointer-events: none; }
+
+        /* 화면 내 오버레이 알림 (팝업) 스타일 */
+        .toast-popup-container {
+            position: fixed;
+            top: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+
+        .toast-popup {
+            background-color: var(--container-bg);
+            border: 2px solid var(--tkd-red);
+            color: var(--text-main);
+            padding: 16px 24px;
+            border-radius: 14px;
+            box-shadow: 0 10px 30px rgba(239, 68, 68, 0.35);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-weight: 700;
+            font-size: 15px;
+            pointer-events: auto;
+            animation: slideDown 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .toast-popup-icon {
+            font-size: 24px;
+            color: var(--tkd-red);
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .toast-popup-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 16px;
+            cursor: pointer;
+            margin-left: auto;
+            padding: 2px 6px;
+        }
+        .toast-popup-close:hover { color: var(--text-main); }
     </style>
 </head>
 <body>
+
+<!-- 화면 오버레이 알림 컨테이너 -->
+<div id="toastContainer" class="toast-popup-container"></div>
 
 <button class="theme-toggle-btn" onclick="toggleTheme()">
     <span id="theme-icon">🌙</span> <span id="theme-text">야간 모드</span>
@@ -535,6 +649,26 @@
             <input type="range" id="uiScaleSlider" min="70" max="150" step="5" value="100" style="width: 100%; accent-color: var(--accent-green);" oninput="changeUIScale(this.value)">
         </div>
 
+        <!-- 세련되게 개판된 음소거 토글 섹션 -->
+        <div style="margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 16px;">
+            <div class="mute-toggle-wrapper">
+                <span class="mute-label">
+                    <i class="fa-solid fa-volume-xmark" style="color: var(--tkd-red);"></i> 전체 사운드 음소거
+                </span>
+                <label class="switch">
+                    <input type="checkbox" id="muteSoundToggle" onchange="toggleMuteSound(this.checked)">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div id="volumeControlGroup" style="transition: opacity 0.2s;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <span style="font-size: 13px;">🔊 알람 음량: <strong id="volumeText" style="color:var(--tkd-blue);">80%</strong></span>
+                </div>
+                <input type="range" id="volumeSlider" min="0" max="100" value="80" style="width: 100%; accent-color: var(--tkd-blue);" oninput="changeAlarmVolume(this.value)">
+            </div>
+        </div>
+
         <div>
             🎵 현재 사운드: <strong id="currentSoundName" style="color:var(--accent-amber);">기본 띠로링 소리</strong>
         </div>
@@ -643,6 +777,8 @@
     ];
 
     let timerList = [];
+    let alarmVolume = 0.8; 
+    let isAlarmMuted = false;
 
     function init() {
         initTimerData();
@@ -652,6 +788,7 @@
         initTkdDB(); 
         startBannerSlideshow(); 
         loadUIScale();
+        loadAudioSettings();
         switchTab('rune');
         document.getElementById('smartParser').addEventListener('input', handleSmartParse);
         
@@ -660,9 +797,6 @@
         }
     }
 
-    /* =========================================================
-       타이머 카드 전체 드래그 앤 드롭 구현
-       ========================================================= */
     function initTimerData() {
         const savedCustoms = JSON.parse(localStorage.getItem('tkdCustomTimersList') || '[]');
         const allAvailable = [...defaultTimers, ...savedCustoms];
@@ -707,7 +841,7 @@
             box.className = 'timer-dark-box';
             box.id = `timer_box_${t.id}`;
             box.dataset.id = t.id;
-            box.setAttribute('draggable', 'true'); // 타이머 카드 전체를 드래그 가능하도록 설정
+            box.setAttribute('draggable', 'true');
 
             box.innerHTML = `
                 <div class="timer-dark-left">
@@ -725,13 +859,11 @@
                 <button class="t-test-mini" onclick="startAppTimer('${t.id}', 10)">10s</button>
             `;
 
-            // 버튼 클릭 시 드래그 동작이 무시되도록 처리
             const buttons = box.querySelectorAll('button');
             buttons.forEach(btn => {
                 btn.addEventListener('mousedown', (e) => e.stopPropagation());
             });
 
-            // 드래그 앤 드롭 이벤트 등록
             box.addEventListener('dragstart', handleDragStart);
             box.addEventListener('dragend', handleDragEnd);
 
@@ -854,6 +986,25 @@
         }
     }
 
+    function showToastPopup(title, message) {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        toast.className = 'toast-popup';
+        toast.innerHTML = `
+            <i class="fa-solid fa-bell toast-popup-icon"></i>
+            <div>
+                <div style="font-size:15px; font-weight:800;">${title}</div>
+                <div style="font-size:12px; font-weight:500; color:var(--text-muted); margin-top:2px;">${message}</div>
+            </div>
+            <button class="toast-popup-close" onclick="this.parentElement.remove()"><i class="fa-solid fa-xmark"></i></button>
+        `;
+        container.appendChild(toast);
+
+        setTimeout(() => {
+            if (toast.parentElement) toast.remove();
+        }, 6000);
+    }
+
     function timerExpired(id) {
         if (activeTimers[id]) clearInterval(activeTimers[id]);
         activeTimers[id] = null;
@@ -869,11 +1020,11 @@
         }
 
         playAlarmSound(); 
+        showToastPopup(`⏰ [${name}] 완료!`, "설정한 시간이 완료되었습니다.");
 
         if ("Notification" in window && Notification.permission === "granted") {
-            new Notification(`⏰ [${name}] 완료!`, { body: "시간이 다 되었습니다." });
+            new Notification(`⏰ [${name}] 완료!`, { body: "설정한 시간이 완료되었습니다." });
         }
-        setTimeout(() => alert(`⏰ [${name}] 완료되었습니다!`), 100);
     }
 
     function openCustomTimerModal() { document.getElementById('customTimerModal').style.display = 'flex'; }
@@ -1278,13 +1429,58 @@
         };
     }
 
+    function loadAudioSettings() {
+        const savedVol = localStorage.getItem('tkdAlarmVolume');
+        if (savedVol !== null) {
+            alarmVolume = parseFloat(savedVol);
+            const slider = document.getElementById('volumeSlider');
+            const volText = document.getElementById('volumeText');
+            if (slider) slider.value = Math.round(alarmVolume * 100);
+            if (volText) volText.textContent = `${Math.round(alarmVolume * 100)}%`;
+        }
+
+        const savedMute = localStorage.getItem('tkdAlarmMuted');
+        if (savedMute !== null) {
+            isAlarmMuted = (savedMute === 'true');
+            const muteToggle = document.getElementById('muteSoundToggle');
+            if (muteToggle) muteToggle.checked = isAlarmMuted;
+            applyMuteUIState(isAlarmMuted);
+        }
+    }
+
+    function changeAlarmVolume(val) {
+        alarmVolume = val / 100;
+        document.getElementById('volumeText').textContent = val + '%';
+        localStorage.setItem('tkdAlarmVolume', alarmVolume);
+    }
+
+    function toggleMuteSound(isMuted) {
+        isAlarmMuted = isMuted;
+        localStorage.setItem('tkdAlarmMuted', isMuted);
+        applyMuteUIState(isMuted);
+    }
+
+    function applyMuteUIState(isMuted) {
+        const volGroup = document.getElementById('volumeControlGroup');
+        if (volGroup) {
+            if (isMuted) {
+                volGroup.classList.add('slider-disabled');
+            } else {
+                volGroup.classList.remove('slider-disabled');
+            }
+        }
+    }
+
     function openSoundModal() { document.getElementById('soundModal').style.display = 'flex'; }
     function closeSoundModal() { document.getElementById('soundModal').style.display = 'none'; }
     function testSound() { playAlarmSound(); }
 
     function playAlarmSound() {
+        if (isAlarmMuted || alarmVolume === 0) return;
+
         if (customAudioUrl) {
             const audio = new Audio(customAudioUrl);
+            audio.volume = alarmVolume;
             audio.play().catch(e => playDefaultBeep());
         } else {
             playDefaultBeep();
@@ -1301,9 +1497,12 @@
                 osc.frequency.value = freq;
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
+                
+                const targetGain = 0.5 * alarmVolume;
+                
                 osc.start(startTime);
-                gain.gain.setValueAtTime(0.5, startTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
+                gain.gain.setValueAtTime(targetGain, startTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
                 osc.stop(startTime + duration);
             }
             const now = audioCtx.currentTime;
