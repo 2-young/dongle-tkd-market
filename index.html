@@ -100,9 +100,7 @@
         .sidebar-container::before, .app-container::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
+            top: 0; left: 0; right: 0;
             height: 5px;
             background: linear-gradient(90deg, var(--tkd-red) 0%, var(--tkd-blue) 100%);
             z-index: 10;
@@ -151,10 +149,8 @@
         }
         
         .banner-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
+            width: 100%; height: 100%;
+            object-fit: cover; object-position: center;
             display: block;
             transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s ease;
             will-change: opacity, transform;
@@ -228,72 +224,35 @@
         .add-cart-btn { background-color: var(--tkd-red); color: white; border: none; border-radius: 8px; width: 32px; height: 32px; font-size: 14px; font-weight: bold; cursor: pointer; transition: transform 0.15s, background-color 0.2s; }
         .add-cart-btn:hover { transform: scale(1.1); filter: brightness(1.1); }
 
-        .alchemy-guide-box {
-            background-color: var(--input-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 18px;
-            margin-bottom: 20px;
-        }
-        .alchemy-title { font-size: 14px; font-weight: 800; color: var(--tkd-blue); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
-        .alchemy-table { width: 100%; border-collapse: collapse; font-size: 12px; text-align: left; }
-        .alchemy-table th { background-color: var(--container-bg); color: var(--text-muted); padding: 8px; border-bottom: 1px solid var(--border-color); }
-        .alchemy-table td { padding: 8px; border-bottom: 1px dashed var(--border-color); color: var(--text-main); }
-        .alchemy-formula { margin-top: 12px; padding: 10px 12px; background-color: rgba(59, 130, 246, 0.08); border: 1px dashed rgba(59, 130, 246, 0.3); border-radius: 8px; font-size: 12px; color: var(--tkd-blue); line-height: 1.5; }
-
         .cart-header { font-size: 16px; font-weight: 900; margin-bottom: 14px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; }
-        .settings-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 16px; padding: 4px; border-radius: 6px; }
+        .settings-btn, .pip-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 14px; padding: 4px 8px; border-radius: 6px; transition: all 0.2s; }
         .settings-btn:hover { color: var(--accent-amber); transform: rotate(30deg); }
+        .pip-btn { background: rgba(59, 130, 246, 0.15); color: var(--tkd-blue); font-weight: 700; border: 1px solid rgba(59, 130, 246, 0.3); }
+        .pip-btn:hover { background: var(--tkd-blue); color: white; }
 
         .add-custom-timer-btn {
-            background: rgba(59, 130, 246, 0.15);
-            color: var(--tkd-blue);
-            border: 1px dashed var(--tkd-blue);
-            border-radius: 8px;
-            padding: 6px 10px;
-            font-size: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
+            background: rgba(59, 130, 246, 0.15); color: var(--tkd-blue);
+            border: 1px dashed var(--tkd-blue); border-radius: 8px; padding: 6px 10px;
+            font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.2s;
         }
-        .add-custom-timer-btn:hover {
-            background: var(--tkd-blue);
-            color: white;
-        }
+        .add-custom-timer-btn:hover { background: var(--tkd-blue); color: white; }
 
         .timer-dark-box {
-            background-color: var(--input-bg); 
-            border-radius: 12px;
-            padding: 14px 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-            position: relative;
-            border: 1px solid var(--border-color);
-            cursor: grab;
-            user-select: none;
-            transition: transform 0.15s, opacity 0.15s, border-color 0.15s, box-shadow 0.2s;
+            background-color: var(--input-bg); border-radius: 12px; padding: 14px 16px;
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 10px; position: relative; border: 1px solid var(--border-color);
+            cursor: grab; user-select: none; transition: transform 0.15s, opacity 0.15s, border-color 0.15s, box-shadow 0.2s;
         }
         .timer-dark-box:hover { border-color: var(--tkd-blue); }
         .timer-dark-box:active { cursor: grabbing; }
-        .timer-dark-box.dragging {
-            opacity: 0.3;
-            border: 2px dashed var(--tkd-blue);
-            background-color: var(--card-hover);
-        }
+        .timer-dark-box.dragging { opacity: 0.3; border: 2px dashed var(--tkd-blue); background-color: var(--card-hover); }
+        .timer-dark-box.pip-locked { cursor: default !important; }
         .timer-drag-handle { color: var(--text-muted); margin-right: 8px; font-size: 12px; }
         .timer-dark-left { display: flex; flex-direction: column; gap: 4px; pointer-events: none; }
         .timer-dark-name { font-size: 13px; font-weight: 700; color: var(--text-muted); display: flex; align-items: center; gap: 4px; }
-        .timer-dark-val {
-            font-size: 22px;
-            font-weight: 900;
-            font-family: 'Orbitron', monospace;
-            color: var(--text-main);
-            letter-spacing: 1px;
-        }
-        .timer-dark-right { display: flex; gap: 6px; align-items: center; }
-        .t-dark-btn { padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 800; border: none; cursor: pointer; transition: background-color 0.2s, transform 0.1s; }
+        .timer-dark-val { font-size: 22px; font-weight: 900; font-family: 'Orbitron', monospace; color: var(--text-main); letter-spacing: 1px; }
+        .timer-dark-right { display: flex; gap: 6px; align-items: center; z-index: 5; }
+        .t-dark-btn { padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 800; border: none; cursor: pointer; transition: background-color 0.2s, transform 0.1s; pointer-events: auto !important; }
         .t-dark-btn:active { transform: scale(0.95); }
         .t-start { background-color: rgba(16, 185, 129, 0.15); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.3); }
         .t-start:hover { background-color: var(--accent-green); color: white; }
@@ -303,7 +262,7 @@
         .t-del:hover { color: var(--tkd-red); }
         .timer-expired { animation: blinkRed 1s infinite; color: var(--tkd-red) !important; }
         @keyframes blinkRed { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
-        .t-test-mini { position: absolute; top: 6px; right: 8px; font-size: 10px; background: none; border: none; color: var(--text-muted); opacity: 0.5; cursor: pointer; }
+        .t-test-mini { position: absolute; top: 6px; right: 8px; font-size: 10px; background: none; border: none; color: var(--text-muted); opacity: 0.5; cursor: pointer; pointer-events: auto !important; }
         .t-test-mini:hover { opacity: 1; }
 
         .cart-empty { font-size: 13px; color: var(--text-muted); text-align: center; padding: 24px 0; background: var(--input-bg); border-radius: 12px; border: 1px dashed var(--border-color); }
@@ -335,7 +294,6 @@
         .calc-eq { background-color: var(--accent-green); color: white; border: none; }
         .calc-clear { background-color: rgba(239, 68, 68, 0.1); color: var(--tkd-red); border-color: rgba(239, 68, 68, 0.3); }
 
-        /* 모달 및 커스텀 팝업 스타일 */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); z-index: 1000; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(4px); }
         .modal-content { background: var(--container-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 24px; width: 420px; max-width: 90%; box-shadow: var(--shadow-lg); }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; }
@@ -351,117 +309,27 @@
         .shop-alert-msg { font-size: 15px; font-weight: 900; color: var(--text-muted); margin-bottom: 4px; }
         .shop-alert-sub { font-size: 12px; color: var(--text-muted); }
 
-        /* 개판된 스마트 음소거 토글 스위치 디자인 */
-        .mute-toggle-wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background-color: var(--input-bg);
-            padding: 10px 14px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            margin-bottom: 12px;
-        }
-        .mute-label {
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--text-main);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 44px;
-            height: 24px;
-        }
+        .mute-toggle-wrapper { display: flex; align-items: center; justify-content: space-between; background-color: var(--input-bg); padding: 10px 14px; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 12px; }
+        .mute-label { font-size: 13px; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
+        .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
         .switch input { opacity: 0; width: 0; height: 0; }
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #334155;
-            transition: .3s;
-            border-radius: 24px;
-        }
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 18px;
-            width: 18px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: .3s;
-            border-radius: 50%;
-        }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #334155; transition: .3s; border-radius: 24px; }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; }
         input:checked + .slider { background-color: var(--tkd-red); }
         input:checked + .slider:before { transform: translateX(20px); }
-
         .slider-disabled { opacity: 0.4; pointer-events: none; }
 
-        /* 화면 내 오버레이 알림 (팝업) 스타일 */
-        .toast-popup-container {
-            position: fixed;
-            top: 25px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            pointer-events: none;
-        }
-
-        .toast-popup {
-            background-color: var(--container-bg);
-            border: 2px solid var(--tkd-red);
-            color: var(--text-main);
-            padding: 16px 24px;
-            border-radius: 14px;
-            box-shadow: 0 10px 30px rgba(239, 68, 68, 0.35);
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            font-weight: 700;
-            font-size: 15px;
-            pointer-events: auto;
-            animation: slideDown 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-30px) scale(0.9); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        .toast-popup-icon {
-            font-size: 24px;
-            color: var(--tkd-red);
-            animation: pulse 1s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
-
-        .toast-popup-close {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 16px;
-            cursor: pointer;
-            margin-left: auto;
-            padding: 2px 6px;
-        }
+        .toast-popup-container { position: fixed; top: 25px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+        .toast-popup { background-color: var(--container-bg); border: 2px solid var(--tkd-red); color: var(--text-main); padding: 16px 24px; border-radius: 14px; box-shadow: 0 10px 30px rgba(239, 68, 68, 0.35); display: flex; align-items: center; gap: 14px; font-weight: 700; font-size: 15px; pointer-events: auto; animation: slideDown 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-30px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .toast-popup-icon { font-size: 24px; color: var(--tkd-red); animation: pulse 1s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+        .toast-popup-close { background: none; border: none; color: var(--text-muted); font-size: 16px; cursor: pointer; margin-left: auto; padding: 2px 6px; }
         .toast-popup-close:hover { color: var(--text-main); }
     </style>
 </head>
 <body>
 
-<!-- 화면 오버레이 알림 컨테이너 -->
 <div id="toastContainer" class="toast-popup-container"></div>
 
 <button class="theme-toggle-btn" onclick="toggleTheme()">
@@ -473,7 +341,10 @@
         
         <div class="cart-header">
             <div><i class="fa-solid fa-bell"></i> 알림</div>
-            <button class="settings-btn" onclick="openSoundModal()" title="화면 크기 및 사운드 설정"><i class="fa-solid fa-gear"></i></button>
+            <div style="display: flex; gap: 6px; align-items: center;">
+                <button class="pip-btn" onclick="togglePipMode()" title="PIP 알람 창으로 분리"><i class="fa-solid fa-window-restore"></i> PIP 모드</button>
+                <button class="settings-btn" onclick="openSoundModal()" title="화면 크기 및 사운드 설정"><i class="fa-solid fa-gear"></i></button>
+            </div>
         </div>
 
         <div class="shop-alert-box" id="shopScheduleInfoBox">
@@ -487,7 +358,6 @@
             <button class="add-custom-timer-btn" onclick="openCustomTimerModal()"><i class="fa-solid fa-plus"></i> 추가</button>
         </div>
 
-        <!-- 동적 타이머 전체 드래그 영역 -->
         <div id="timersListContainer"></div>
 
         <div style="height: 12px;"></div>
@@ -508,22 +378,18 @@
             
             <div class="calc-grid">
                 <button class="calc-btn" style="grid-column: span 4; background-color: var(--border-color);" onclick="calcBackspace()">지우기 (←)</button>
-                
                 <button class="calc-btn" onclick="calcAppend('7')">7</button>
                 <button class="calc-btn" onclick="calcAppend('8')">8</button>
                 <button class="calc-btn" onclick="calcAppend('9')">9</button>
                 <button class="calc-btn calc-op" onclick="calcAppend('+')">+</button>
-                
                 <button class="calc-btn" onclick="calcAppend('4')">4</button>
                 <button class="calc-btn" onclick="calcAppend('5')">5</button>
                 <button class="calc-btn" onclick="calcAppend('6')">6</button>
                 <button class="calc-btn calc-op" onclick="calcAppend('-')">-</button>
-                
                 <button class="calc-btn" onclick="calcAppend('1')">1</button>
                 <button class="calc-btn" onclick="calcAppend('2')">2</button>
                 <button class="calc-btn" onclick="calcAppend('3')">3</button>
                 <button class="calc-btn calc-op" onclick="calcAppend('*')">×</button>
-                
                 <button class="calc-btn calc-clear" onclick="calcClear()">C</button>
                 <button class="calc-btn" onclick="calcAppend('0')">0</button>
                 <button class="calc-btn calc-eq" onclick="calcCalculate()">=</button>
@@ -574,50 +440,6 @@
         </div>
 
         <div id="runeView">
-            <div class="alchemy-guide-box">
-                <div class="alchemy-title"><i class="fa-solid fa-flask"></i> 연금 룬 제작 레시피 가이드</div>
-                <table class="alchemy-table">
-                    <thead>
-                        <tr>
-                            <th>속성</th>
-                            <th>2단계 (어색한 결정 + 해산물)</th>
-                            <th>3단계 (속성 결정 + 해산물)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>🔥 화염</td>
-                            <td>어색한 결정 + <strong>굴</strong> ➔ 결정ㅣ화염</td>
-                            <td>결정ㅣ화염 + <strong>소라</strong> ➔ 정제 결정ㅣ화염</td>
-                        </tr>
-                        <tr>
-                            <td>💧 호흡</td>
-                            <td>어색한 결정 + <strong>미역</strong> ➔ 결정ㅣ호흡</td>
-                            <td>결정ㅣ호흡 + <strong>키조개</strong> ➔ 정제 결정ㅣ호흡</td>
-                        </tr>
-                        <tr>
-                            <td>💨 신속</td>
-                            <td>어색한 결정 + <strong>전복</strong> ➔ 결정ㅣ신속</td>
-                            <td>결정ㅣ신속 + <strong>멍게</strong> ➔ 정제 결정ㅣ신속</td>
-                        </tr>
-                        <tr>
-                            <td>⚡ 성급</td>
-                            <td>어색한 결정 + <strong>홍합</strong> ➔ 결정ㅣ성급</td>
-                            <td>결정ㅣ성급 + <strong>해삼</strong> ➔ 정제 결정ㅣ성급</td>
-                        </tr>
-                        <tr>
-                            <td>💪 힘</td>
-                            <td>어색한 결정 + <strong>해삼</strong> ➔ 결정ㅣ힘</td>
-                            <td>결정ㅣ힘 + <strong>홍합</strong> ➔ 정제 결정ㅣ힘</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="alchemy-formula">
-                    ✨ <strong>최종 룬 제작 공식:</strong> 정제 결정 × 3 + 보석 × 1 ➔ 효과 룬 × 1 (12초)<br>
-                    📦 <strong>대량 제작:</strong> 정제 결정 × 48 + 보석 × 16 ➔ 효과 룬 × 16 (192초)
-                </div>
-            </div>
-
             <div class="item-list" id="runeListContainer"></div>
         </div>
 
@@ -649,7 +471,6 @@
             <input type="range" id="uiScaleSlider" min="70" max="150" step="5" value="100" style="width: 100%; accent-color: var(--accent-green);" oninput="changeUIScale(this.value)">
         </div>
 
-        <!-- 세련되게 개판된 음소거 토글 섹션 -->
         <div style="margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 16px;">
             <div class="mute-toggle-wrapper">
                 <span class="mute-label">
@@ -669,20 +490,12 @@
             </div>
         </div>
 
-        <div>
-            🎵 현재 사운드: <strong id="currentSoundName" style="color:var(--accent-amber);">기본 띠로링 소리</strong>
-        </div>
+        <div>🎵 현재 사운드: <strong id="currentSoundName" style="color:var(--accent-amber);">기본 띠로링 소리</strong></div>
         <div style="display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap;">
             <input type="file" id="customAudioInput" accept="audio/*" style="display:none;" onchange="handleAudioUpload(event)">
-            <button class="t-dark-btn t-start" style="flex:1;" onclick="document.getElementById('customAudioInput').click()">
-                <i class="fa-solid fa-upload"></i> 파일 업로드
-            </button>
-            <button class="t-dark-btn" style="background:var(--border-color); color:var(--text-main);" onclick="testSound()">
-                <i class="fa-solid fa-play"></i> 미리듣기
-            </button>
-            <button class="t-dark-btn t-stop" style="flex:1;" onclick="clearCustomAudio()">
-                <i class="fa-solid fa-rotate-left"></i> 초기화
-            </button>
+            <button class="t-dark-btn t-start" style="flex:1;" onclick="document.getElementById('customAudioInput').click()"><i class="fa-solid fa-upload"></i> 파일 업로드</button>
+            <button class="t-dark-btn" style="background:var(--border-color); color:var(--text-main);" onclick="testSound()"><i class="fa-solid fa-play"></i> 미리듣기</button>
+            <button class="t-dark-btn t-stop" style="flex:1;" onclick="clearCustomAudio()"><i class="fa-solid fa-rotate-left"></i> 초기화</button>
         </div>
     </div>
 </div>
@@ -712,6 +525,8 @@
 </div>
 
 <script>
+    let pipWindow = null;
+
     function toggleTheme() {
         const html = document.documentElement;
         const currentTheme = html.getAttribute('data-theme');
@@ -720,6 +535,10 @@
         html.setAttribute('data-theme', newTheme);
         document.getElementById('theme-icon').textContent = newTheme === 'dark' ? '🌙' : '☀️';
         document.getElementById('theme-text').textContent = newTheme === 'dark' ? '야간 모드' : '주간 모드';
+
+        if (pipWindow) {
+            pipWindow.document.documentElement.setAttribute('data-theme', newTheme);
+        }
     }
 
     const serverData = {
@@ -797,6 +616,114 @@
         }
     }
 
+    async function togglePipMode() {
+        if (!('documentPictureInPicture' in window)) {
+            alert('현재 브라우저가 Document Picture-in-Picture API를 지원하지 않습니다.\n(Chrome, Edge 등 최신 브라우저를 사용해 주세요.)');
+            return;
+        }
+
+        if (pipWindow) {
+            pipWindow.close();
+            pipWindow = null;
+            return;
+        }
+
+        try {
+            pipWindow = await window.documentPictureInPicture.requestWindow({
+                width: 360,
+                height: 480,
+            });
+
+            pipWindow.document.title = "태권도장 타이머";
+
+            [...document.styleSheets].forEach((styleSheet) => {
+                try {
+                    const cssRules = [...styleSheet.cssRules].map((rule) => rule.cssText).join('');
+                    const style = document.createElement('style');
+                    style.textContent = cssRules;
+                    pipWindow.document.head.appendChild(style);
+                } catch (e) {
+                    const link = document.createElement('link');
+                    link.rel = 'stylesheet';
+                    link.type = styleSheet.type;
+                    link.href = styleSheet.href;
+                    pipWindow.document.head.appendChild(link);
+                }
+            });
+
+            pipWindow.document.documentElement.setAttribute('data-theme', document.documentElement.getAttribute('data-theme'));
+            pipWindow.document.body.style.padding = '12px';
+            pipWindow.document.body.style.margin = '0';
+            pipWindow.document.body.style.minHeight = '100vh';
+            pipWindow.document.body.style.boxSizing = 'border-box';
+            pipWindow.document.body.style.overflowY = 'auto';
+
+            const container = pipWindow.document.createElement('div');
+            container.id = 'pipWrapper';
+            container.innerHTML = `
+                <div style="font-weight:900; font-size:14px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; background:var(--input-bg); padding:10px 12px; border-radius:10px; border:1px solid var(--border-color);">
+                    <span>🥋 태권도장 타이머</span>
+                </div>
+                <div id="pipTimersContainer"></div>
+            `;
+            pipWindow.document.body.appendChild(container);
+
+            updatePipContent();
+
+            pipWindow.addEventListener('unload', () => {
+                pipWindow = null;
+            });
+        } catch (err) {
+            console.error('PIP 창을 여는 데 실패했습니다:', err);
+        }
+    }
+
+    function updatePipContent() {
+        if (!pipWindow) return;
+
+        const pipTimers = pipWindow.document.getElementById('pipTimersContainer');
+        if (!pipTimers) return;
+
+        pipTimers.innerHTML = '';
+        let activeCount = 0;
+
+        timerList.forEach(t => {
+            const isRunning = !!activeTimers[t.id];
+            if (isRunning) {
+                activeCount++;
+                const originalBox = document.getElementById(`timer_box_${t.id}`);
+                if (originalBox) {
+                    const clonedBox = originalBox.cloneNode(true);
+                    
+                    clonedBox.removeAttribute('draggable');
+                    clonedBox.classList.add('pip-locked');
+                    const dragHandle = clonedBox.querySelector('.timer-drag-handle');
+                    if (dragHandle) dragHandle.style.display = 'none';
+
+                    const buttons = clonedBox.querySelectorAll('button');
+                    buttons.forEach(btn => {
+                        const btnClass = btn.className;
+                        if (btnClass.includes('t-start')) {
+                            btn.onclick = () => startAppTimer(t.id, t.defaultSeconds);
+                        } else if (btnClass.includes('t-stop')) {
+                            btn.onclick = () => stopAppTimer(t.id);
+                        } else if (btnClass.includes('t-del')) {
+                            btn.onclick = () => deleteCustomTimer(t.id);
+                        } else if (btnClass.includes('t-test-mini')) {
+                            btn.onclick = () => startAppTimer(t.id, 10);
+                        }
+                    });
+
+                    pipTimers.appendChild(clonedBox);
+                }
+            }
+        });
+
+        if (activeCount === 0) {
+            pipTimers.innerHTML = `<div class="cart-empty" style="margin-top:20px;">작동 중인 타이머가 없습니다.<br>메인 화면에서 타이머를 시작해 주세요!</div>`;
+        }
+    }
+
     function initTimerData() {
         const savedCustoms = JSON.parse(localStorage.getItem('tkdCustomTimersList') || '[]');
         const allAvailable = [...defaultTimers, ...savedCustoms];
@@ -871,6 +798,7 @@
         });
 
         container.addEventListener('dragover', handleDragOver);
+        updatePipContent();
     }
 
     let draggedItem = null;
@@ -920,6 +848,7 @@
         timerList = newOrder.map(id => timerMap.get(id)).filter(Boolean);
 
         localStorage.setItem('tkdTimerOrder', JSON.stringify(newOrder));
+        updatePipContent();
     }
 
     function formatTimeStr(seconds, showHours) {
@@ -941,6 +870,7 @@
         const endTime = Date.now() + (seconds * 1000);
         localStorage.setItem('tkdTimer_' + id, endTime.toString());
         startTimerLoop(id, endTime);
+        updatePipContent();
     }
 
     function stopAppTimer(id) {
@@ -954,6 +884,7 @@
             el.classList.remove('timer-expired');
             if (timerObj) el.textContent = formatTimeStr(timerObj.defaultSeconds, timerObj.showHours);
         }
+        updatePipContent();
     }
 
     function startTimerLoop(id, endTime) {
@@ -976,13 +907,16 @@
         const m = Math.floor((diff % 3600000) / 60000);
         const s = Math.floor((diff % 60000) / 1000);
         
+        const timeStr = showHours 
+            ? `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+            : `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+
         const el = document.getElementById('timer_' + id);
-        if (el) {
-            if (showHours) {
-                el.textContent = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-            } else {
-                el.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-            }
+        if (el) el.textContent = timeStr;
+
+        if (pipWindow) {
+            const pipEls = pipWindow.document.querySelectorAll(`#timer_${id}`);
+            pipEls.forEach(pipEl => { pipEl.textContent = timeStr; });
         }
     }
 
@@ -1000,6 +934,13 @@
         `;
         container.appendChild(toast);
 
+        if (pipWindow) {
+            const pipToast = toast.cloneNode(true);
+            pipToast.querySelector('.toast-popup-close').onclick = function() { pipToast.remove(); };
+            pipWindow.document.body.appendChild(pipToast);
+            setTimeout(() => { if (pipToast.parentElement) pipToast.remove(); }, 6000);
+        }
+
         setTimeout(() => {
             if (toast.parentElement) toast.remove();
         }, 6000);
@@ -1013,10 +954,19 @@
         const timerObj = timerList.find(t => t.id === id);
         const name = timerObj ? timerObj.name : "타이머";
         const el = document.getElementById('timer_' + id);
+        const expiredText = (timerObj && timerObj.showHours) ? "00:00:00" : "00:00";
         
         if (el) {
             el.classList.add('timer-expired');
-            el.textContent = (timerObj && timerObj.showHours) ? "00:00:00" : "00:00";
+            el.textContent = expiredText;
+        }
+
+        if (pipWindow) {
+            const pipEls = pipWindow.document.querySelectorAll(`#timer_${id}`);
+            pipEls.forEach(pipEl => {
+                pipEl.classList.add('timer-expired');
+                pipEl.textContent = expiredText;
+            });
         }
 
         playAlarmSound(); 
